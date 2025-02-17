@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nixie+One&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap");
+@import url("./reset.css");
+@import url("./colors.css");
+
+
+:root{
+    
+  /* Screen Breakpoints */
+    --screen-xs: 0;
+    --screen-sm: 576px;
+    --screen-md: 768px;
+    --screen-lg: 992px;
+    --screen-xl: 1200px;
+}
+
+
+html {
+  background-color: var(--night-base-1);
+  color: var(--night-primary-1);
+  font-family: "Roboto", "Fira Code", "Inconsolata", "Red Hat Display", "Noto Sans", Helvetica;
+}
+
+body{
+  font-family: "Nixie One", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  
+}
+
+a:link, a:active, a:visited, a:hover{
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+
+h1 {
+  font-size: 3em;
+  font-weight: 900;
+  text-transform: capitalize;
+  text-align: center;
+  padding: 3rem 0;  
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 40px 0;
+}
+
+span{
+  padding: 0;
+  margin: 0;
+}
+
+.grid-container{
+  display: grid;
+  font-size: 2rem;
+  row-gap:20px;
+  column-gap: 100px;
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-rows: 4fr;
+  border-radius: 20px;
+  color: var(--night-primary-2);
+  padding-bottom: 4rem;
+  grid-template-areas: 
+    ". container ."
+}
+
+.header{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-item{
+  display: grid;
+  grid-area: container;
+  grid-column: 2 / 2;
+  grid-row: 2 / 2;
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: 3fr 1fr 1fr;
+  border-radius: 20px;
+  gap: 30px;
+  min-height: 80dvh;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+}
