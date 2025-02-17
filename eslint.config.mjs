@@ -4,6 +4,7 @@ import eslintConfigPrettier from "eslint-config-prettier";
 
 export default [
   {languageOptions: { globals: globals.browser }},
+  eslintConfigPrettier,
   pluginJs.configs.recommended,
   {
     rules: {
@@ -12,8 +13,9 @@ export default [
         "no-unused-expressions": "warn",
         "semi": "warn"
     },
-    extends: "eslint:recommended",
-    ignores: [".config/*", "package.json", "webpack.config.js",]
   },
-  eslintConfigPrettier
+  {
+    ignores: ["**/temp.js", "config/*", ".config/*", "package.json", "webpack.config.js"]
+  }
+  
 ];
