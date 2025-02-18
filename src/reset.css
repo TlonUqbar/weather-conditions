@@ -28,3 +28,7 @@ p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
 p { text-wrap: pretty; }
 h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
 /* #root, #__next { isolation: isolate; } */
+
+code, kbd, pre, samp{ font-family:monospace; }
+sub{ vertical-align:sub; }
+sup{ vertical-align:super; }
