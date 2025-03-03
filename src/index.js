@@ -23,8 +23,14 @@ async function changeLocations(e) {
   fetchCurrentWeather(location);
   fetchDailyWeather(location);
   fetchHourlyWeather(location);
+  fetchAirQualityIndex(location);
 }
 
+
+const aqiEndpoint = "https://air-quality-api.open-meteo.com/v1/air-quality";
+let aqiCurrent = "current=european_aqi,us_aqi,pm10,pm2_5,uv_index";
+let aqiHourly = "hourly=pm10,pm2_5,uv_index,european_aqi,us_aqi";
+let aqiForecast = "forecast_days=1";
 
 const weatherEndpoint = "https://api.open-meteo.com/v1/forecast";
 let current = 'current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m';
@@ -75,13 +81,15 @@ async function firstTimeVisitor(){
 
 async function repeatVisitor(){
   console.log("NOT First Time");
-
     let currentWeather = JSON.parse(localStorage.getItem("currentWeather"));
     let dailyWeather = JSON.parse(localStorage.getItem("dailyWeather"));
     let hourlyWeather = JSON.parse(localStorage.getItem("hourlyWeather"));
+    let airNow = JSON.parse(localStorage.getItem("aqi-now"));
+    let airHour = JSON.parse(localStorage.getItem("aqi-hourly"));
     pDOM.populateCurrent(currentWeather, "current");
     pDOM.populateDaily(dailyWeather, "daily");
     pDOM.populateHourly(hourlyWeather, "hourly");
+    pDOM.populateAQI(airNow, airHour);
 }
 
 
@@ -96,7 +104,6 @@ async function fetchInitialGeoLocation(){
     .then( (response) => response.json() )
     .then( (json) => results = json )
     .then( () => { startingLocation = extractIPGeoValues(results); testSelection = startingLocation; })
-    // .then( () => testSelection = startingLocation )
     .then( () => { 
       let initial = {};
       let lastVisit = DateTime.now();
@@ -107,16 +114,17 @@ async function fetchInitialGeoLocation(){
 
       initial = startingLocation; 
       localStorage.setItem("initialLocation", JSON.stringify(initial)); 
-      localStorage.setItem("lastVisit", JSON.stringify(lastVisit)); 
-      
+      localStorage.setItem("lastVisit", JSON.stringify(lastVisit));  
     })
     .then( () => fetchCurrentWeather(testSelection))
     .then( () => fetchDailyWeather(testSelection))
     .then( () => fetchHourlyWeather(testSelection))
+    .then( () => fetchAirQualityIndex(testSelection) )
     .then( () => { return testSelection; })
     .catch( (error) => console.error(error) );
 
 }
+
 
 function extractIPGeoValues(results) {
   let geocoded = {};
@@ -132,7 +140,6 @@ function extractIPGeoValues(results) {
 
   return geocoded;
 }
-
 
 
 function fetchGeoCodingData(userLocation){
@@ -158,7 +165,6 @@ function fetchGeoCodingData(userLocation){
 }
 
 
-
 function extractGeoLocationValues (results) {
   let myKeys = ["name", "admin1", "country_code", "country", "timezone", "latitude", "longitude"];
   let rawResults = results.results;
@@ -179,13 +185,11 @@ function extractGeoLocationValues (results) {
 }
 
 
-
 function fetchCurrentWeather(userSelection){
   let latitude = `latitude=${userSelection.latitude}`;
   let longitude = `longitude=${userSelection.longitude}`;
   let now;
   let currentWeather = {};
-
 
   fetch(`${weatherEndpoint}?${latitude}&${longitude}&${current}&${units}&${timezone}&${forecast4}`, requestOptions)
     .then(response => response.json())
@@ -209,7 +213,6 @@ function fetchDailyWeather(userSelection){
   let today;
   let dailyWeather = {};
 
-
   fetch(`${weatherEndpoint}?${latitude}&${longitude}&${daily}&${units}&${timezone}&${forecast}`, requestOptions)
   .then(response => response.json())
   .then( (json) =>  today = json )
@@ -227,7 +230,6 @@ function fetchHourlyWeather(userSelection){
   let hour;
   let is_day;
 
-
   fetch(`${weatherEndpoint}?${latitude}&${longitude}&${hourly}&${units}&${timezone}&${forecast}&current=is_day`, requestOptions)
   .then( response => response.json())
   .then( (json) => hour = json)
@@ -240,12 +242,9 @@ function fetchHourlyWeather(userSelection){
 
 }
 
-
 function isArray(what) {
   return Object.prototype.toString.call(what) === '[object Array]';
 }
-
-
 
 function extractWeatherData(weather, section){
   const rawData = weather[`${section}`];
@@ -262,3 +261,22 @@ function extractWeatherData(weather, section){
   return testObj;
 }
   
+
+function fetchAirQualityIndex(userSelection){
+  let latitude = `latitude=${userSelection.latitude}`;
+  let longitude = `longitude=${userSelection.longitude}`;
+  let aqi;
+  let currentIndex = {};
+  let hourlyIndex = {};
+
+  fetch(`${aqiEndpoint}?${latitude}&${longitude}&${aqiCurrent}&${aqiHourly}&${aqiForecast}`, requestOptions)
+    .then( (response) => response.json())
+    .then( (json) => aqi = json)
+    .then( () => console.log("AQI: ", aqi))
+    .then( () =>  currentIndex = extractWeatherData(aqi, "current"))
+    .then( () =>  hourlyIndex = extractWeatherData(aqi, "hourly"))
+    .then( () => {localStorage.setItem("aqi-now", JSON.stringify(currentIndex)); })
+    .then( () => {localStorage.setItem("aqi-hourly", JSON.stringify(hourlyIndex)); })
+    .then( () => pDOM.populateAQI(currentIndex, hourlyIndex) )
+    .catch( error => console.log("error", error));
+}

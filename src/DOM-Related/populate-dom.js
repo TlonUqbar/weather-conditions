@@ -47,6 +47,24 @@ export function populateHourly(hourlyWeather){
 
 }
 
+export function populateAQI(now, hour){
+  
+  let aqiNow_dom = document.querySelector(".aqi-now");
+  let aqiHourly_dom = document.querySelector(".aqi-hour");
+
+  aqiNow_dom.querySelector(".us-aqi").textContent = "US: " + now.us_aqi;
+  aqiNow_dom.querySelector(".eu-aqi").textContent = "EU:  " + now.european_aqi;
+  aqiNow_dom.querySelector(".pm10").textContent = "PM10:  " + now.pm10;
+  aqiNow_dom.querySelector(".pm2-5").textContent = "PM2.5: " + now.pm2_5;
+  aqiNow_dom.querySelector(".uv-index").textContent = "UV: " + now.uv_index;
+
+  aqiHourly_dom.querySelector(".us-aqi-hour").textContent = "US: " + hour.us_aqi[0];
+  aqiHourly_dom.querySelector(".eu-aqi-hour").textContent = "EU:  " + hour.european_aqi[0];
+  aqiHourly_dom.querySelector(".pm10-hour").textContent = "PM10:  " + hour.pm10[0];
+  aqiHourly_dom.querySelector(".pm2-5-hour").textContent = "PM2.5: " + hour.pm2_5[0];
+  aqiHourly_dom.querySelector(".uv-index-hour").textContent = "UV: " + hour.uv_index[0];
+}
+
 export function degreesToCardinal( angle ){
 	let directions = [ "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
                     "S", "SSW", "SW", "WSW","W", "WNW", "NW", "NNW" ];
