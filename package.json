@@ -19,8 +19,8 @@
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.0"
   },
-  "name": "my-webpack-project",
-  "description": "My webpack project",
+  "name": "weather-conditions",
+  "description": "Weather App Project",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
@@ -67,6 +67,7 @@
     "kind-of": "^6.0.3",
     "loader-runner": "^4.3.0",
     "locate-path": "^7.2.0",
+    "luxon": "^3.5.0",
     "merge-stream": "^2.0.0",
     "mime-db": "^1.53.0",
     "mime-types": "^3.0.0",

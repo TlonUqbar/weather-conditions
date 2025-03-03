@@ -8,14 +8,14 @@
 @import url("./colors.css");
 
 
-:root{
-    
+:root{  
   /* Screen Breakpoints */
     --screen-xs: 0;
     --screen-sm: 576px;
     --screen-md: 768px;
     --screen-lg: 992px;
     --screen-xl: 1200px;
+    --screen-xxl: 1400px;
 }
 
 
@@ -72,7 +72,8 @@ span{
   color: var(--night-primary-2);
   padding-bottom: 4rem;
   grid-template-areas: 
-    ". container ."
+    ". selections ."
+    ". container .";
 }
 
 .header{
@@ -82,19 +83,82 @@ span{
   align-items: center;
 }
 
+.selections{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: center;
+  grid-area: selections;
+  gap:20px;
+}
+
 .grid-item{
   display: grid;
   grid-area: container;
   grid-column: 2 / 2;
   grid-row: 2 / 2;
   grid-template-columns: 3fr 2fr;
-  grid-template-rows: 3fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   border-radius: 20px;
-  gap: 30px;
+  gap: 50px;
   min-height: 80dvh;
 }
 
 .footer {
   display: flex;
   justify-content: center;
+}
+
+
+
+.fahrenheit::after, 
+.celsius::after, 
+.mph::after, 
+.kmh::after, 
+.inch::after, 
+.millimeter::after,
+.meter::after,
+.meter-secs::after,
+.percent::after
+{
+  font-size: 1.3rem;
+  color: var(--night-accent-3);
+  padding-right: 10px;
+}
+
+.fahrenheit::after {
+  content: " \00b0 F";
+  /* content: url("./assets/icons/degree-fahrenheit.svg"); */
+  padding-left: 5px;
+}
+
+.celsius::after{
+  content: " \00b0 C";
+  /* content: url("./assets/icons/degree-celsius.svg"); */
+  padding-left: 5px;
+}
+
+.mph::after{ content: " mph"; }
+.kmh::after{ content: " km/h"; }
+.inch::after{ content: " in"; }
+.millimeter::after{ content: " mm"; }
+.meter::after{ content: " m"; }
+.meter-secs::after{ content: " m/s"; }
+.percent::after{ content: " %"; }
+
+
+.btn{
+  background-color: var(--night-base-3);
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  border: 1px solid var(--night-accent-2);
+  box-shadow: inset var(--night-box-shadow) var(--night-box-shadow-color);
+}
+
+.btn:hover{
+  background-color: var(--night-accent-1);
+  color: var(--night-primary-1);
+  font-weight: bold;
 }
