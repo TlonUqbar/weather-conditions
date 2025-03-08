@@ -47,13 +47,14 @@ h1 {
 h2 {
   font-size: 1.8rem;
   font-weight: 700;
+  text-transform: capitalize;
 }
 
 h3 {
   font-size: 1.6rem;
   font-weight: 500;
-  text-transform: uppercase;
-  padding: 40px 0;
+  text-transform: capitalize;
+  /* padding: 40px 0; */
 }
 
 span{
@@ -161,4 +162,202 @@ span{
   background-color: var(--night-accent-1);
   color: var(--night-primary-1);
   font-weight: bold;
+}
+
+
+
+.modal {
+  position: fixed;
+  z-index: 1; 
+  padding-top: 5vh; 
+  left: 0;
+  top: -100vh;
+  width: 100vw; 
+  height: 100vh;
+  overflow: auto;
+  transition: top 0.75s ease-in-out, opacity 0.8s ease-in-out;
+  opacity: 0;
+  background-color: transparent;
+}
+
+.modal.show{
+  top: 0;
+  opacity: 1;
+  background-color: transparent;
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-items: stretch;
+  align-items: stretch;
+  background-color: var(--night-base-3);
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 35vw;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  transition: top 0.4s, opacity 0.4s; 
+}
+
+.close {
+  color: var(--night-accent-1);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: var(--night-primary-1);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  /* flex-direction: row; */
+  /* align-items: center; */
+  /* justify-items: center; */
+  padding: 20px 16px 5px;
+  background-color: var(--night-text-3);
+  color: var(--night-primary-1);
+  border-radius: 10px 10px 0 0;
+  width: calc(40vw - 4px);
+  align-self: center;
+  text-align: center;
+}
+
+.modal-body {
+  display:flex;
+  flex-direction: row;
+  /* gap: 10px; */
+  justify-content: center;
+  align-items: center;
+  padding: 15px 16px; 
+  margin: auto;
+  width: calc(40vw - 4px);
+  background-color: var(--night-text-3);
+  
+  
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  padding: 20px 40px 40px;
+  background-color: var(--night-text-3);
+  /* color: var(--night-primary-1); */
+  border-radius: 0 0 10px 10px;
+  width: calc(40vw - 4px);
+  font-size: 1.3rem;
+}
+
+#myModal{
+  border-radius: 10px;
+}
+
+
+#myBtn{
+  background-color: var(--night-base-3);
+  padding: 10px 30px;  
+  border: 1px solid var(--night-accent-2);
+  border-radius: 5px;
+  font-weight: bold;
+  box-shadow: inset var(--night-box-shadow) var(--night-box-shadow-color);
+  vertical-align: bottom;
+}
+
+.info{
+  font-family: Helvetica;
+  padding: 10px 20px
+
+}
+
+.group{
+  display: flex;
+  border: 1px solid var(--night-accent-5);
+  border-radius: 5px;
+}
+
+.input {
+  background-color: var(--night-accent-5);
+  padding: 0 10px;
+  width: 28vw;
+  border-radius: 5px 0 0 5px;
+  border: 1px solid var(--night-accent-4);
+  color: var(--night-primary-1);
+  height: 34px;
+}
+
+.search {
+  /* background-color: var(--night-base-1); */
+  /* color: var(--night-primary-1); */
+  padding: 1px 7px;
+  width: 2vw;
+  border-radius: 0 5px 5px 0;
+  background-color: var(--night-accent-2);
+  border: 1px solid var(--night-accent-4);
+  cursor: pointer;
+  height: 34px;
+}
+
+
+
+.search::after{
+  /* content: "🔎"; */
+  content:url("./assets/icons/black-search.svg");
+  /* margin-left: 10px; */
+  /* vertical-align: bottom; */
+  /* width: 24px; */
+  /* height: 24px; */
+  vertical-align: -44%;
+
+}
+
+.search:hover{
+  background-color: var(--night-text-2);
+}
+
+.results{
+  border: 1px solid var(--night-accent-4);
+  border-radius: 7px;
+  width: 30vw;
+  /* padding: 3px 0; */
+  background-color: var(--night-text-3);
+  /* color: var(--night-primary-1); */
+  /* border-top: 1px solid var(--night-accent-5); */
+  /* padding: 5px 0 */
+
+}
+
+.result{
+  border-bottom: 1px solid var(--night-accent-4);
+  padding: 15px 0 13px 30px;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: var(--night-accent-2);
+  font-family: Arial;
+}
+
+.result:last-child{ 
+  border-bottom: none ;
+}
+
+.result:hover{
+  background-color: var(--night-text-4);
+  color: var(--night-primary-1);
+}
+
+.result::before{
+  content: url("./assets/icons/location-pin.svg");
+  margin-left: -10px;
+  margin-right: 20px;
+}
+
+.hide{
+  display: none;
 }

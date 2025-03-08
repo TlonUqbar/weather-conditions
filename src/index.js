@@ -1,24 +1,72 @@
 
-// import { init } from "es-module-lexer";
+
 import "./styles.css";
 import {DateTime} from "luxon";
 import * as pDOM from "./DOM-Related/populate-dom.js";
 
-let choice = document.querySelectorAll(".btn");
 
+let modal = document.querySelector("#myModal");
+let search = document.querySelector("#myBtn");
+let span = document.querySelector(".close");
+let find = document.querySelector(".search");
+let input = document.querySelector("input");
 
-choice.forEach( (item) => {
-  item.addEventListener("click", (e) => changeLocations(e) ); 
+search.addEventListener("click", () => { modal.classList.add("show"); });
+// span.addEventListener("click", () => { modal.classList.remove("show"); });
+span.addEventListener("click", () => closeModal());
+
+window.addEventListener("click", (e) => {
+  if (e.target === modal){
+    // modal.classList.remove("show");
+    closeModal();
+  }
 });
 
+find.addEventListener("click", () => {
+  if( input.value !== ""){
+    let enc = new URLSearchParams({ input: input.value});
+    enc = enc.get("input");
+    switchLocations(enc);
+  }
+});
+
+
+let choice = document.querySelectorAll(".btn");
+choice.forEach( (item) => {
+  item.addEventListener("click", (e) => {
+    if( e.target !== modal){
+      document.querySelector(".info").classList.add("hide");
+      changeLocations(e);
+      
+    }
+  }); 
+});
+
+
+export function closeModal(){
+  modal.classList.remove("show");
+}
+
+async function switchLocations(city){
+  let location = await fetchGeoCodedLocation(city);
+  pDOM.populatedGeoCoding(location);
+  document.querySelector(".info").classList.add("hide");
+}
  
+export function testLocation( testing ){
+  fetchCurrentWeather(testing);
+  fetchDailyWeather(testing);
+  fetchHourlyWeather(testing);
+  fetchAirQualityIndex(testing);
+
+}
+
+
 async function changeLocations(e) {
   e.preventDefault();
   e.stopPropagation();
   let newCity = e.target.getAttribute('data-choice');
-
   let location = await fetchGeoCodingData(newCity);
-  console.log("gps", location);
 
   fetchCurrentWeather(location);
   fetchDailyWeather(location);
@@ -142,6 +190,25 @@ function extractIPGeoValues(results) {
 }
 
 
+function fetchGeoCodedLocation(userLocation){
+  let encodedLocation = userLocation.replace(/\W/g, '+');
+  let baseURL = "https://geocoding-api.open-meteo.com/v1/search";
+  let name = `name=${encodedLocation}`;
+  let count = "count=10";
+  let language = "language=en";
+  let format = "format=json";
+  let results;
+  let listed = {};
+
+  return fetch(`${baseURL}?${name}&${count}&${language}&${format}`, requestOptions)
+    .then( (response) => response.json() )
+    .then( (json) => { results = json; console.log("Results: ", results); } )
+    .then( () => { listed = extractGeoLocationValues(results); return listed; } )
+    .catch( (error) => console.error(error));
+
+}
+
+
 function fetchGeoCodingData(userLocation){
   let encodedLocation = userLocation.replace(/\W/g, '+');
   let baseURL = "https://geocoding-api.open-meteo.com/v1/search";
@@ -154,11 +221,12 @@ function fetchGeoCodingData(userLocation){
 
   return fetch(`${baseURL}?${name}&${count}&${language}&${format}`, requestOptions)
     .then( (response) => response.json() )
-    .then( (json) => { results = json; console.log("results: ", results); } )
+    .then( (json) => { results = json; /* console.log("results: ", results); */} )
     .then( () => { 
       listed = extractGeoLocationValues(results); 
       let myObj = listed[0];
-      console.log("listed : ", myObj); 
+      // console.log("listed : ", myObj); 
+      localStorage.setItem("GeoCodedList", JSON.stringify(listed));
       return myObj;
     })
     .catch( (error) => console.error(error));
@@ -196,7 +264,7 @@ function fetchCurrentWeather(userSelection){
     .then( (json) => now = json)
     .then( () => { currentWeather = extractWeatherData(now, "current"); })
     // .then( () => console.log("CURRENT WEATHER!!! ", currentWeather))
-    .then( () => { console.log("currentWeather city and state additions: ", userSelection.city, userSelection.state, userSelection); })
+    // .then( () => { console.log("currentWeather city and state additions: ", userSelection.city, userSelection.state, userSelection); })
     .then( () => { 
       currentWeather.name = userSelection.city || userSelection.name; 
       currentWeather.state = userSelection.state || userSelection.admin1; 
@@ -272,7 +340,7 @@ function fetchAirQualityIndex(userSelection){
   fetch(`${aqiEndpoint}?${latitude}&${longitude}&${aqiCurrent}&${aqiHourly}&${aqiForecast}`, requestOptions)
     .then( (response) => response.json())
     .then( (json) => aqi = json)
-    .then( () => console.log("AQI: ", aqi))
+    // .then( () => console.log("AQI: ", aqi))
     .then( () =>  currentIndex = extractWeatherData(aqi, "current"))
     .then( () =>  hourlyIndex = extractWeatherData(aqi, "hourly"))
     .then( () => {localStorage.setItem("aqi-now", JSON.stringify(currentIndex)); })
