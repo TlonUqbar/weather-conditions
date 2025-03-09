@@ -1,117 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Weather Conditions</title>
-        <link rel="icon" href="https://fav.farm/partly-sunny" />
-    </head>
-    <body>
-        <header class="header">
-            <h1>Weather Conditions</h1>
-        </header>
-        <!-- <button id="myBtn">Open Modal</button> -->
-
-
-        <!-- The Modal -->
-        <div id="myModal" class="modal">
-
-            <!-- Modal content -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="close">&times;</span>
-                    <h2>Location Search</h2>
-                </div>
-                <div class="modal-body">
-                    <div class="group">
-                        <input type="text" class="input" placeholder="City Name or Postal code">
-                        <!-- <input type="button" class="search" value="🔍"> -->
-                        <a class="search"></a>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <!-- <h3 class="">Results:</h3> -->
-                    <div class="results">
-                        <div class="info">Search by city name or postal code</div>
-                        <!-- <div class="result">Lake Forest, California, United States</div>
-                        <div class="result">San Francisco, California, United States</div>
-                        <div class="result">Flekkefjord, Agder, Norway</div>
-                        <div class="result">Mount Shasta, California, United States</div>
-                        <div class="result">Lima, Lima, Peru</div> -->
-
-                    </div>
-                </div>
-            </div>
+  <head>
+    <meta charset="utf-8" />
+    <title>Weather Conditions</title>
+    <link rel="icon" href="https://fav.farm/partly-sunny" />
+  </head>
+  <body>
+    <header class="header">
+      <h1>Weather Conditions</h1>
+    </header>
+  
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>Location Search</h2>
         </div>
-        
+        <div class="modal-body">
+          <div class="group">
+            <input type="text" class="input" placeholder="City Name or Postal code" />
+            <a class="search"></a>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="results">
+            <div class="info">Search by city name or postal code</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-
-        <section class="grid-container">
-            <div class="selections">
-                <a href="#" class="btn" data-choice="Lake+Forest">Lake Forest, CA</a>
-                <a href="#" class="btn" data-choice="94115">94115 (San Francisco, CA)</a>
-                <a href="#" class="btn" data-choice="Flekkefjord">Flekkefjord, Norway</a>
-                <a href="#" class="btn" data-choice="Mount+Shasta">Mount Shasta, CA</a>
-                <a href="#" id="myBtn" >Change Location</a>
-                <a href="#" class="btn" data-choice="Lima">Lima, Peru</a>
-            </div>
-            <div class="grid-item">
-                <div class="current">
-                    <div class="location">
-                        <div class="city"></div>
-                        <div class="state-country"></div>
-                    </div>
-                    <div class="datetime">
-                        <div class="date"></div>
-                        <div class="time"></div>
-                    </div>
-                    <div class="temp-now fahrenheit"></div>
-                    <div class="feels-now fahrenheit"></div>
-                    <div class="humidity-now percent"></div>
-                    <div class="precipitation-now inch"></div>
-                    <div class="weather-code-now"></div>
-                    <div class="wind-speed-now mph"></div>
-                    <div class="wind-direction-now"></div>
-                </div>
-                <div class="daily">
-                    <div class="high fahrenheit"></div>
-                    <div class="low fahrenheit"></div>
-                    <div class="sunrise"></div>
-                    <div class="sunset"></div>
-                    <div class="pop-max percent"></div>
-                    <div class="wind-speed-max mph"></div>
-                    <div class="wind-direction-dominant"></div>
-                </div>
-                <div class="hourly">
-                    <div class="temp-hour fahrenheit"></div>
-                    <div class="feels-hour fahrenheit"></div>
-                    <div class="humidity-hour percent"></div>
-                    <div class="weather-code-hour"></div>
-                    <div class="visibility-hour meter"></div>
-                    <div class="wind-speed-hour mph"></div>
-                    <div class="wind-direction-hour"></div>
-                </div>
-                <div class="aqi">
-                    <div class="aqi-now">
-                        <div class="us-aqi"></div>
-                        <div class="eu-aqi"></div>
-                        <div class="pm10"></div>
-                        <div class="pm2-5"></div>
-                        <div class="uv-index"></div>
-                    </div>
-                    <div class="aqi-hour">
-                        <div class="us-aqi-hour"></div>
-                        <div class="eu-aqi-hour"></div>
-                        <div class="pm10-hour"></div>
-                        <div class="pm2-5-hour"></div>
-                        <div class="uv-index-hour"></div>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-        <footer class="footer">
-            <h2>Footer!!</h2>
-        </footer>
-    </body>
-    
+    <section class="grid-container">
+      <div class="selections">
+        <a href="#" id="myBtn">Change Location</a>
+      </div>
+      <div class="grid-item">
+        <div class="current">
+          <div class="location">
+            <div class="city"></div>
+            <div class="state-country"></div>
+          </div>
+          <div class="datetime">
+            <div class="date"></div>
+            <div class="time"></div>
+          </div>
+          <div class="temp-now fahrenheit"></div>
+          <div class="feels-now fahrenheit"></div>
+          <div class="humidity-now percent"></div>
+          <div class="precipitation-now inch"></div>
+          <div class="weather-code-now"></div>
+          <div class="wind-speed-now mph"></div>
+          <div class="wind-direction-now"></div>
+        </div>
+        <div class="daily">
+          <div class="high fahrenheit"></div>
+          <div class="low fahrenheit"></div>
+          <div class="sunrise"></div>
+          <div class="sunset"></div>
+          <div class="pop-max percent"></div>
+          <div class="wind-speed-max mph"></div>
+          <div class="wind-direction-dominant"></div>
+        </div>
+        <div class="hourly">
+          <div class="temp-hour fahrenheit"></div>
+          <div class="feels-hour fahrenheit"></div>
+          <div class="humidity-hour percent"></div>
+          <div class="weather-code-hour"></div>
+          <div class="visibility-hour meter"></div>
+          <div class="wind-speed-hour mph"></div>
+          <div class="wind-direction-hour"></div>
+        </div>
+        <div class="aqi">
+          <div class="aqi-now">
+            <div class="us-aqi"></div>
+            <div class="eu-aqi"></div>
+            <div class="pm10"></div>
+            <div class="pm2-5"></div>
+            <div class="uv-index"></div>
+          </div>
+          <div class="aqi-hour">
+            <div class="us-aqi-hour"></div>
+            <div class="eu-aqi-hour"></div>
+            <div class="pm10-hour"></div>
+            <div class="pm2-5-hour"></div>
+            <div class="uv-index-hour"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">
+      <h2>Footer!!</h2>
+    </footer>
+  </body>
 </html>

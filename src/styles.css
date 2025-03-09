@@ -27,7 +27,6 @@ html {
 
 body{
   font-family: "Nixie One", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  
 }
 
 a:link, a:active, a:visited, a:hover{
@@ -54,7 +53,6 @@ h3 {
   font-size: 1.6rem;
   font-weight: 500;
   text-transform: capitalize;
-  /* padding: 40px 0; */
 }
 
 span{
@@ -111,8 +109,6 @@ span{
   justify-content: center;
 }
 
-
-
 .fahrenheit::after, 
 .celsius::after, 
 .mph::after, 
@@ -164,8 +160,6 @@ span{
   font-weight: bold;
 }
 
-
-
 .modal {
   position: fixed;
   z-index: 1; 
@@ -205,10 +199,11 @@ span{
 }
 
 .close {
-  color: var(--night-accent-1);
+  color: var(--night-accent-3);
   float: right;
-  font-size: 28px;
+  font-size: 2.5rem;
   font-weight: bold;
+  margin-top: -25px;
 }
 
 .close:hover,
@@ -219,9 +214,6 @@ span{
 }
 
 .modal-header {
-  /* flex-direction: row; */
-  /* align-items: center; */
-  /* justify-items: center; */
   padding: 20px 16px 5px;
   background-color: var(--night-text-3);
   color: var(--night-primary-1);
@@ -234,15 +226,12 @@ span{
 .modal-body {
   display:flex;
   flex-direction: row;
-  /* gap: 10px; */
   justify-content: center;
   align-items: center;
   padding: 15px 16px; 
   margin: auto;
   width: calc(40vw - 4px);
   background-color: var(--night-text-3);
-  
-  
 }
 
 .modal-footer {
@@ -250,15 +239,12 @@ span{
   justify-content: center;
   padding: 20px 40px 40px;
   background-color: var(--night-text-3);
-  /* color: var(--night-primary-1); */
   border-radius: 0 0 10px 10px;
   width: calc(40vw - 4px);
   font-size: 1.3rem;
 }
 
-#myModal{
-  border-radius: 10px;
-}
+#myModal{ border-radius: 10px; }
 
 
 #myBtn{
@@ -274,7 +260,6 @@ span{
 .info{
   font-family: Helvetica;
   padding: 10px 20px
-
 }
 
 .group{
@@ -294,8 +279,6 @@ span{
 }
 
 .search {
-  /* background-color: var(--night-base-1); */
-  /* color: var(--night-primary-1); */
   padding: 1px 7px;
   width: 2vw;
   border-radius: 0 5px 5px 0;
@@ -305,17 +288,9 @@ span{
   height: 34px;
 }
 
-
-
 .search::after{
-  /* content: "🔎"; */
   content:url("./assets/icons/black-search.svg");
-  /* margin-left: 10px; */
-  /* vertical-align: bottom; */
-  /* width: 24px; */
-  /* height: 24px; */
   vertical-align: -44%;
-
 }
 
 .search:hover{
@@ -326,12 +301,7 @@ span{
   border: 1px solid var(--night-accent-4);
   border-radius: 7px;
   width: 30vw;
-  /* padding: 3px 0; */
   background-color: var(--night-text-3);
-  /* color: var(--night-primary-1); */
-  /* border-top: 1px solid var(--night-accent-5); */
-  /* padding: 5px 0 */
-
 }
 
 .result{

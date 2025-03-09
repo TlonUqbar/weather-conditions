@@ -1,86 +1,15 @@
-
-
 import "./styles.css";
 import {DateTime} from "luxon";
 import * as pDOM from "./DOM-Related/populate-dom.js";
 
-
-let modal = document.querySelector("#myModal");
-let search = document.querySelector("#myBtn");
-let span = document.querySelector(".close");
-let find = document.querySelector(".search");
-let input = document.querySelector("input");
-
-search.addEventListener("click", () => { modal.classList.add("show"); });
-// span.addEventListener("click", () => { modal.classList.remove("show"); });
-span.addEventListener("click", () => closeModal());
-
-window.addEventListener("click", (e) => {
-  if (e.target === modal){
-    // modal.classList.remove("show");
-    closeModal();
-  }
-});
-
-find.addEventListener("click", () => {
-  if( input.value !== ""){
-    let enc = new URLSearchParams({ input: input.value});
-    enc = enc.get("input");
-    switchLocations(enc);
-  }
-});
-
-
-let choice = document.querySelectorAll(".btn");
-choice.forEach( (item) => {
-  item.addEventListener("click", (e) => {
-    if( e.target !== modal){
-      document.querySelector(".info").classList.add("hide");
-      changeLocations(e);
-      
-    }
-  }); 
-});
-
-
-export function closeModal(){
-  modal.classList.remove("show");
-}
-
-async function switchLocations(city){
-  let location = await fetchGeoCodedLocation(city);
-  pDOM.populatedGeoCoding(location);
-  document.querySelector(".info").classList.add("hide");
-}
- 
-export function testLocation( testing ){
-  fetchCurrentWeather(testing);
-  fetchDailyWeather(testing);
-  fetchHourlyWeather(testing);
-  fetchAirQualityIndex(testing);
-
-}
-
-
-async function changeLocations(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  let newCity = e.target.getAttribute('data-choice');
-  let location = await fetchGeoCodingData(newCity);
-
-  fetchCurrentWeather(location);
-  fetchDailyWeather(location);
-  fetchHourlyWeather(location);
-  fetchAirQualityIndex(location);
-}
-
-
 const aqiEndpoint = "https://air-quality-api.open-meteo.com/v1/air-quality";
+const weatherEndpoint = "https://api.open-meteo.com/v1/forecast";
+const API_KEY = "MTQ2MmQyMTUwZTRkNDg3ZmEwNzE3ODA4MjI1ZjE4YzU=";
+const requestOptions = { method: "GET", redirect: "follow", mode: "cors" };
+
 let aqiCurrent = "current=european_aqi,us_aqi,pm10,pm2_5,uv_index";
 let aqiHourly = "hourly=pm10,pm2_5,uv_index,european_aqi,us_aqi";
 let aqiForecast = "forecast_days=1";
-
-const weatherEndpoint = "https://api.open-meteo.com/v1/forecast";
 let current = 'current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m';
 let daily = 'daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max,wind_speed_10m_max,wind_direction_10m_dominant';
 let hourly = 'hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,visibility,wind_speed_10m,wind_direction_10m';
@@ -91,25 +20,48 @@ let units = `${temperature}&${precipitation}&${wind}`;
 let timezone = 'timezone=America%2FLos_Angeles';
 let forecast4 = 'forecast_days=4';
 let forecast = "forecast_days=1";
-
-
-let datetime_dom = document.querySelector(".datetime");
-
-const API_KEY = "MTQ2MmQyMTUwZTRkNDg3ZmEwNzE3ODA4MjI1ZjE4YzU=";
 let token;
+let datetime_dom = document.querySelector(".datetime");
+let modal = document.querySelector("#myModal");
+let search = document.querySelector("#myBtn");
+let span = document.querySelector(".close");
+let find = document.querySelector(".search");
+let input = document.querySelector("input");
 
 
-const requestOptions = {
-  method: "GET",
-  redirect: "follow",
-  mode: "cors"
-};
+if(document.readyState === "interactive"){ initialize(); } 
+
+search.addEventListener("click", () => { modal.classList.add("show"); });
+span.addEventListener("click", () => closeModal());
+window.addEventListener("click", (e) => { if (e.target === modal){ closeModal(); }  });
+
+find.addEventListener("click", () => {
+  if( input.value !== ""){
+    let enc = new URLSearchParams({ input: input.value});
+    enc = enc.get("input");
+    switchLocations(enc);
+  }
+});
 
 
-if(document.readyState === "interactive"){
-  initialize();
-} 
+export function closeModal(){
+  modal.classList.remove("show");
+  document.querySelector(".info").classList.remove("hide");
+}
 
+export function testLocation( testing ){
+  fetchCurrentWeather(testing);
+  fetchDailyWeather(testing);
+  fetchHourlyWeather(testing);
+  fetchAirQualityIndex(testing);
+
+}
+
+async function switchLocations(city){
+  let location = await fetchGeoCodedLocation(city);
+  pDOM.populatedGeoCoding(location);
+  document.querySelector(".info").classList.add("hide");
+}
 
 function initialize() {
   token = window.atob(API_KEY);
@@ -122,13 +74,9 @@ function initialize() {
 }
 
 
-async function firstTimeVisitor(){
-  fetchInitialGeoLocation();
-  console.log("First Time");
-}
+async function firstTimeVisitor(){ fetchInitialGeoLocation(); }
 
 async function repeatVisitor(){
-  console.log("NOT First Time");
     let currentWeather = JSON.parse(localStorage.getItem("currentWeather"));
     let dailyWeather = JSON.parse(localStorage.getItem("dailyWeather"));
     let hourlyWeather = JSON.parse(localStorage.getItem("hourlyWeather"));
@@ -148,7 +96,7 @@ async function fetchInitialGeoLocation(){
   let startingLocation;
   let testSelection = {}  ;
   
-   return await fetch(`${baseURL}?${apiKey}`, requestOptions)
+  return await fetch(`${baseURL}?${apiKey}`, requestOptions)
     .then( (response) => response.json() )
     .then( (json) => results = json )
     .then( () => { startingLocation = extractIPGeoValues(results); testSelection = startingLocation; })
@@ -170,7 +118,6 @@ async function fetchInitialGeoLocation(){
     .then( () => fetchAirQualityIndex(testSelection) )
     .then( () => { return testSelection; })
     .catch( (error) => console.error(error) );
-
 }
 
 
@@ -202,33 +149,8 @@ function fetchGeoCodedLocation(userLocation){
 
   return fetch(`${baseURL}?${name}&${count}&${language}&${format}`, requestOptions)
     .then( (response) => response.json() )
-    .then( (json) => { results = json; console.log("Results: ", results); } )
+    .then( (json) => { results = json; } )
     .then( () => { listed = extractGeoLocationValues(results); return listed; } )
-    .catch( (error) => console.error(error));
-
-}
-
-
-function fetchGeoCodingData(userLocation){
-  let encodedLocation = userLocation.replace(/\W/g, '+');
-  let baseURL = "https://geocoding-api.open-meteo.com/v1/search";
-  let name = `name=${encodedLocation}`;
-  let count = "count=10";
-  let language = "language=en";
-  let format = "format=json";
-  let results;
-  let listed = {};
-
-  return fetch(`${baseURL}?${name}&${count}&${language}&${format}`, requestOptions)
-    .then( (response) => response.json() )
-    .then( (json) => { results = json; /* console.log("results: ", results); */} )
-    .then( () => { 
-      listed = extractGeoLocationValues(results); 
-      let myObj = listed[0];
-      // console.log("listed : ", myObj); 
-      localStorage.setItem("GeoCodedList", JSON.stringify(listed));
-      return myObj;
-    })
     .catch( (error) => console.error(error));
 }
 
@@ -242,13 +164,10 @@ function extractGeoLocationValues (results) {
     let tempObj = {};
 
     Object.keys(element).forEach( (k) => {
-      if( myKeys.includes(k) ) {
-        tempObj[`${k}`] = `${element[`${k}`]}`;
-      }
+      if( myKeys.includes(k) ) { tempObj[`${k}`] = `${element[`${k}`]}`;}
     });
     list.push(tempObj);
   });
-
   return list;
 }
 
@@ -262,16 +181,14 @@ function fetchCurrentWeather(userSelection){
   fetch(`${weatherEndpoint}?${latitude}&${longitude}&${current}&${units}&${timezone}&${forecast4}`, requestOptions)
     .then(response => response.json())
     .then( (json) => now = json)
-    .then( () => { currentWeather = extractWeatherData(now, "current"); })
-    // .then( () => console.log("CURRENT WEATHER!!! ", currentWeather))
-    // .then( () => { console.log("currentWeather city and state additions: ", userSelection.city, userSelection.state, userSelection); })
+    .then( () => currentWeather = extractWeatherData(now, "current") )
     .then( () => { 
       currentWeather.name = userSelection.city || userSelection.name; 
       currentWeather.state = userSelection.state || userSelection.admin1; 
       currentWeather.country = userSelection.country_name || userSelection.country;
     })    
     .then( () => pDOM.populateCurrent(currentWeather))
-    .then( () => { localStorage.setItem("currentWeather", JSON.stringify(currentWeather)); })
+    .then( () => localStorage.setItem("currentWeather", JSON.stringify(currentWeather)) )
     .catch(error => console.log("error", error));
 }
 
@@ -285,9 +202,8 @@ function fetchDailyWeather(userSelection){
   .then(response => response.json())
   .then( (json) =>  today = json )
   .then( () => dailyWeather = extractWeatherData(today, "daily") )
-  // .then( () => console.log("DAILY WEATHER!!! ", dailyWeather))
-  .then( () =>  pDOM.populateDaily(dailyWeather))
-  .then( () => { localStorage.setItem("dailyWeather", JSON.stringify(dailyWeather)); })
+  .then( () => pDOM.populateDaily(dailyWeather))
+  .then( () => localStorage.setItem("dailyWeather", JSON.stringify(dailyWeather)))
   .catch( error => console.log("error", error));
 }
 
@@ -303,16 +219,12 @@ function fetchHourlyWeather(userSelection){
   .then( (json) => hour = json)
   .then( () => hourlyWeather = extractWeatherData(hour, "hourly"))
   .then( () => hourlyWeather.is_day = hour.current.is_day )
-  // .then( () => console.log("HOURLYWEATHER!!! ", hourlyWeather))
-  .then( () =>  pDOM.populateHourly(hourlyWeather, is_day))
-  .then( () => {localStorage.setItem("hourlyWeather", JSON.stringify(hourlyWeather)); })
+  .then( () => pDOM.populateHourly(hourlyWeather, is_day))
+  .then( () => localStorage.setItem("hourlyWeather", JSON.stringify(hourlyWeather)) )
   .catch( error => console.log("error", error));
-
 }
 
-function isArray(what) {
-  return Object.prototype.toString.call(what) === '[object Array]';
-}
+function isArray(what){ return Object.prototype.toString.call(what) === '[object Array]'; }
 
 function extractWeatherData(weather, section){
   const rawData = weather[`${section}`];
@@ -323,8 +235,7 @@ function extractWeatherData(weather, section){
       testObj[`${key}`] = rawData[`${key}`];
     } else {
       testObj[`${key}`] = `${rawData[`${key}`]}`;
-    }
-    
+    }    
   });
   return testObj;
 }
@@ -340,11 +251,10 @@ function fetchAirQualityIndex(userSelection){
   fetch(`${aqiEndpoint}?${latitude}&${longitude}&${aqiCurrent}&${aqiHourly}&${aqiForecast}`, requestOptions)
     .then( (response) => response.json())
     .then( (json) => aqi = json)
-    // .then( () => console.log("AQI: ", aqi))
-    .then( () =>  currentIndex = extractWeatherData(aqi, "current"))
-    .then( () =>  hourlyIndex = extractWeatherData(aqi, "hourly"))
-    .then( () => {localStorage.setItem("aqi-now", JSON.stringify(currentIndex)); })
-    .then( () => {localStorage.setItem("aqi-hourly", JSON.stringify(hourlyIndex)); })
+    .then( () => currentIndex = extractWeatherData(aqi, "current"))
+    .then( () => hourlyIndex = extractWeatherData(aqi, "hourly"))
+    .then( () => localStorage.setItem("aqi-now", JSON.stringify(currentIndex)) )
+    .then( () => localStorage.setItem("aqi-hourly", JSON.stringify(hourlyIndex)) )
     .then( () => pDOM.populateAQI(currentIndex, hourlyIndex) )
     .catch( error => console.log("error", error));
 }
