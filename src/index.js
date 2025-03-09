@@ -68,6 +68,7 @@ export function closeModal(){
 export function testLocation( testing ){
   fetchCurrentWeather(testing);
   fetchDailyWeather(testing);
+  fetchForecastWeather(testing);
   fetchHourlyWeather(testing);
   fetchAirQualityIndex(testing);
 
@@ -95,12 +96,14 @@ async function firstTimeVisitor(){ fetchInitialGeoLocation(); }
 async function repeatVisitor(){
     let currentWeather = JSON.parse(localStorage.getItem("currentWeather"));
     let dailyWeather = JSON.parse(localStorage.getItem("dailyWeather"));
+    let forecastWeather = JSON.parse(localStorage.getItem("forecastWeather"));
     let hourlyWeather = JSON.parse(localStorage.getItem("hourlyWeather"));
     let airNow = JSON.parse(localStorage.getItem("aqi-now"));
     let airHour = JSON.parse(localStorage.getItem("aqi-hourly"));
-    pDOM.populateCurrent(currentWeather, "current");
-    pDOM.populateDaily(dailyWeather, "daily");
-    pDOM.populateHourly(hourlyWeather, "hourly");
+    pDOM.populateCurrent(currentWeather);
+    pDOM.populateDaily(dailyWeather);
+    pDOM.populateHourly(hourlyWeather);
+    pDOM.populateForecast(forecastWeather);
     pDOM.populateAQI(airNow, airHour);
 }
 
@@ -130,6 +133,7 @@ async function fetchInitialGeoLocation(){
     })
     .then( () => fetchCurrentWeather(testSelection))
     .then( () => fetchDailyWeather(testSelection))
+    .then( () => fetchForecastWeather(testSelection))
     .then( () => fetchHourlyWeather(testSelection))
     .then( () => fetchAirQualityIndex(testSelection) )
     .then( () => { return testSelection; })
@@ -196,9 +200,9 @@ function fetchCurrentWeather(userSelection){
   let now;
   let currentWeather = {};
 
-  fetch(`${weatherEndpoint}?${latitude}&${longitude}&${current}&${units}&${timezone}&${forecast4}`, requestOptions)
+  fetch(`${weatherEndpoint}?${latitude}&${longitude}&${current}&${units}&${timezone}&${forecast}`, requestOptions)
     .then(response => response.json())
-    .then( (json) => now = json)
+    .then( (json) => now = json )
     .then( () => currentWeather = extractWeatherData(now, "current") )
     .then( () => { 
       currentWeather.name = userSelection.city || userSelection.name; 
@@ -208,6 +212,22 @@ function fetchCurrentWeather(userSelection){
     .then( () => pDOM.populateCurrent(currentWeather))
     .then( () => localStorage.setItem("currentWeather", JSON.stringify(currentWeather)) )
     .catch(error => console.log("error", error));
+}
+
+function fetchForecastWeather(userSelection){
+  let latitude = `latitude=${userSelection.latitude}`;
+  let longitude = `longitude=${userSelection.longitude}`;
+  let forecast;
+  let forecastWeather = {};
+
+  fetch(`${weatherEndpoint}?${latitude}&${longitude}&${daily}&${units}&${timezone}&${forecast4}`, requestOptions)
+  .then(response => response.json())
+  .then( (json) =>  forecast = json )
+  .then( () => console.log("Forecast: ", forecast))
+  .then( () => forecastWeather = extractWeatherData(forecast, "daily") )
+  .then( () => pDOM.populateForecast(forecastWeather))
+  .then( () => localStorage.setItem("forecastWeather", JSON.stringify(forecastWeather)))
+  .catch( error => console.log("error", error));
 }
 
 function fetchDailyWeather(userSelection){
@@ -234,7 +254,7 @@ function fetchHourlyWeather(userSelection){
 
   fetch(`${weatherEndpoint}?${latitude}&${longitude}&${hourly}&${units}&${timezone}&${forecast}&current=is_day`, requestOptions)
   .then( response => response.json())
-  .then( (json) => hour = json)
+  .then( (json) => hour = json )
   .then( () => hourlyWeather = extractWeatherData(hour, "hourly"))
   .then( () => hourlyWeather.is_day = hour.current.is_day )
   .then( () => pDOM.populateHourly(hourlyWeather, is_day))

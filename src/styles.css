@@ -337,3 +337,48 @@ span{
 .hide{
   display: none;
 }
+
+
+
+.city{
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+.state{
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+
+.temp{
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+.feels{
+  font-size: 1.6rem;
+}
+
+.code{
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.high, .low{
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.sun{
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.pop{
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.wind{
+  font-size: 2.2rem;
+}
