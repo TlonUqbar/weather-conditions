@@ -8,6 +8,16 @@ let thisHour = DateTime.now().hour;
 export function populatedGeoCoding(obj) {
   let results_dom = document.querySelector(".results");
 
+  results_dom.querySelectorAll(".result").forEach( (l) => l.remove() );
+
+  if ( typeof obj != 'object') {
+    let notFound  = document.createElement("div");
+    notFound.classList = ["result not-found"];
+    notFound.textContent = "Location not found. Check spelling.";
+    results_dom.appendChild(notFound);
+    return;
+  }
+
   obj.forEach( (el, i) => {
     let doc  = document.createElement("div");
     doc.classList.add("result");  
@@ -15,12 +25,7 @@ export function populatedGeoCoding(obj) {
     doc.setAttribute("data-index", i);
     doc.addEventListener("click", () => {
       test.testLocation(el);
-      setTimeout(() => { test.closeModal();}, 500);
-      setTimeout( () => { 
-        results_dom.querySelectorAll(".result").forEach( (l) => {
-          l.remove();
-        })
-        ; }, 1000);
+      test.closeModal();
     });
     results_dom.appendChild(doc);
   });

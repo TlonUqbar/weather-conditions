@@ -304,7 +304,7 @@ span{
   background-color: var(--night-text-3);
 }
 
-.result{
+.result, .not-found{
   border-bottom: 1px solid var(--night-accent-4);
   padding: 15px 0 13px 30px;
   font-weight: 400;
@@ -324,6 +324,12 @@ span{
 
 .result::before{
   content: url("./assets/icons/location-pin.svg");
+  margin-left: -10px;
+  margin-right: 20px;
+}
+
+.not-found::before{
+  content: url("./assets/icons/location-not-found.svg");
   margin-left: -10px;
   margin-right: 20px;
 }

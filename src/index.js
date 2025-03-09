@@ -36,17 +36,33 @@ span.addEventListener("click", () => closeModal());
 window.addEventListener("click", (e) => { if (e.target === modal){ closeModal(); }  });
 
 find.addEventListener("click", () => {
+  findLocation();
+});
+
+window.addEventListener("keydown", (e) => {
+  switch(e.code){
+    case "Enter" :
+    case "NumpadEnter" : findLocation();
+      break;
+    case "Escape" : input.value = ""; 
+      break;
+    default : break;
+  }
+});
+
+
+function findLocation(){
   if( input.value !== ""){
     let enc = new URLSearchParams({ input: input.value});
     enc = enc.get("input");
     switchLocations(enc);
   }
-});
-
+}
 
 export function closeModal(){
   modal.classList.remove("show");
   document.querySelector(".info").classList.remove("hide");
+  document.querySelectorAll(".result").forEach( (l) => { l.remove(); });
 }
 
 export function testLocation( testing ){
@@ -160,15 +176,17 @@ function extractGeoLocationValues (results) {
   let rawResults = results.results;
   let list = [];
 
-  rawResults.forEach( element => {
-    let tempObj = {};
+  if( rawResults && rawResults !== 'null' && rawResults !== 'undefined' ){
+    rawResults.forEach( element => {
+      let tempObj = {};
 
-    Object.keys(element).forEach( (k) => {
-      if( myKeys.includes(k) ) { tempObj[`${k}`] = `${element[`${k}`]}`;}
+      Object.keys(element).forEach( (k) => {
+        if( myKeys.includes(k) ) { tempObj[`${k}`] = `${element[`${k}`]}`;}
+      });
+      list.push(tempObj);
     });
-    list.push(tempObj);
-  });
-  return list;
+    return list;
+  } else { return "Location not found"; }
 }
 
 
