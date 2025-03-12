@@ -1,7 +1,11 @@
 import {DateTime} from "luxon";
 import * as test from "../index.js";
+// import * as icons from "../assets/icons";
 
 let thisHour = DateTime.now().hour;
+let is_day;
+
+
 
 
 export function populatedGeoCoding(obj) {
@@ -38,40 +42,83 @@ export function populateCurrent(currentWeather) {
   let humid = document.createElement("div");
   let precip = document.createElement("div");
   let wmocode = document.createElement("div");
+  let icon = document.createElement("div");
   let speed = document.createElement("div");
   let direction = document.createElement("div");
+  let location = document.createElement("div");
   let city  = document.createElement("div");
   let state = document.createElement("div");
+  let datetime = document.createElement("div");
+  let time = document.createElement("div");
+  let date = document.createElement("div");
+  let group1 = document.createElement("div");
+  let group2 = document.createElement("div");
+  let group3 = document.createElement("div"); 
+  let group4 = document.createElement("div"); 
+  let group5 = document.createElement("div"); 
+  let group6 = document.createElement("div"); 
 
+  let forecast = weatherCodeToForecast(currentWeather.weather_code, currentWeather.is_day);
+  is_day = currentWeather.is_day;
   current_dom.innerHTML = "";
+
+  group1.classList.add("cg1");
+  group2.classList.add("cg2");
+  group3.classList.add("cg3");
+  group4.classList.add("cg4");
+  group5.classList.add("cg5");
+  group6.classList.add("cg6");
+  datetime.classList.add("datetime");
+  location.classList.add("location");
+  date.classList.add("date");
+  time.classList.add("time");
+  current_dom.classList.add("simple-current");
   temp.classList = ["temp fahrenheit "];
   feels.classList = ["feels fahrenheit "];
-  humid.classList = ["percent"];
-  precip.classList = ["inch"];
-  wmocode.classList = ["code"];
-  speed.classList = ["wind mph"];
-  direction.classList = ["wind dir"];
-  city.classList = ["city"];
-  state.classList = ["state"];
+  humid.classList = ["humid percent"];
+  precip.classList = ["rain-total inch"];
+  wmocode.classList.add("code");
+  icon.classList = [`icon ${wmoToIcon(forecast)}`];
+  speed.classList = ["c-wind mph"];
+  direction.classList = ["c-wind dominant"];
+  city.classList.add("city");
+  state.classList.add("state");
+  
+
+  date.textContent = DateTime.now().toLocaleString(DateTime.DATE_MED);
+  time.textContent = DateTime.now().toLocaleString(DateTime.TIME_SIMPLE);
   temp.textContent = currentWeather.temperature_2m;
   feels.textContent = "Feels: " + currentWeather.apparent_temperature;
   humid.textContent = currentWeather.relative_humidity_2m;
   precip.textContent = currentWeather.precipitation;
-  wmocode.textContent = weatherCodeToForecast(currentWeather.weather_code, currentWeather.is_day);
+  wmocode.textContent = forecast;
+  icon.textContent = '';
   speed.textContent = currentWeather.wind_speed_10m;
   direction.textContent = degreesToCardinal(currentWeather.wind_direction_10m);
   city.textContent = currentWeather.name;
   state.textContent = `${currentWeather.state}, ${currentWeather.country}`;
 
-  current_dom.append(city);
-  current_dom.append(state);
-  current_dom.append(temp);
-  current_dom.append(feels);
-  current_dom.append(wmocode);
-  current_dom.append(humid);
-  current_dom.append(precip);
-  current_dom.append(speed);
-  current_dom.append(direction);
+  datetime.append(date);
+  datetime.append(time);
+  location.append(city);
+  location.append(state);
+  group1.append(location);
+  group2.append(datetime);
+  group3.append(temp);
+  group3.append(feels);
+  group4.append(icon);
+  group4.append(wmocode);
+  group5.append(humid);
+  group5.append(precip);
+  group6.append(speed);
+  group6.append(direction);
+
+  current_dom.append(group1);
+  current_dom.append(group2);
+  current_dom.append(group3);
+  current_dom.append(group4);
+  current_dom.append(group5);
+  current_dom.append(group6);
 }
 
 
@@ -86,30 +133,51 @@ export function populateDaily(dailyWeather){
   let precip = document.createElement("div");
   let speed = document.createElement("div");
   let direction = document.createElement("div");
+  let uv = document.createElement("div");
+  let group1 = document.createElement("div");
+  let group2 = document.createElement("div");
+  let group3 = document.createElement("div");
+  let group4 = document.createElement("div");
 
-  daily_dom.innerHTML = "";
+  daily_dom .innerHTML = "";
+  group1.classList.add("dg1");
+  group2.classList.add("dg2");
+  group3.classList.add("dg3");
+  group4.classList.add("dg4");
+
+
+  daily_dom.classList.add("simple-today");
   high.classList = ["high fahrenheit"];
   low.classList = ["low fahrenheit"];
-  sunrise.classList = ["sun"];
-  sunset.classList = ["sun"];
+  sunrise.classList = ["sunrise"];
+  sunset.classList = ["sunset"];
   precip.classList = ["pop percent"];
-  speed.classList = ["wind mph"];
-  direction.classList = ["wind mph"];
-  high.innerHTML = "H: " + dailyWeather.temperature_2m_max[0];
-  low.innerHTML = "L: " + dailyWeather.temperature_2m_min[0];
+  speed.classList = ["d-wind speed mph"];
+  direction.classList = ["d-wind direction"];
+  uv.classList = ["uv-index"];
+  high.innerHTML = dailyWeather.temperature_2m_max[0];
+  low.innerHTML = dailyWeather.temperature_2m_min[0];
   sunrise.innerHTML = sunup;
   sunset.textContent = sundown;
   precip.innerHTML = dailyWeather.precipitation_probability_max[0];
   speed.innerHTML = dailyWeather.wind_speed_10m_max[0];  
-  direction.innerHTML = dailyWeather.wind_direction_10m_dominant[0];
+  direction.innerHTML = degreesToCardinal(dailyWeather.wind_direction_10m_dominant[0]);
+  uv.textContent = dailyWeather.uv_index_max;
 
-  daily_dom.append(high);
-  daily_dom.append(low);
-  daily_dom.append(sunrise);
-  daily_dom.append(sunset);
-  daily_dom.append(precip);
-  daily_dom.append(speed);
-  daily_dom.append(direction);
+
+
+  group1.append(high);
+  group1.append(low);
+  daily_dom.append(group1);
+  group2.append(sunrise);
+  group2.append(sunset);
+  daily_dom.append(group2);
+  group3.append(uv);
+  group3.append(precip);
+  daily_dom.append(group3);
+  group4.append(speed);
+  group4.append(direction);
+  daily_dom.append(group4);
 }
 
 
@@ -130,8 +198,8 @@ export function populateHourly(hourlyWeather){
   humid.classList = ["percent"];
   wmocode.classList = ["code"];
   visibility.classList = ["meter"];
-  speed.classList = ["wind mph"];
-  direction.classList = ["wind"];
+  speed.classList = ["h-wind mph"];
+  direction.classList = ["h-wind"];
   temp.textContent = hourlyWeather.temperature_2m[thisHour];
   feels.textContent = hourlyWeather.apparent_temperature[thisHour];
   humid.textContent = hourlyWeather.relative_humidity_2m[thisHour];
@@ -149,23 +217,21 @@ export function populateHourly(hourlyWeather){
   hourly_dom.append(direction);
 }
 
-function isArray(what){ return Object.prototype.toString.call(what) === '[object Array]'; }
+// function isArray(what){ return Object.prototype.toString.call(what) === '[object Array]'; }
 
-export function populateForecast(forecastWeather){
+export function populateForecast(forecastWeather, is_day){
   let forecast_dom = document.querySelector(".forecast");
   let days = [1, 2, 3];
-
-
-
+  console.log("forcast object", forecastWeather);  
   forecast_dom.innerHTML = "";
-
+  forecast_dom.classList.add("simple-forecast");
 
   days.forEach(day => {
-    Object.keys(forecastWeather).forEach(
+    let days = document.createElement("div");
+    days.classList = [`simple-day-${day}`];
+    forecast_dom.append(days);
+    Object.keys(forecastWeather).sort().forEach(
       key => {
-        // console.log( forecastWeather[`${key}`][day]);
-        // let sunup = 
-        // let sundown = DateTime.fromISO(forecastWeather.sunset[0],{setZone: "true"}).toLocaleString(DateTime.TIME_SIMPLE);
         let high = document.createElement("div");
         let low = document.createElement("div");
         let sunrise = document.createElement("div");
@@ -174,54 +240,72 @@ export function populateForecast(forecastWeather){
         let speed = document.createElement("div");
         let direction = document.createElement("div");
         let wmo = document.createElement("div"); 
+        let icon = document.createElement("div");
+        let uvi = document.createElement("div");
+        let time = document.createElement("div");
+        const sunup = (day) => { return DateTime.fromISO(forecastWeather.sunrise[day]).toLocaleString(DateTime.TIME_SIMPLE); };
+        const sundown = (day) => {return DateTime.fromISO(forecastWeather.sunset[day]).toLocaleString(DateTime.TIME_SIMPLE);};
+        const weekday = (day) => {return DateTime.fromISO(forecastWeather.time[day]).weekdayLong;};
 
-        function sunup(day){
-          return DateTime.fromISO(forecastWeather.sunrise[day],{setZone: "true"}).toLocaleString(DateTime.TIME_SIMPLE);
-        }
-
-        const sundown = (day) => {return DateTime.fromISO(forecastWeather.sunset[day],{setZone: "true"}).toLocaleString(DateTime.TIME_SIMPLE);};
 
         switch (key) {
           case "temperature_2m_max": 
             high.classList = ["high fahrenheit"];
-            high.textContent = "H: " + forecastWeather.temperature_2m_max[day];
-            forecast_dom.append(high);
-            console.log(key); break;
+            high.textContent = forecastWeather.temperature_2m_max[day];
+            days.append(high);
+              break;
           case "temperature_2m_min": 
             low.classList = ["low fahrenheit"];
-            low.textContent = "L: " + forecastWeather.temperature_2m_min[day];
-            forecast_dom.append(low);
-            console.log(key); break;
-          case "sunrise" : 
-            sunrise.classList = ["sun"]; 
-            sunrise.textContent = sunup(day);
-            forecast_dom.append(sunrise);
-            console.log(key); break;
-          case "sunset" : 
-            sunset.classList = ["sun"];
-            sunset.textContent = sundown(day);
-            forecast_dom.append(sunset);
-            console.log(key); break;
+            low.textContent = forecastWeather.temperature_2m_min[day];
+            days.append(low);
+              break;
+          // case "sunrise" : 
+          //   sunrise.classList = ["sunrise"]; 
+          //   sunrise.textContent = sunup(day);
+          //   days.append(sunrise);
+          //     break;
+          // case "sunset" : 
+          //   sunset.classList = ["sunset"];
+          //   sunset.textContent = sundown(day);
+          //   days.append(sunset);
+          //     break;
           case "precipitation_probability_max" : 
             precip.classList = ["pop percent"];
             precip.textContent = forecastWeather.precipitation_probability_max[day];
-            forecast_dom.append(precip);
-            break;
-          case "wind_speed_10m_max" : 
-            speed.classList = ["wind mph"];
-            speed.textContent = forecastWeather.wind_speed_10m_max[day];  
-            forecast_dom.append(speed);
-            break;
-          case "wind_direction_10m_dominant" : 
-            direction.classList = ["wind"];
-            direction.textContent = degreesToCardinal(forecastWeather.wind_direction_10m_dominant[day]);
-            forecast_dom.append(direction);
-            break;
+            days.append(precip);
+              break;
+          // case "wind_speed_10m_max" : 
+          //   speed.classList = ["speed mph"];
+          //   speed.textContent = forecastWeather.wind_speed_10m_max[day];  
+          //   days.append(speed);
+          //     break;
+          // case "wind_direction_10m_dominant" : 
+          //   direction.classList = ["direction wind"];
+          //   direction.textContent = degreesToCardinal(forecastWeather.wind_direction_10m_dominant[day]);
+          //   days.append(direction);
+          //     break;
           case "weather_code" :
-            wmo.classList = [""];
-            wmo.textContent = weatherCodeToForecast(forecastWeather.weather_code[day], forecastWeather.is_day);
-            forecast_dom.append(wmo);
-            default : break;
+            wmo.classList = ["wmo"];
+            wmo.textContent = weatherCodeToForecast(forecastWeather.weather_code[day], is_day);
+            days.append(wmo);
+            icon.classList = [`icon ${wmoToIcon(weatherCodeToForecast(forecastWeather.weather_code[day], is_day) )}`];
+            icon.textContent = '';
+            days.append(icon);
+              break;
+          
+          case "uv_index_max" :
+            uvi.classList = ["uv-index"];
+            uvi.textContent = forecastWeather.uv_index_max[day];
+            days.append(uvi);
+              break;
+          case "time" :
+            time.classList = ["day-forecast"];
+            time.textContent = weekday(day);
+            days.append(time);
+              break;
+            default : 
+              // console.log(key);  
+            break;
         }
       });
   });
@@ -293,13 +377,13 @@ export function degreesToCardinal( angle ){
 export function weatherCodeToForecast(weather_code, is_day){
   let forecast;
   let codes = { "0" : ["Sunny", "Clear"], "1": ["Mostly Sunny",  "Mostly Clear"], "2": "Partly Cloudy",
-              "3": "Cloudy", "45": " Foggy ", "48": " Rime Fog","51": " Light Drizzle", "53": " Drizzle",
-              "55": " Heavy Drizzle", "56": " Light Freezing Drizzle", "57": " Freezing Drizzle",
-              "61": " Light Rain", "63": " Rain", "65": " Heavy Rain", "66": " Light Freezing Rain",
-              "67": " Freezing Rain", "71": " Light Snow", "73": " Snow", "75": " Heavy Snow", 
-              "77": " Snow Grains", "80": " Light Showers", "81": " Showers", "82": " Heavy Showers",
-              "85": " Light Snow Showers", "86": " Snow Showers", "95": " Thunderstorms",
-              "96": " Light Thunderstorms With Hail", "99": " Thunderstorms With Hail", };
+              "3": "Cloudy", "45": "Foggy ", "48": "Rime Fog","51": "Light Drizzle", "53": "Drizzle",
+              "55": "Heavy Drizzle", "56": "Light Freezing Drizzle", "57": "Freezing Drizzle",
+              "61": "Light Rain", "63": "Rain", "65": "Heavy Rain", "66": "Light Freezing Rain",
+              "67": "Freezing Rain", "71": "Light Snow", "73": "Snow", "75": "Heavy Snow", 
+              "77": "Snow Grains", "80": "Light Showers", "81": "Showers", "82": "Heavy Showers",
+              "85": "Light Snow Showers", "86": "Snow Showers", "95": "Thunderstorms",
+              "96": "Light Thunderstorms With Hail", "99": "Thunderstorms With Hail", };
 
   if ( weather_code === "0" || weather_code === "1"){
     forecast = is_day === "1" ? codes[weather_code][0] : codes[weather_code][1];   
@@ -307,4 +391,42 @@ export function weatherCodeToForecast(weather_code, is_day){
     forecast = codes[weather_code];
   }
   return forecast;
+}
+
+
+export function wmoToIcon(forecast){
+  let codes = { 
+    "Sunny" : "sunny", 
+    "Clear" : "clear", 
+    "Mostly Sunny" : "mostly-sunny", 
+    "Mostly Clear" : "mostly-clear", 
+    "Partly Cloudy" : "partly-cloudy",
+    "Cloudy" : "cloudy",
+    "Foggy " : "foggy",
+    "Rime Fog" : "rime",
+    "Light Drizzle" : "light-drizzle",
+    "Drizzle" : "drizzle",
+    "Heavy Drizzle" : "heavy-drizzle",
+    "Light Freezing Drizzle" : "light-freezing-drizzle",
+    "Freezing Drizzle" : "freezing-drizzle",
+    "Light Rain" : "light-rain",
+    "Rain" : "rain",
+    "Heavy Rain" : "heavy-rain",
+    "Light Freezing Rain" : "light-freezing-rain",
+    "Freezing Rain" : "freezing-rain",
+    "Light Snow" : "light-snow",
+    "Snow" : "snow",
+    "Heavy Snow" : "heavy-snow",
+    "Snow Grains" : "snow-grains",
+    "Light Showers" : "light-showers",
+    "Showers" : "showers",
+    "Heavy Showers" : "heavy-showers",
+    "Light Snow Showers" : "light-snow-showers",
+    "Snow Showers" : "snow-showers",
+    "Thunderstorms" : "thunderstorms",
+    "Light Thunderstorms With Hail" : "light-thunderstorms-hail",
+    "Thunderstorms With Hail" : "thunderstorms-hail",
+   };
+
+  return codes[forecast];
 }
