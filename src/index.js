@@ -29,6 +29,68 @@ let search = document.querySelector("#myBtn");
 let span = document.querySelector(".close");
 let find = document.querySelector(".search");
 let input = document.querySelector("input");
+let is_day;
+
+
+
+const user_settings = {
+  "temperature": "",
+  "humidty" : "",
+  "wind_speed" : "",
+  "precipitation" : "",
+};
+const USACA = {
+  "temperature": "°F",
+  "humidty" : "%",
+  "wind_speed" : "mph",
+  "precipitation" : "inch",
+};
+const defaults = {
+  "temperature": "°C",
+  "humidty" : "%",
+  "wind_speed" : "km/h",
+  "precipitation" : "mm",
+ };
+
+
+
+
+// let settings = (function setup(){
+//   let tempUnit = "°F";
+//   let humidityUnit = "%";
+//   let windSpeedUnit = "mp/h";
+//   function get
+// })();
+
+
+
+// const addMove = (row, column, player) => {
+//   if (board[row][column].getToken() === "_") {
+//     board[row][column].setToken(player);
+//   } else {
+//     return;
+//   }
+// }; 
+
+// const TestObj = function() {
+
+//   let tempUnits = "°F";
+
+//   const getTempUnits = function(){ return tempUnits; };
+//   const setTempUnits = function(value){ tempUnits = value;};
+
+//   return{
+//     getTempUnits, setTempUnits
+//   };
+// };
+
+// console.log("testOBJ: ", TestObj);
+// console.log("Attempting to directly access tempUnits: ", TestObj.tempUnits);
+// console.log("Attempting to directly access tempUnits: ", TestObj.tempUnits =  "°K");
+// console.log("Attempting to directly access tempUnits: ", TestObj.tempUnits);
+// console.log("Getting tempUnits: ", TestObj.getTempUnits());
+// console.log("Setting tempUnits to '°C': ", TestObj.setTempUnits("°C") );
+// console.log("Getting new tempUnits: ", TestObj.getTempUnits());
 
 
 if(document.readyState === "interactive"){ initialize(); } 
@@ -68,6 +130,7 @@ export function closeModal(){
 }
 
 export function testLocation( testing ){
+  // console.log("testing: ", testing );
   fetchCurrentWeather(testing);
   fetchDailyWeather(testing);
   fetchForecastWeather(testing);
@@ -86,6 +149,10 @@ function initialize() {
   token = window.atob(API_KEY);
   let lsKeys = Object.keys(localStorage);
 
+  // if( Object.keys(localStorage).includes("is_day") ) {
+
+  // }
+
   datetime_dom.querySelector(".date").textContent = DateTime.now().toLocaleString(DateTime.DATE_MED);
   datetime_dom.querySelector(".time").textContent = DateTime.now().toLocaleString(DateTime.TIME_SIMPLE);
 
@@ -102,6 +169,8 @@ async function repeatVisitor(){
     let hourlyWeather = JSON.parse(localStorage.getItem("hourlyWeather"));
     let airNow = JSON.parse(localStorage.getItem("aqi-now"));
     let airHour = JSON.parse(localStorage.getItem("aqi-hourly"));
+    let dt = JSON.parse(localStorage.getItem("info")).is_day;
+    console.log("daytime: ", dt );
     pDOM.populateCurrent(currentWeather);
     pDOM.populateDaily(dailyWeather);
     pDOM.populateHourly(hourlyWeather);
@@ -123,15 +192,17 @@ async function fetchInitialGeoLocation(){
     .then( () => { startingLocation = extractIPGeoValues(results); testSelection = startingLocation; })
     .then( () => { 
       let initial = {};
-      let lastVisit = DateTime.now();
+      let info = {};
       
       if( Object.keys(localStorage).includes("initialLocation")){
         initial = JSON.parse(localStorage.getItem("initialLocation"));
       }
 
       initial = startingLocation; 
+      info.location = initial;
+    
       localStorage.setItem("initialLocation", JSON.stringify(initial)); 
-      localStorage.setItem("lastVisit", JSON.stringify(lastVisit));  
+      localStorage.setItem("info", JSON.stringify(info));
     })
     .then( () => fetchCurrentWeather(testSelection))
     .then( () => fetchDailyWeather(testSelection))
@@ -173,7 +244,7 @@ function fetchGeoCodedLocation(userLocation){
   return fetch(`${baseURL}?${name}&${count}&${language}&${format}`, requestOptions)
     .then( (response) => response.json() )
     .then( (json) => { results = json; } )
-    .then( () => { listed = extractGeoLocationValues(results); return listed; } )
+    .then( () => { listed = extractGeoLocationValues(results); console.table(listed); return listed; } )
     .catch( (error) => console.error(error));
 }
 
@@ -203,17 +274,26 @@ function fetchCurrentWeather(userSelection){
   let timezone = `timezone=${userSelection.timezone}`;
   let now;
   let currentWeather = {};
+  let info = {};
 
   fetch(`${weatherEndpoint}?${latitude}&${longitude}&${current}&${units}&${timezone}&${forecast}`, requestOptions)
     .then(response => response.json())
     .then( (json) => now = json  )
-    .then( () => console.log("current results:", now ) )
+    // .then( () => console.log("current results:", now ) )
     .then( () => currentWeather = extractWeatherData(now, "current") )
     .then( () => { 
       currentWeather.name = userSelection.city || userSelection.name; 
       currentWeather.state = userSelection.state || userSelection.admin1; 
       currentWeather.country = userSelection.country_name || userSelection.country;
     })    
+    .then( () => {
+      info = JSON.parse(localStorage.getItem("info"));
+      info.is_day = currentWeather.is_day;
+      info.updated = currentWeather.time;
+      info.lastVisit = DateTime.now().set({millisecond: 0, second: 0}).toISO({includeOffset: false, suppressMilliseconds: true, suppressSeconds: true, format: 'extended'}).toString();
+      // console.log("added info;", info);
+      localStorage.setItem("info", JSON.stringify(info));
+    })
     .then( () => pDOM.populateCurrent(currentWeather))
     .then( () => localStorage.setItem("currentWeather", JSON.stringify(currentWeather)) )
     .catch(error => console.log("error", error));
@@ -226,15 +306,13 @@ function fetchForecastWeather(userSelection){
   let current ="current=is_day";
   let forecast;
   let forecastWeather = {};
-  let is_day;
 
   fetch(`${weatherEndpoint}?${latitude}&${longitude}&${current}&${daily}&${units}&${timezone}&${forecast4}`, requestOptions)
   .then(response => response.json())
   .then( (json) =>  forecast = json )
-  .then( () => is_day = forecast.current.is_day )
-  .then( () => console.log("Forecast: ", forecast))
+  // .then( () => console.log("Forecast: ", forecast))
   .then( () => forecastWeather = extractWeatherData(forecast, "daily") )
-  .then( () => pDOM.populateForecast(forecastWeather, is_day))
+  .then( () => pDOM.populateForecast(forecastWeather))
   .then( () => localStorage.setItem("forecastWeather", JSON.stringify(forecastWeather)))
   .catch( error => console.log("error", error));
 }
@@ -246,14 +324,12 @@ function fetchDailyWeather(userSelection){
   let current ="current=is_day";
   let today;
   let dailyWeather = {};
-  let is_day;
 
   fetch(`${weatherEndpoint}?${latitude}&${longitude}&${current}&${daily}&${units}&${timezone}&${forecast}`, requestOptions)
   .then(response => response.json())
   .then( (json) =>  today = json )
-  .then( () => is_day = today.current.is_day )
   .then( () => dailyWeather = extractWeatherData(today, "daily") )
-  .then( () => pDOM.populateDaily(dailyWeather, is_day))
+  .then( () => pDOM.populateDaily(dailyWeather))
   .then( () => localStorage.setItem("dailyWeather", JSON.stringify(dailyWeather)))
   .catch( error => console.log("error", error));
 }
@@ -264,14 +340,13 @@ function fetchHourlyWeather(userSelection){
   let timezone = `timezone=${userSelection.timezone}`;
   let hourlyWeather = {};
   let hour;
-  let is_day;
+  // &current=is_day
 
-  fetch(`${weatherEndpoint}?${latitude}&${longitude}&${hourly}&${units}&${timezone}&${forecast}&current=is_day`, requestOptions)
+  fetch(`${weatherEndpoint}?${latitude}&${longitude}&${hourly}&${units}&${timezone}&${forecast}`, requestOptions)
   .then( response => response.json())
   .then( (json) => hour = json )
   .then( () => hourlyWeather = extractWeatherData(hour, "hourly"))
-  .then( () => hourlyWeather.is_day = hour.current.is_day )
-  .then( () => pDOM.populateHourly(hourlyWeather, is_day))
+  .then( () => pDOM.populateHourly(hourlyWeather))
   .then( () => localStorage.setItem("hourlyWeather", JSON.stringify(hourlyWeather)) )
   .catch( error => console.log("error", error));
 }
