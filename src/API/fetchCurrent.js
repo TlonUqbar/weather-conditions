@@ -11,20 +11,12 @@ export function fetchCurrent(userSelection){
   let now;
   let currentWeather = {};
   let info = {};
-  let temperature = `temperature_unit=${vars.preferred.temperature}`;
-  let precipitation = `precipitation_unit=${vars.preferred.precip}`;
-  let wind = `wind_speed_unit=${vars.preferred.speed}`;
+  let temperature = `temperature_unit=${globalThis.preferred.temperature}`;
+  let precipitation = `precipitation_unit=${globalThis.preferred.precip}`;
+  let wind = `wind_speed_unit=${globalThis.preferred.speed}`;
   let units = `${temperature}&${precipitation}&${wind}`;
   
-  // vars.preferred.temp = "fahrenheit";
-  // vars.preferred.temp = "celsius";
-  // vars.preferred.speed = "mph";
-  // vars.preferred.speed = "kmh";
-  // vars.preferred.precip = "mm";
-  // vars.preferred.precip = "inch";
 
-  // let units = `${temperature}&${precipitation}&${wind}`;
-  // console.table(userSelection);
   console.log("var units: ", units);
 
   fetch(`${vars.weatherEndpoint}?${latitude}&${longitude}&${vars.current}&${units}&${timezone}&${vars.forecast}`, vars.requestOptions)
@@ -39,6 +31,7 @@ export function fetchCurrent(userSelection){
       currentWeather.country_code = userSelection.country_code || userSelection.country_code2; 
       currentWeather.timezone = userSelection.timezone || userSelection.time_zone.name;
       currentWeather.tz = now.timezone_abbreviation;
+      localStorage.setItem("currentLocation", currentWeather.name);
     })    
     .then( () => {
       info = JSON.parse(localStorage.getItem("info"));

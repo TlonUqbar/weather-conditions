@@ -1,11 +1,12 @@
-import { searchResults, requestOptions } from "../../src/index.js";
+import { requestOptions } from "../../src/index.js";
+
 
 export function geoCoding(userLocation){
   let encodedLocation = userLocation.replace(/\W/g, '+');
   let baseURL = "https://geocoding-api.open-meteo.com/v1/search";
   let name = `name=${encodedLocation}`;
   // let count = "count=10";
-  let count = `count=${searchResults}`;
+  let count = `count=${globalThis.preferred.results}`;
   let language = "language=en";
   let format = "format=json";
   let results;
@@ -15,7 +16,10 @@ export function geoCoding(userLocation){
   return fetch(`${baseURL}?${name}&${count}&${language}&${format}`, requestOptions)
     .then( (response) => response.json() )
     .then( (json) => { results = json; } )
-    .then( () => { listed = extractGeoLocationValues(results); console.table(listed); return listed; } )
+    .then( () => { 
+      listed = extractGeoLocationValues(results); 
+      console.table(listed); 
+      return listed; } )
     .catch( (error) => console.error(error));
 }
 

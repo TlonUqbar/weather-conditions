@@ -1,7 +1,3 @@
-// import { DateTime, Settings } from "luxon";
-// import { iconHelper as wmoToIcon } from "../helpers/weatherIcons.js";
-// import { wmoHelper as weatherCodeToForecast } from "../helpers/weatherCodes.js";
-// import { windDirection as degreesToCardinal} from "../helpers/windDirection.js";
 import { countryCodes } from "../helpers/country_codes.js"; 
 import * as vars from "../index.js";
 
@@ -38,6 +34,7 @@ export function modalResults(obj) {
       vars.testLocation(el);
       vars.closeModal();
       // setTimeout( () => { input.value = ""; }, 1000 ); 
+      localStorage.setItem("selectedLocation", JSON.stringify(el));
       
     });
     results_dom.appendChild(doc);

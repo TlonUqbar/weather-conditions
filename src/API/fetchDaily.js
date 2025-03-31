@@ -8,9 +8,9 @@ export function fetchDaily(userSelection){
   let longitude = `longitude=${userSelection.longitude}`;
   let timezone = `timezone=${userSelection.timezone}`;
   // let units = `${vars.temperature}&${vars.precipitation}&${vars.wind}`;
-  let temperature = `temperature_unit=${vars.preferred.temperature}`;
-  let precipitation = `precipitation_unit=${vars.preferred.precip}`;
-  let wind = `wind_speed_unit=${vars.preferred.speed}`;
+  let temperature = `temperature_unit=${globalThis.preferred.temperature}`;
+  let precipitation = `precipitation_unit=${globalThis.preferred.precip}`;
+  let wind = `wind_speed_unit=${globalThis.preferred.speed}`;
   let units = `${temperature}&${precipitation}&${wind}`;  
   let current ="current=is_day";
   let today;

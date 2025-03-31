@@ -3,7 +3,7 @@ import { iconHelper as wmoToIcon } from "../helpers/weatherIcons.js";
 import { wmoHelper as weatherCodeToForecast } from "../helpers/weatherCodes.js";
 import { windDirection as degreesToCardinal} from "../helpers/windDirection.js";
 import { countryCodes } from "../helpers/country_codes.js"; 
-import * as vars from "../index.js";
+import { vars } from "../index.js";
 
 let thisHour = DateTime.now().hour;
 
@@ -45,17 +45,18 @@ export function populateCurrent(currentWeather) {
   let group4 = addElement("div", "cg4");
   let group5 = addElement("div", "cg5");
   let group6 = addElement("div", "cg6");
-  let time2;
+  let time2 = addElement( "div", "regional-time", `(${locationTime.toLocaleString(DateTime.TIME_SIMPLE)} ${tz})`);
+  let order = [];
 
-  if( local.zoneName !== locationTime.zoneName ) {
-    time2 =  addElement( "div", "regional-time", `(${locationTime.toLocaleString(DateTime.TIME_SIMPLE)} ${tz})`);
-  }
+  order = ( local.zoneName != locationTime.zoneName) ? [city, state, time2] : [city, state];
+
+
 
   current_dom.innerHTML = ""; 
   current_dom.classList.add("simple-current");
   
   orderAppend(datetime, ...[date, time]);
-  orderAppend(location, ...[city, state, time2]);
+  orderAppend(location, ...order);
   orderAppend(group1, location);
   orderAppend(group2, datetime);
   orderAppend(group3, ...[temp, feels]);
@@ -235,66 +236,37 @@ export function populateForecast(forecastWeather){
 export function populateAQI(now, hour){
   let aqiNow_dom = document.querySelector(".aqi-now");
   let aqiHourly_dom = document.querySelector(".aqi-hour");
-  let usn = document.createElement("div");
-  let eun = document.createElement("div");
-  let pm10n = document.createElement("div");
-  let pm25n = document.createElement("div");
-  let uvn = document.createElement("div");
-  let ush = document.createElement("div");
-  let euh = document.createElement("div");
-  let pm10h = document.createElement("div");
-  let pm25h = document.createElement("div");
-  let uvh = document.createElement("div");
+
+  let usn = addElement("div", '', `US: ${now.us_aqi}`);
+  let eun = addElement("div", "", `EU: ${now.european_aqi}`);
+  let pm10n = addElement("div", "", `PM10: ${now.pm10}`);
+  let pm25n = addElement("div", "", `PM2.5: ${now.pm2_5}`);
+  let uvn = addElement("div", "", `UV: ${now.uv_index}`);
+  let ush = addElement("div", "", `US: ${now.us_aqi[thisHour]}`);
+  let euh = addElement("div", '', `EU: ${now.european_aqi[thisHour]}`);
+  let pm10h = addElement("div", "", `PM10:  ${hour.pm10[thisHour]}`);
+  let pm25h = addElement("div", "", `PM2.5:  ${hour.pm2_5[thisHour]}`);
+  let uvh = addElement("div", "", now.uv_index[thisHour] );
 
   aqiNow_dom.innerHTML = '';
   aqiHourly_dom.innerHTML = '';
 
-  usn.classList = [""];
-  eun.classList = [""];
-  pm10n.classList = [""];
-  pm25n.classList = [""];
-  uvn.classList = [""];
-  ush.classList = [""];
-  euh.classList = [""];
-  pm10h.classList = [""];
-  pm25h.classList = [""];
-  uvh.classList = [""];
-
-  usn.textContent = "US: " + now.us_aqi;
-  eun.textContent = "EU:  " + now.european_aqi;
-  pm10n.textContent = "PM10:  " + now.pm10;
-  pm25n.textContent = "PM2.5: " + now.pm2_5;
-  uvn.textContent = "UV: " + now.uv_index;
-  ush.textContent = "US: " + hour.us_aqi[thisHour];
-  euh.textContent = "EU:  " + hour.european_aqi[thisHour];
-  pm10h.textContent = "PM2.5: " + hour.pm2_5[thisHour];
-  pm25h.textContent = "PM2.5: " + hour.pm2_5[thisHour];
-  uvh.textContent = "UV: " + hour.uv_index[thisHour];
-
-  aqiNow_dom.append(usn);
-  aqiNow_dom.append(eun);
-  aqiNow_dom.append(pm10n);
-  aqiNow_dom.append(pm25n);
-  aqiNow_dom.append(uvn);
-  aqiHourly_dom.append(ush);
-  aqiHourly_dom.append(euh);
-  aqiHourly_dom.append(pm10h);
-  aqiHourly_dom.append(pm25h);
-  aqiHourly_dom.append(uvh);
+  orderAppend(aqiNow_dom, ...[usn, eun, pm10n, pm25n, uvn]);
+  orderAppend(aqiHourly_dom, ...[ush, euh, pm10h,pm25h, uvh]);
 }
 
 
 
 function tempClass(){
-  return (vars.preferred.temp === "fahrenheit") ? "fahrenheit" : "celsius";
+  return (preferred.temp === "fahrenheit") ? "fahrenheit" : "celsius";
 }
 
 function precipClass(){
-  return (vars.preferred.precip === "inch") ? "inch" : "mm";
+  return (preferred.precip === "inch") ? "inch" : "mm";
 }
 
 function windClass(){
-  switch( vars.preferred.wind ) {
+  switch( preferred.wind ) {
     case "mph" : return "mph"; 
     case "kmh" : return "kmh";
     case "ms" : return "ms";

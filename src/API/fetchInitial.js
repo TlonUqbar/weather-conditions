@@ -22,15 +22,6 @@ export async function fetchInitial(){
       let initial = {};
       let info = {};
       
-      // if( Object.keys(localStorage).includes("initialLocation")){
-      //   initial = JSON.parse(localStorage.getItem("initialLocation"));
-      // }
-
-      // if ( Object.keys(JSON.parse(localStorage.info)).includes("location")  ){
-      //   info.location = JSON.parse(localStorage.info);
-      // }
-
-
       initial = startingLocation; 
       info.location = initial;
     

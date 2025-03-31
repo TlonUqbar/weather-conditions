@@ -11,20 +11,11 @@ export function fetchForecast(userSelection){
   let current ="current=is_day";
   let forecast;
   let forecastWeather = {};
-  let tUnit = vars.preferred.temp; // = "celsius";
-  let sUnit = vars.preferred.speed; // = "knots";
-  let pUnit = vars.preferred.precip; // = "mm";
-  let temperature = `temperature_unit=${tUnit}`;
-  let precipitation = `precipitation_unit=${pUnit}`;
-  let wind = `wind_speed_unit=${sUnit}`;
+  let temperature = `temperature_unit=${globalThis.preferred.temp}`;
+  let precipitation = `precipitation_unit=${globalThis.preferred.precip}`;
+  let wind = `wind_speed_unit=${globalThis.preferred.speed}`;
   let units = `${temperature}&${precipitation}&${wind}`;
 
-    
-    // vars.preferred.temp = "celsius";
-    // vars.preferred.speed = "mph";
-    // vars.preferred.speed = "kmh";
-    // vars.preferred.precip = "mm";
-    // vars.preferred.precip = "inch";
 
   console.log("vars F: ", units);
 

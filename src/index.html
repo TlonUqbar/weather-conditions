@@ -11,6 +11,9 @@
     <header class="header">
       <!-- <h1>Weather Conditions</h1> -->
       <a href="#" id="myBtn">Change Location</a>
+      <a href="#" id="myBtn2">Change Units</a>
+      <!-- <a href="#" class="change">Change Units</a> -->
+      <!-- <button class="change">Change Units</button> -->
     </header>
   
     <div id="myModal" class="modal">
@@ -29,6 +32,49 @@
           <div class="results">
             <div class="info">Search by city name or postal code</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="preferences" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close2">&times;</span>
+          <h2>Settings</h2>
+        </div>
+        <div class="modal-body">
+          <div class="group2">
+            <fieldset class="settings-temp">
+              <legend>Temperature</legend>
+              <label><input type="radio" name="temp" value="celsius"> &deg;C </label>
+              <label><input type="radio" name="temp" value="fahrenheit"> &deg;F </label>
+            </fieldset>
+
+            <fieldset class="settings-precipitation">
+              <legend>Precipitation</legend>
+              <label><input type="radio" name="precip" value="mm">mm</label>
+              <label><input type="radio" name="precip" value="inch">in</label>
+            </fieldset>
+
+            <fieldset class="settings-wind">
+              <legend>Wind Speed</legend>
+              <label><input type="radio" name="wind" value="kmh"> km/h</label>
+              <label><input type="radio" name="wind" value="mph"> mph</label>
+              <label><input type="radio" name="wind" value="ms"> m/s</label>
+              <label><input type="radio" name="wind" value="kn"> knots</label>
+            </fieldset>
+
+            <fieldset class="settings-results">
+              <legend>Location Search Results</legend>
+              <!-- <label for="results">Results</label> -->
+              <input type="range" name="results" min="1" max="100" value="10" step="1" list="steplist" autocomplete="off" oninput="this.nextElementSibling.value = this.value">
+              <output id="results">10</output>
+            </fieldset>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="save">Submit</a>
         </div>
       </div>
     </div>
@@ -55,6 +101,7 @@
 
     <footer class="footer">
       <!-- <h2>Footer!!</h2> -->
+       
        <p class="spacer">&nbsp;</p>
     </footer>
   </body>
