@@ -107,12 +107,12 @@ async function savePrefs(){
 }
 
 
-export function testLocation( testing ){
-  fetchCurrentWeather(testing);
-  fetchDailyWeather(testing);
-  fetchForecastWeather(testing);
-  fetchHourlyWeather(testing);
-  fetchAirQualityIndex(testing);
+export function testLocation( location ){
+  fetchCurrentWeather(location);
+  fetchDailyWeather(location);
+  fetchForecastWeather(location);
+  fetchHourlyWeather(location);
+  fetchAirQualityIndex(location);
 }
 
 async function switchLocations(city){
@@ -130,12 +130,10 @@ async function changeUnits(temp, precip, speed, results){
   globalThis.preferred.speed = speed;
   globalThis.preferred.results = results;
 
-  let units = {
-    "temperature" : `${temp}`, 
-    "precipitaion" : `${precip}`, 
-    "wind" : `${speed}`, 
-    "results" : `${results}` };
-  localStorage.setItem("units", JSON.stringify(units));
+  let units = { "temperature" : `${temp}`,  "precipitaion" : `${precip}`, 
+                "wind" : `${speed}`, "results" : `${results}` };
+  
+                localStorage.setItem("units", JSON.stringify(units));
 
   fetchCurrentWeather(location);
   fetchDailyWeather(location);

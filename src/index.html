@@ -46,31 +46,51 @@
         <div class="modal-body">
           <div class="group2">
             <fieldset class="settings-temp">
+              
               <legend>Temperature</legend>
-              <label><input type="radio" name="temp" value="celsius"> &deg;C </label>
-              <label><input type="radio" name="temp" value="fahrenheit"> &deg;F </label>
+              
+              <div class="switch-field">
+                <input type="radio" id="celsius" name="temp" value="celsius"/>
+                <label for="celsius">&deg;C</label>
+                <input type="radio" id="fahrenheit" name="temp" value="fahrenheit" />
+                <label for="fahrenheit">&deg;F</label>
+              </div>
+              
             </fieldset>
 
             <fieldset class="settings-precipitation">
               <legend>Precipitation</legend>
-              <label><input type="radio" name="precip" value="mm">mm</label>
-              <label><input type="radio" name="precip" value="inch">in</label>
+              <div class="switch-field">
+              <input type="radio" id="millimeter" name="precip" value="mm">
+              <label for="millimeter">mm</label>
+              <input type="radio" id="inch" name="precip" value="inch">
+              <label for="inch">in</label>
+              </div>
             </fieldset>
 
             <fieldset class="settings-wind">
               <legend>Wind Speed</legend>
-              <label><input type="radio" name="wind" value="kmh"> km/h</label>
-              <label><input type="radio" name="wind" value="mph"> mph</label>
-              <label><input type="radio" name="wind" value="ms"> m/s</label>
-              <label><input type="radio" name="wind" value="kn"> knots</label>
+              <div class="switch-field">
+                <input type="radio" id="kmh" name="wind" value="kmh">
+                <label for="kmh">km/h</label>
+                <input type="radio" id="mph" name="wind" value="mph">
+                <label for="mph">mph</label>
+                <input type="radio" id="ms" name="wind" value="ms">
+                <label for="ms">m/s</label>
+                <input type="radio" id="knots" name="wind" value="kn">
+                <label for="knots">knots</label>
+              </div>
             </fieldset>
 
             <fieldset class="settings-results">
-              <legend>Location Search Results</legend>
+              <legend>Search Results</legend>
               <!-- <label for="results">Results</label> -->
               <input type="range" name="results" min="1" max="100" value="10" step="1" list="steplist" autocomplete="off" oninput="this.nextElementSibling.value = this.value">
               <output id="results">10</output>
             </fieldset>
+
+
+
           </div>
         </div>
         <div class="modal-footer">

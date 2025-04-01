@@ -254,6 +254,8 @@ span{
   background-color: var(--night-text-3);
 }
 
+
+
 .modal-footer {
   display: flex;
   justify-content: center;
@@ -289,43 +291,99 @@ span{
 }
 
 .group2{
-  flex-direction: row;
-  align-items: center;
-  justify-items: space-evenly;
-  width: 80%;
-  gap: 20px;
-  flex-wrap: wrap;
+  background-color: var(--night-base-3);
+  display: grid;
+  width: 90%;
+  gap: 0 10px;
   font-family: "Nunito";
+  box-shadow: inset var(--night-box-shadow) var(--night-box-shadow-color);
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
 }
 
 .settings-temp, 
 .settings-wind, 
 .settings-precipitation, 
 .settings-results{
-  display:flex;
-  flex-direction: column;
-  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 10px;
   align-items: center;
-  justify-content: space-evenly;
+  justify-items: center;
   font-size: 1.1rem;
+  /* border: 1px solid; */
+  /* gap:20px; */
 }
+
+/* output{
+  display: inline;
+} */
 
 .settings-results{
-  height: 100px;
-
+  grid-template-columns: 5fr 1fr;
+  gap: 10px 0;
 }
 
-input[type="range"] + datalist{
 
-}
 
 legend{
-  font-size: 1.4rem;
+  /* font-size: 1.4rem; */
   width: 100%;
+  padding: 10px 0 0;
   text-align: center;
-  align-self: center;
-  justify-self: center;
 }
+
+/* Start */
+
+.switch-field {
+  display: flex;
+  /* margin-bottom: 10px; */
+  overflow: hidden;
+}
+
+.switch-field input {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  border: 0;
+  overflow: hidden;
+}
+
+.switch-field label {
+  background-color: var(--night-text-1);
+  /* color: rgba(0, 0, 0, 0.6); */
+  color: var(--night-text-3);
+  font-size: 900;
+  font-size: 1rem;
+  line-height: 1;
+  text-align: center;
+  padding: 6px 16px;
+  margin-right: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.1s ease-in-out;
+  font-family: "Poppins";
+}
+
+.switch-field label:hover {
+  cursor: pointer;
+}
+
+.switch-field input:checked + label {
+  background-color: var(--night-accent-2);
+  box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+  border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+  border-radius: 0 4px 4px 0;
+}
+
+/* End */
 
 .input {
   background-color: var(--night-accent-5);
@@ -763,15 +821,14 @@ div[class^="simple-day"]{
 
 .change, .save{
   background-color: var(--night-base-3);
-  padding: 10px 30px;
+  padding: 6px 30px;
   border: 1px solid var(--night-accent-2);
   border-radius: 5px;
-  font-weight: 900;
+  font-weight: 700;
   box-shadow: inset var(--night-box-shadow) var(--night-box-shadow-color);
-  vertical-align: bottom;
-  display: inline;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-family: "Nunito";
 }
 
 .save:hover{
