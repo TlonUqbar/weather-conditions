@@ -27,6 +27,7 @@ export async function fetchInitial(){
     
       localStorage.setItem("initialLocation", JSON.stringify(initial)); 
       localStorage.setItem("info", JSON.stringify(info));
+      localStorage.setItem("selectedLocation", JSON.stringify(initial));
     })
     .then( () => fetchCurrentWeather(testSelection))
     .then( () => fetchDailyWeather(testSelection))

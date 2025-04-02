@@ -9,6 +9,7 @@ import { fetchAQI as fetchAirQualityIndex } from "./API/fetchAQI.js";
 import { fetchInitial as fetchInitialGeoLocation }  from "./API/fetchInitial.js";
 import { modalResults as populatedGeoCoding } from "./partials/modalResults.js";
 
+
 export const aqiEndpoint = "https://air-quality-api.open-meteo.com/v1/air-quality";
 export const weatherEndpoint = "https://api.open-meteo.com/v1/forecast";
 const API_KEY = "MTQ2MmQyMTUwZTRkNDg3ZmEwNzE3ODA4MjI1ZjE4YzU=";
@@ -125,12 +126,13 @@ async function switchLocations(city){
 
 async function changeUnits(temp, precip, speed, results){
   let location = JSON.parse(localStorage.getItem("selectedLocation"));
+
   globalThis.preferred.temperature = temp;
   globalThis.preferred.precip = precip;
   globalThis.preferred.speed = speed;
   globalThis.preferred.results = results;
 
-  let units = { "temperature" : `${temp}`,  "precipitaion" : `${precip}`, 
+  let units = { "temperature" : `${temp}`,  "precipitation" : `${precip}`, 
                 "wind" : `${speed}`, "results" : `${results}` };
   
                 localStorage.setItem("units", JSON.stringify(units));
@@ -145,6 +147,7 @@ async function changeUnits(temp, precip, speed, results){
 function initialize() {
   token = window.atob(API_KEY);
   let lsKeys = Object.keys(localStorage);
+  setRadios();
 
   return ( !lsKeys.includes("info") ) ? firstTimeVisitor() : repeatVisitor();
 }
@@ -164,7 +167,7 @@ async function repeatVisitor(){
     let units = JSON.parse(localStorage.getItem("units"));
 
     globalThis.preferred.temperature = units.temperature;
-    globalThis.preferred.precip = units.precipitaion;
+    globalThis.preferred.precip = units.precipitation;
     globalThis.preferred.speed = units.wind;
 
     pDOM.populateCurrent(currentWeather);
@@ -174,6 +177,25 @@ async function repeatVisitor(){
     pDOM.populateAQI(airNow, airHour);
 }
 
+
+function setRadios(){
+
+  let units = JSON.parse(localStorage.getItem("units"));
+  let temp =  units.temperature;
+  let precip = units.precipitation;
+  let speed = units.wind;
+
+  (temp === "celsius") ? (document.querySelector("#celsius").checked = true) : ( document.querySelector("#fahrenheit").checked = true) ;
+  (precip === "mm") ? (document.querySelector("#millimeter").checked = true ) : ( document.querySelector("#inch").checked = true) ; 
+
+  switch (speed) {
+    case "kmh": document.querySelector("#kmh").checked = true; break;
+    case "mph": document.querySelector("#mph").checked = true; break;
+    case "ms" : document.querySelector("#ms").checked = true; break;
+    case "kn" : document.querySelector("#knots").checked = true; break;
+    default: break;
+  }
+}
 
 
 export default globalThis.preferred ;
