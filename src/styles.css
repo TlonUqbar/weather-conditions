@@ -294,11 +294,12 @@ span{
   background-color: var(--night-base-3);
   display: grid;
   width: 90%;
-  gap: 0 10px;
+  gap: 20px 10px;
   font-family: "Nunito";
   box-shadow: inset var(--night-box-shadow) var(--night-box-shadow-color);
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: auto;
+  padding: 20px 0;
 }
 
 .settings-temp, 
@@ -320,8 +321,9 @@ span{
 } */
 
 .settings-results{
-  grid-template-columns: 5fr 1fr;
-  gap: 10px 0;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
 }
 
 
@@ -329,8 +331,12 @@ span{
 legend{
   /* font-size: 1.4rem; */
   width: 100%;
-  padding: 10px 0 0;
+  /* padding: 10px 0 0; */
   text-align: center;
+}
+
+.settings-results > input[type="range"]{
+  width: 8vw;
 }
 
 /* Start */
@@ -339,6 +345,10 @@ legend{
   display: flex;
   /* margin-bottom: 10px; */
   overflow: hidden;
+}
+
+.settings-wind > .switch-field{
+  flex-direction: column;
 }
 
 .switch-field input {
@@ -382,6 +392,15 @@ legend{
 .switch-field label:last-of-type {
   border-radius: 0 4px 4px 0;
 }
+
+.settings-wind > .switch-field label:first-of-type {
+  border-radius: 4px 4px 0 0 ;
+}
+
+.settings-wind > .switch-field label:last-of-type {
+  border-radius: 0 0 4px 4px ;
+}
+
 
 /* End */
 
