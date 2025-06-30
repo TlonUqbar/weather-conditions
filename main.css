@@ -283,6 +283,7 @@ sup{ vertical-align:super; }
   --night-text-4: #6a7d89;
   --night-box-shadow-color: #020015;
   --night-box-shadow: 1px 1px 5px;
+  --night-border: #756d60;
   
   /* Light Theme Sunny Day */
   --day-base-1: #FFF6E5;
@@ -317,7 +318,7 @@ html {
 
 body{
   font-family: "Nixie One", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  /* background-image: url("./assets/images/olenka-kotyk-9TUkYXQKXec-unsplash.jpg"); */
+  /* background-image: url("../images/olenka-kotyk-9TUkYXQKXec-unsplash.jpg"); */
   background-image: url(1c50c6e595a27c9a8230.jpg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -431,13 +432,13 @@ span{
 
 .fahrenheit::after {
   content: " \00b0 F";
-  /* content: url("./assets/icons/degree-fahrenheit.svg"); */
+  /* content: url("../icons/degree-fahrenheit.svg"); */
   padding-left: 5px;
 }
 
 .celsius::after{
   content: " \00b0 C";
-  /* content: url("./assets/icons/degree-celsius.svg"); */
+  /* content: url("../icons/degree-celsius.svg"); */
   padding-left: 5px;
 }
 
@@ -498,7 +499,8 @@ span{
   background-color: var(--night-base-3);
   margin: auto;
   padding: 0;
-  border: 1px solid #888;
+  /* border: 1px solid #e8e6e3; */
+  border: 1px solid #756d60;
   width: 800px;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
@@ -573,20 +575,21 @@ span{
 
 .group, .group2{
   display: flex;
-  border: 1px solid var(--night-accent-5);
-  border-radius: 5px;
+  /* border: 1px solid var(--night-accent-5); */
+  border: 1px solid var(--night-border);
+  border-radius: 8px;
 }
 
 .group2{
   background-color: var(--night-base-3);
   display: grid;
   width: 90%;
-  gap: 20px 10px;
+  gap: 20px 0;
   font-family: "Nunito";
   box-shadow: inset var(--night-box-shadow) var(--night-box-shadow-color);
   grid-template-columns: 1fr;
   grid-template-rows: auto;
-  padding: 20px 0;
+  padding: 20px;
 }
 
 .settings-temp, 
@@ -613,24 +616,19 @@ span{
   gap: 0;
 }
 
-
-
-legend{
-  /* font-size: 1.4rem; */
-  width: 100%;
-  /* padding: 10px 0 0; */
-  text-align: center;
-}
-
 .settings-results > input[type="range"]{
   width: 8vw;
+}
+
+legend{
+  width: 100%;
+  text-align: center;
 }
 
 /* Start */
 
 .switch-field {
   display: flex;
-  /* margin-bottom: 10px; */
   overflow: hidden;
 }
 
@@ -688,15 +686,14 @@ legend{
   border-radius: 0 0 4px 4px ;
 }
 
-
 /* End */
 
 .input {
-  background-color: var(--night-accent-5);
+  background-color: var(--dark-base-2);
   padding: 0 10px;
   width: 600px;
-  border-radius: 5px 0 0 5px;
-  border: 1px solid var(--night-accent-4);
+  border-radius: 8px 0 0 8px;
+  border: 1px solid var(--night-border);
   color: var(--night-primary-1);
   height: 34px;
 }
@@ -704,9 +701,9 @@ legend{
 .search {
   padding: 1px 7px;
   width: 40px;
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 8px 8px 0;
   background-color: var(--night-accent-2);
-  border: 1px solid var(--night-accent-4);
+  border: 1px solid var(--night-border);
   cursor: pointer;
   height: 34px;
 }
@@ -780,7 +777,8 @@ legend{
 .simple-current{
   display: grid;
   background-color: rgba(0,0,0,0.4);
-  border: 1px solid rgba(255, 255, 255, 0.20);
+  /* border: 1px solid rgba(255, 255, 255, 0.20); */
+  border: 1px solid var(--night-border);
   backdrop-filter: blur(2px);
   border-radius: 10px;
   grid-template-columns:1fr 1fr;
@@ -880,7 +878,8 @@ legend{
   align-items: center;
   align-content: center;
   backdrop-filter: blur(2px);
-  border: 1px solid rgba(255, 255, 255, 0.20);
+  /* border: 1px solid rgba(255, 255, 255, 0.20); */
+  border: 1px solid var(--night-border);
   background-color: rgba(0,0,0,0.4);
   border-radius: 10px;
   font-size: 1.8rem;
@@ -908,7 +907,8 @@ div[class^="simple-day"]{
   justify-content: space-between;
   backdrop-filter: blur(2px);
   background-color: rgba(0,0,0,0.4);
-  border: 1px solid rgba(255, 255, 255, 0.20);
+  /* border: 1px solid rgba(255, 255, 255, 0.20); */
+  border: 1px solid var(--night-border);
   border-radius: 10px;
 }
 
@@ -1352,10 +1352,10 @@ div[class^="simple-day"]{
     grid-template-rows: auto;
   }
 
-  div[class^="simple-day"]{
-    /* flex-direction: row; */
-    /* flex-wrap: wrap; */
-  }
+  /* div[class^="simple-day"]{
+    flex-direction: row;
+    flex-wrap: wrap;
+  } */
 
   .modal-content{ width: 80vw; }
 
