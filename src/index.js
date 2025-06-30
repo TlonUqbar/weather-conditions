@@ -163,11 +163,19 @@ function setRadios(){
   let precip = units.precipitation;
   let speed = units.wind;
   let results = units.results;
-  let t = (temp === "celsius") ? "#celsius" : "#fahrenheit";
-  let p = (precip === "mm") ? "#millimeter" : "#inch"; 
-  
-  document.querySelector(`${t}`).checked = true;
-  document.querySelector(`${p}`).checked = true;
+
+
+  switch (temp) {
+    case 'celsius': document.querySelector('#celsius').checked = true; break;
+    case 'fahrenheit': document.querySelector('#fahrenheit').checked = true; break;
+    default: break;
+  }
+
+  switch (precip) {
+    case 'mm': document.querySelector('#millimeter').checked = true; break;
+    case 'inch': document.querySelector('#inch').checked = true; break;
+    default: break;
+  }
 
   switch (speed) {
     case "kmh": document.querySelector("#kmh").checked = true; break;
