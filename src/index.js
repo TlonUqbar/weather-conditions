@@ -1,26 +1,16 @@
-import "./styles.css";
-import * as pDOM from "./DOM-Related/populate-dom.js";
-import { geoCoding as fetchGeoCodedLocation }  from "./API/geoCoding";
-import { fetchCurrent as fetchCurrentWeather } from "./API/fetchCurrent.js";
-import { fetchDaily as fetchDailyWeather } from "./API/fetchDaily.js";
-import { fetchForecast as fetchForecastWeather } from "./API/fetchForecast.js";
-import { fetchHourly as fetchHourlyWeather } from "./API/fetchHourly.js";
-import { fetchAQI as fetchAirQualityIndex } from "./API/fetchAQI.js";
-import { fetchInitial as fetchInitialGeoLocation }  from "./API/fetchInitial.js";
+import "./assets/styles/styles.css";
+import * as pDOM from "./pages/populate-dom.js";
+import { geoCoding as fetchGeoCodedLocation }  from "./services/geoCoding.js";
+import { fetchCurrent as fetchCurrentWeather } from "./services/fetchCurrent.js";
+import { fetchDaily as fetchDailyWeather } from "./services/fetchDaily.js";
+import { fetchForecast as fetchForecastWeather } from "./services/fetchForecast.js";
+import { fetchHourly as fetchHourlyWeather } from "./services/fetchHourly.js";
+import { fetchAQI as fetchAirQualityIndex } from "./services/fetchAQI.js";
+import { fetchInitial as fetchInitialGeoLocation }  from "./services/fetchInitial.js";
 import { modalResults as populatedGeoCoding } from "./partials/modalResults.js";
 
-
-export const aqiEndpoint = "https://air-quality-api.open-meteo.com/v1/air-quality";
-export const weatherEndpoint = "https://api.open-meteo.com/v1/forecast";
-const API_KEY = "MTQ2MmQyMTUwZTRkNDg3ZmEwNzE3ODA4MjI1ZjE4YzU=";
-export const requestOptions = { method: "GET", redirect: "follow", mode: "cors" };
-
-globalThis.preferred = { 
-  "temperature" : "celsius",
-  "precipitation" : "mm", 
-  "snow" : "cm", 
-  "wind" : "kmh", 
-  "results" : "10",
+globalThis.preferred = { "temperature" : "celsius", "precipitation" : "mm", 
+  "snow" : "cm", "wind" : "kmh", "results" : "20",
   set temp(tUnit){ this.temperature = tUnit; },
   get temp() { return this.temperature; },
   set precip(pUnit){ this.precipitation = pUnit; },
@@ -31,6 +21,10 @@ globalThis.preferred = {
   get search(){ return this.results; }
 };
 
+const API_KEY = "MTQ2MmQyMTUwZTRkNDg3ZmEwNzE3ODA4MjI1ZjE4YzU=";
+export const aqiEndpoint = "https://air-quality-api.open-meteo.com/v1/air-quality";
+export const weatherEndpoint = "https://api.open-meteo.com/v1/forecast";
+export const requestOptions = { method: "GET", redirect: "follow", mode: "cors" };
 export let aqiCurrent = "current=european_aqi,us_aqi,pm10,pm2_5,uv_index";
 export let aqiHourly = "hourly=pm10,pm2_5,uv_index,european_aqi,us_aqi";
 export let aqiForecast = "forecast_days=1";
@@ -40,7 +34,10 @@ export let hourly = 'hourly=temperature_2m,relative_humidity_2m,apparent_tempera
 export let forecast4 = 'forecast_days=4';
 export let forecast = "forecast_days=1";
 export let token;
-
+let units = { "temperature":  globalThis.preferred.temp, "wind" : globalThis.preferred.speed,
+  "precipitation" : globalThis.preferred.precip, "results" : globalThis.preferred.search };
+  
+localStorage.setItem("units", JSON.stringify(units));
 
 let modal = document.querySelector("#myModal");
 let search = document.querySelector("#myBtn");
@@ -50,27 +47,17 @@ let span = document.querySelector(".close");
 let span2 = document.querySelector(".close2");
 let find = document.querySelector(".search");
 let input = document.querySelector("input");
-// let units = document.querySelector(".change");
-
 let save = document.querySelector(".save");
-
-
-save.addEventListener("click", () => { savePrefs(); closeModal(); });
-
-
 
 if(document.readyState === "interactive"){ initialize(); } 
 
-// units.addEventListener("click", () => { changeUnits(); });
-
+save.addEventListener("click", () => { savePrefs(); closeModal(); });
 set.addEventListener("click", () => { settings.classList.add("show"); });
 search.addEventListener("click", () => { modal.classList.add("show"); });
 span.addEventListener("click", () => closeModal());
 span2.addEventListener("click", () => closeModal());
 window.addEventListener("click", (e) => { if (e.target === modal || e.target === settings ){ closeModal(); }   });
-
 find.addEventListener("click", () => { findLocation(); });
-
 window.addEventListener("keydown", (e) => {
   switch(e.code){
     case "Enter" :
@@ -107,7 +94,6 @@ async function savePrefs(){
   changeUnits(temp, precip, speed, results);
 }
 
-
 export function testLocation( location ){
   fetchCurrentWeather(location);
   fetchDailyWeather(location);
@@ -125,18 +111,15 @@ async function switchLocations(city){
 
 
 async function changeUnits(temp, precip, speed, results){
+  let units = {};
   let location = JSON.parse(localStorage.getItem("selectedLocation"));
 
   globalThis.preferred.temperature = temp;
   globalThis.preferred.precip = precip;
   globalThis.preferred.speed = speed;
   globalThis.preferred.results = results;
-
-  let units = { "temperature" : `${temp}`,  "precipitation" : `${precip}`, 
-                "wind" : `${speed}`, "results" : `${results}` };
-  
-                localStorage.setItem("units", JSON.stringify(units));
-
+  units = { "temperature" : `${temp}`, "precipitation" : `${precip}`, "wind" : `${speed}`, "results" : `${results}` };
+  localStorage.setItem("units", JSON.stringify(units));
   fetchCurrentWeather(location);
   fetchDailyWeather(location);
   fetchForecastWeather(location);
@@ -152,41 +135,39 @@ function initialize() {
   return ( !lsKeys.includes("info") ) ? firstTimeVisitor() : repeatVisitor();
 }
 
-
-async function firstTimeVisitor(){ fetchInitialGeoLocation(); console.log("First time visitor"); }
+async function firstTimeVisitor(){ fetchInitialGeoLocation(); }
 
 async function repeatVisitor(){
-    console.log("Repeat visitor");
-    let currentWeather = JSON.parse(localStorage.getItem("currentWeather"));
-    let dailyWeather = JSON.parse(localStorage.getItem("dailyWeather"));
-    let forecastWeather = JSON.parse(localStorage.getItem("forecastWeather"));
-    let hourlyWeather = JSON.parse(localStorage.getItem("hourlyWeather"));
-    let airNow = JSON.parse(localStorage.getItem("aqi-now"));
-    let airHour = JSON.parse(localStorage.getItem("aqi-hourly"));
+  let currentWeather = JSON.parse(localStorage.getItem("currentWeather"));
+  let dailyWeather = JSON.parse(localStorage.getItem("dailyWeather"));
+  let forecastWeather = JSON.parse(localStorage.getItem("forecastWeather"));
+  let hourlyWeather = JSON.parse(localStorage.getItem("hourlyWeather"));
+  let airNow = JSON.parse(localStorage.getItem("aqi-now"));
+  let airHour = JSON.parse(localStorage.getItem("aqi-hourly"));
+  let units = JSON.parse(localStorage.getItem("units"));
 
-    let units = JSON.parse(localStorage.getItem("units"));
-
-    globalThis.preferred.temperature = units.temperature;
-    globalThis.preferred.precip = units.precipitation;
-    globalThis.preferred.speed = units.wind;
-
-    pDOM.populateCurrent(currentWeather);
-    pDOM.populateDaily(dailyWeather);
-    pDOM.populateHourly(hourlyWeather);
-    pDOM.populateForecast(forecastWeather);
-    pDOM.populateAQI(airNow, airHour);
+  globalThis.preferred.temperature = units.temperature;
+  globalThis.preferred.precip = units.precipitation;
+  globalThis.preferred.speed = units.wind;
+  pDOM.populateCurrent(currentWeather);
+  pDOM.populateDaily(dailyWeather);
+  pDOM.populateHourly(hourlyWeather);
+  pDOM.populateForecast(forecastWeather);
+  pDOM.populateAQI(airNow, airHour);
 }
 
 
 function setRadios(){
-
   let units = JSON.parse(localStorage.getItem("units"));
   let temp =  units.temperature;
   let precip = units.precipitation;
   let speed = units.wind;
-
-  (temp === "celsius") ? (document.querySelector("#celsius").checked = true) : ( document.querySelector("#fahrenheit").checked = true) ;
-  (precip === "mm") ? (document.querySelector("#millimeter").checked = true ) : ( document.querySelector("#inch").checked = true) ; 
+  let results = units.results;
+  let t = (temp === "celsius") ? "#celsius" : "#fahrenheit";
+  let p = (precip === "mm") ? "#millimeter" : "#inch"; 
+  
+  document.querySelector(`${t}`).checked = true;
+  document.querySelector(`${p}`).checked = true;
 
   switch (speed) {
     case "kmh": document.querySelector("#kmh").checked = true; break;
@@ -195,7 +176,8 @@ function setRadios(){
     case "kn" : document.querySelector("#knots").checked = true; break;
     default: break;
   }
-}
 
+  document.querySelector('#results').value = results;
+}
 
 export default globalThis.preferred ;
