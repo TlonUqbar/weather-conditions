@@ -17,8 +17,6 @@ export function fetchDaily(userSelection){
   let dailyWeather = {};
 
 
-
-
   fetch(`${vars.weatherEndpoint}?${latitude}&${longitude}&${current}&${vars.daily}&${units}&${timezone}&${vars.forecast}`, vars.requestOptions)
   .then(response => response.json())
   .then( (json) =>  today = json )

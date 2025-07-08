@@ -16,7 +16,7 @@ export async function fetchInitial(){
   return await fetch(`${baseURL}?${apiKey}`, vars.requestOptions)
     .then( (response) => response.json() )
     .then( (json) => results = json )
-    .then( () => console.log("raw", results) )
+    // .then( () => console.log("raw", results) )
     .then( () => { startingLocation = extractIPGeoValues(results); testSelection = startingLocation; })
     .then( () => { 
       let initial = {};

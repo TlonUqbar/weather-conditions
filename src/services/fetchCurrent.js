@@ -20,12 +20,12 @@ export function fetchCurrent(userSelection){
   let wind = `wind_speed_unit=${setUnits.wind}`;
   let units = `${temperature}&${precipitation}&${wind}`;
 
-  console.log("current units", setUnits);
+  // console.log("current units", setUnits);
 
   fetch(`${vars.weatherEndpoint}?${latitude}&${longitude}&${vars.current}&${units}&${timezone}&${vars.forecast}`, vars.requestOptions)
     .then(response => response.json())
     .then( (json) => now = json  )
-    .then( () => console.log("current results:", now ) )
+    // .then( () => console.log("current results:", now ) )
     .then( () => currentWeather = extractWeatherData(now, "current") )
     .then( () => { 
       currentWeather.name = userSelection.city || userSelection.name; 

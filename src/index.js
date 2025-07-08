@@ -64,12 +64,14 @@ function findLocation(){
   }
 }
 
+
 export function closeModal(){
   modal.classList.remove("show");
   settings.classList.remove("show");
   document.querySelector(".info").classList.remove("hide");
   document.querySelectorAll(".result").forEach( (l) => { l.remove(); });
 }
+
 
 async function savePrefs(){
   let temp = document.querySelector("input[type='radio'][name=temp]:checked").value;
@@ -81,6 +83,7 @@ async function savePrefs(){
   changeUnits(temp, precip, speed, results);
 }
 
+
 export function testLocation( location ){
   fetchCurrentWeather(location);
   fetchDailyWeather(location);
@@ -89,14 +92,13 @@ export function testLocation( location ){
   fetchAirQualityIndex(location);
 }
 
+
 async function switchLocations(city){
   let location = await fetchGeoCodedLocation(city);
   
   populatedGeoCoding(location);
   document.querySelector(".info").classList.add("hide");
 }
-
-
 
 
 function initialize() {
@@ -107,7 +109,9 @@ function initialize() {
   return ( !lsKeys.includes("info") ) ? firstTimeVisitor() : repeatVisitor();
 }
 
+
 async function firstTimeVisitor(){ fetchInitialGeoLocation(); }
+
 
 async function repeatVisitor(){
   let currentWeather = JSON.parse(localStorage.getItem("currentWeather"));
@@ -116,11 +120,7 @@ async function repeatVisitor(){
   let hourlyWeather = JSON.parse(localStorage.getItem("hourlyWeather"));
   let airNow = JSON.parse(localStorage.getItem("aqi-now"));
   let airHour = JSON.parse(localStorage.getItem("aqi-hourly"));
-  let units = pref.getUnits();
   let location = pref.getLocation();
-
-  console.log("units", units);
-
   let timestamp = JSON.parse(localStorage.getItem('currentWeather')).time;
   let nextUpdate = DateTime.fromISO(timestamp).plus({minutes: 15}).toISO();
   let now = DateTime.local().toISO();
@@ -149,7 +149,6 @@ function setRadios(){
   let precip = units.precipitation;
   let speed = units.wind;
   let results = units.results;
-
 
   switch (temp) {
     case 'celsius': document.querySelector('#celsius').checked = true; break;

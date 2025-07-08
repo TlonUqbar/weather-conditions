@@ -6,7 +6,6 @@ export function geoCoding(userLocation){
   let encodedLocation = userLocation.replace(/\W/g, '+');
   let baseURL = "https://geocoding-api.open-meteo.com/v1/search";
   let name = `name=${encodedLocation}`;
-  // let count = "count=10";
   let setUnits  = getUnits();
   let count = `count=${setUnits.results}`;
   let language = "language=en";
@@ -20,7 +19,7 @@ export function geoCoding(userLocation){
     .then( (json) => { results = json; } )
     .then( () => { 
       listed = extractGeoLocationValues(results); 
-      console.table(listed); 
+      // console.table(listed); 
       return listed; } )
     .catch( (error) => console.error(error));
 }
