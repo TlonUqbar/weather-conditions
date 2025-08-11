@@ -328,8 +328,7 @@ sup{ vertical-align:super; }
   position: relative;
   background-color: #e1e9f6;
   border-radius: 10px;
-  /* background: linear-gradient(90deg,rgba(8, 197, 255, 1) 0%, rgba(21, 235, 64, 1) 24%, rgba(122, 217, 20, 1) 50%, rgba(209, 164, 29, 1) 76%, rgba(235, 21, 21, 1) 100%); */
-  background: linear-gradient(90deg, rgba(0, 221, 255, 1) 0%, rgba(9, 205, 235, 1) 30%, rgba(12, 242, 58, 1) 40%, rgba(129, 232, 19, 1) 54%, rgba(209, 164, 29, 1) 70%, rgba(237, 17, 17, 1) 100%);
+  background: linear-gradient(90deg, rgba(0, 221, 255, 1) 0%, rgba(9, 205, 235, 1) 30%, rgba(12, 242, 58, 1) 40%, rgba(129, 232, 19, 1) 54%, rgba(209, 164, 29, 1) 70%, rgba(250, 47, 47, 1) 85%, rgba(245, 0, 0, 1) 100%);
 }
 
 /* .range-selected {
