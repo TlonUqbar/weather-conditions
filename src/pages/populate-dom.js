@@ -5,6 +5,7 @@ import { windDirection as degreesToCardinal} from "../utils/windDirection.js";
 import { countryCodes } from "../utils/country_codes.js"; 
 import { getUnits } from "../utils/units.js";
 import { closeModal, testLocation } from "../index.js";
+import { updateMaxSide, updateMinSide } from "../utils/sliders.js";
 
 
 let thisHour = DateTime.now().hour;
@@ -74,8 +75,12 @@ export function populateDaily(dailyWeather){
   let daily_dom = document.querySelector(".daily");
   let sunup = DateTime.fromISO(dailyWeather.sunrise[0],{setZone: "true"}).toLocaleString(DateTime.TIME_SIMPLE);
   let sundown = DateTime.fromISO(dailyWeather.sunset[0],{setZone: "true"}).toLocaleString(DateTime.TIME_SIMPLE);
-  let high = addElement("div", `dl-high ${tempClass()}`, dailyWeather.temperature_2m_max[0] );
-  let low = addElement("div", `dl-low ${tempClass()}`, dailyWeather.temperature_2m_min[0],);
+  // let high = addElement("div", `dl-high ${tempClass()}`, dailyWeather.temperature_2m_max[0] );
+  // let low = addElement("div", `dl-low ${tempClass()}`, dailyWeather.temperature_2m_min[0],);
+  let highTemp = dailyWeather.temperature_2m_max[0];
+  let lowTemp = dailyWeather.temperature_2m_min[0];
+  let high = addElement('div', `dl-high`, highTemp );
+  let low = addElement('div', `dl-low`, lowTemp );
   let sunrise = addElement("div", "dl-rise sunrise", sunup);
   let sunset  = addElement("div", "dl-set sunset", sundown);
   let precip = addElement("div", "dl-pop percent", dailyWeather.precipitation_probability_max[0]);
@@ -87,8 +92,8 @@ export function populateDaily(dailyWeather){
   let group2 = addElement("div", "dg2");
   let group3 = addElement("div", "dg3");
   let group4 = addElement("div", "dg4"); 
-  let iconH = addElement("div", "md-icons md-high");
-  let iconL = addElement("div", "md-icons md-low");
+  // let iconH = addElement("div", "md-icons md-high");
+  // let iconL = addElement("div", "md-icons md-low");
   let iconU = addElement("div", "md-icons md-sunrise");
   let iconD = addElement("div", "md-icons md-sunset");
   let iconI = addElement("div", "md-icons md-uv-index");
@@ -96,14 +101,20 @@ export function populateDaily(dailyWeather){
   let iconS = addElement("div", "md-icons md-speed");
   // let iconW = addElement("div", "md-icons md-direction");
   let iconW = addElement('div', 'md-icons md-dir');
+  
+  let sliders = createSliders( group1, lowTemp, highTemp);
 
-  iconW.style.transform =
-    'rotate(' + dailyWeather.wind_direction_10m_dominant[0] + 'deg)';
+  iconW.style.transform = `rotate(${dailyWeather.wind_direction_10m_dominant[0]}deg)`;
 
   daily_dom.innerHTML = "";
   daily_dom.classList.add("simple-today");
 
-  orderAppend(group1, ...[iconH, high, iconL, low]);
+
+  orderAppend(group1, ...[low, sliders, high]);
+  // updateMaxSide(sliders, dailyWeather.temperature_2m_max[0]);
+  // updateMinSide(sliders, dailyWeather.temperature_2m_min[0]);
+  
+  // orderAppend(group1, ...[iconH, high, iconL, low]);
   orderAppend(group2, ...[iconU, sunrise, iconD, sunset]);
   orderAppend(group3, ...[iconI, uv, iconP, precip]);
   orderAppend(group4, ...[iconS, speed, iconW, direction, cardinal]);
@@ -148,7 +159,7 @@ export function populateForecast(forecastWeather){
         let time = addElement("div", "grp zeroth", weekday(day));
         let icon = addElement("div", `first sm-icon ${wmoToIcon(weatherCodeToForecast(forecastWeather.weather_code[day], 1) )}`);
         let wmo = addElement("div", "second sm-wmo", weatherCodeToForecast(forecastWeather.weather_code[day], 1)); 
-        let high = addElement("div", "grp third");
+        let ranges = addElement("div", "grp-slide third");
         let low = addElement("div", "grp fourth");
         // let sunrise = addElement("div", "grp fifth");
         // let sunset = addElement("div", "grp sixth");
@@ -156,24 +167,31 @@ export function populateForecast(forecastWeather){
         let precip = addElement("div", "grp eighth");
         // let speed = addElement("div", "grp ninth");
         // let direction = addElement("div", "grp tenth");
+        
 
         switch (key) {
           case "temperature_2m_max": {
             let icon = addElement("div", "icons sm-high");
-            let value = addElement("div", `fc-high ${tempClass()}`, forecastWeather.temperature_2m_max[day]);
+            let highTemp = forecastWeather.temperature_2m_max[day];
+            let lowTemp = forecastWeather.temperature_2m_min[day];
+            let high = addElement("div", `sl-high`, highTemp);
+            let low = addElement("div",`sl-low`, lowTemp);
 
-            orderAppend(high, ...[icon, value]);
-            days.append(high);
+            let sliders = createSliders(ranges, lowTemp, highTemp);
+            orderAppend(ranges, ...[low, sliders, high]);
+
+            // orderAppend(high, ...[icon, value]);
+            days.append(ranges);
               break;
             }
-          case "temperature_2m_min": {
-            let icon = addElement("div", "icons sm-low");
-            let value = addElement("div",`fc-low ${tempClass()}`, forecastWeather.temperature_2m_min[day]);
+          // case "temperature_2m_min": {
+          //   let icon = addElement("div", "icons sm-low");
+          //   let value = addElement("div",`fc-low ${tempClass()}`, forecastWeather.temperature_2m_min[day]);
 
-            orderAppend(low, ...[icon, value]);
-            days.append(low);
-              break;
-            }
+          //   orderAppend(low, ...[icon, value]);
+          //   days.append(low);
+          //     break;
+          //   }
           // case "sunrise" : {
           //   let icon = addElement("div", "icons sm-sunrise");
           //   let value = addElement("div", "fc-sunrise", sunup(day));
@@ -215,7 +233,8 @@ export function populateForecast(forecastWeather){
           //     break;
           //   }
           case "weather_code" : 
-            orderAppend(days, ...[wmo, icon]);
+            // orderAppend(days, ...[wmo, icon]);
+            orderAppend(days, ...[icon]);
               break;
   
           case "uv_index_max" : {
@@ -326,7 +345,34 @@ function orderAppend(parentElement, ...list){
   });
 }
 
-// function rotateArrow( angle ){
-// 	let arrow = document.querySelector(".md-compass");
-// 	arrow.style.transform = 'rotate(' + angle + 'deg)';
-// }
+function createSliders(target, low, high){
+  let range = addElement('div', 'range');
+  let slider = addElement('div', 'range-slider');
+  let rngLo = addElement('div', 'range-low');
+  let rngMd = addElement('div', 'range-middle');
+  let rngHi = addElement('div', 'range-high');
+  let input = addElement('div', 'range-input');
+  let min = addElement('input', 'min');
+  let max = addElement('input', 'max');
+
+  min.setAttribute('min', 0);
+  min.setAttribute('max', 100);
+  min.setAttribute('value', 30);
+  min.setAttribute('step', 1);
+  min.setAttribute('type', 'range');
+
+  max.setAttribute('min', 0);
+  max.setAttribute('max', 100);
+  max.setAttribute('value', 70);
+  max.setAttribute('step', 1);
+  max.setAttribute('type', 'range');
+
+  orderAppend(slider, ...[rngLo, rngMd, rngHi]);
+  orderAppend(input, ...[min, max]);
+  orderAppend(range, ...[slider, input]);
+
+  updateMaxSide(range, high);
+  updateMinSide(range, low);
+
+  return range;
+}

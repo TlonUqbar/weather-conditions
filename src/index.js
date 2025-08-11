@@ -189,7 +189,8 @@ async function changeUnits(temp, precip, speed, results){
   fetchAirQualityIndex(location);
 }
 
-function clearStorage(){
-  Object.keys(localStorage).forEach((key) => localStorage.removeItem(key));
-  // or use localStorage.clear();
-}
+
+// function clearStorage(){
+//   Object.keys(localStorage).forEach((key) => localStorage.removeItem(key));
+//   // or use localStorage.clear();
+// }

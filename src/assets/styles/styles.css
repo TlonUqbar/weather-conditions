@@ -8,6 +8,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url("./reset.css");
 @import url("./colors.css");
+@import url("./sliders.css");
 
 
 
@@ -626,7 +627,7 @@ legend{
 }
 
 
-.dg1{ grid-area: temp; }
+.dg1{ grid-area: temp; grid-template-columns: .75fr 1fr .75fr;}
 .dg2{ grid-area: sun; }
 .dg3{ grid-area: conditions; }
 .dg4{ 
