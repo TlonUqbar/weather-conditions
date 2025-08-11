@@ -1,21 +1,17 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" >
     <title>Weather Conditions</title>
-    <link rel="icon" href="https://fav.farm/partly-sunny" />
+    <link rel="icon" href="https://fav.farm/partly-sunny" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    
     <header class="header">
-      <!-- <h1>Weather Conditions</h1> -->
       <a href="#" id="myBtn">Change Location</a>
       <a href="#" id="myBtn2">Change Units</a>
-      <!-- <a href="#" class="change">Change Units</a> -->
-      <!-- <button class="change">Change Units</button> -->
     </header>
-  
+
     <div id="myModal" class="modal">
       <div class="modal-content">
         <div class="modal-header">
@@ -24,7 +20,7 @@
         </div>
         <div class="modal-body">
           <div class="group">
-            <input type="text" class="input" placeholder="City Name or Postal code" />
+            <input type="text" class="input" placeholder="City Name or Postal code" >
             <a class="search"></a>
           </div>
         </div>
@@ -32,10 +28,12 @@
           <div class="results">
             <div class="info">Search by city name or postal code</div>
           </div>
+          <div class="searches">
+            <div class="searches-title">Previously searched locations</div>
+          </div>
         </div>
       </div>
     </div>
-
 
     <div id="preferences" class="modal">
       <div class="modal-content">
@@ -46,16 +44,16 @@
         <div class="modal-body">
           <div class="group2">
             <fieldset class="settings-temp">
-              
+
               <legend>Temperature</legend>
-              
+
               <div class="switch-field">
-                <input type="radio" id="celsius" name="temp" value="celsius"/>
+                <input type="radio" id="celsius" name="temp" value="celsius">
                 <label for="celsius">&deg;C</label>
-                <input type="radio" id="fahrenheit" name="temp" value="fahrenheit" />
+                <input type="radio" id="fahrenheit" name="temp" value="fahrenheit">
                 <label for="fahrenheit">&deg;F</label>
               </div>
-              
+
             </fieldset>
 
             <fieldset class="settings-precipitation">
@@ -88,8 +86,6 @@
               <output id="results"></output>
             </fieldset>
 
-
-
           </div>
         </div>
         <div class="modal-footer">
@@ -97,8 +93,6 @@
         </div>
       </div>
     </div>
-
-    
 
     <section class="grid-container">
       <div class="grid-item simple">
@@ -120,7 +114,6 @@
 
     <footer class="footer">
       <!-- <h2>Footer!!</h2> -->
-       
        <p class="spacer">&nbsp;</p>
     </footer>
   </body>

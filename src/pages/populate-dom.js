@@ -4,6 +4,7 @@ import { wmoHelper as weatherCodeToForecast } from "../utils/weatherCodes.js";
 import { windDirection as degreesToCardinal} from "../utils/windDirection.js";
 import { countryCodes } from "../utils/country_codes.js"; 
 import { getUnits } from "../utils/units.js";
+import { closeModal, testLocation } from "../index.js";
 
 
 let thisHour = DateTime.now().hour;
@@ -34,7 +35,7 @@ export function populateCurrent(currentWeather) {
   let cardinal = addElement( "span", "c-direction cardinal", degreesToCardinal(currentWeather.wind_direction_10m));
   let smIconH = addElement("div", "sm-humid");
   let smIconR = addElement("div", "sm-rain");
-  let mdIconW = addElement("div", "md-wind");  
+  let mdIconW = addElement('div', 'md-compass');  
   let location = addElement( "div", "location");
   let city = addElement("div", "city", currentWeather.name, );
   let state = addElement("div", "state", `${st}, ${cntry}`);
@@ -50,6 +51,7 @@ export function populateCurrent(currentWeather) {
   let time2 = addElement( "div", "regional-time", `(${locationTime.toLocaleString(DateTime.TIME_SIMPLE)} ${tz})`);
   let order = [];
 
+  mdIconW.style.transform = 'rotate(' + currentWeather.wind_direction_10m + 'deg)';
   order = ( local.zoneName != locationTime.zoneName) ? [city, state, time2] : [city, state];
 
   current_dom.innerHTML = ""; 
@@ -92,9 +94,13 @@ export function populateDaily(dailyWeather){
   let iconI = addElement("div", "md-icons md-uv-index");
   let iconP = addElement("div", "md-icons md-pop");
   let iconS = addElement("div", "md-icons md-speed");
-  let iconW = addElement("div", "md-icons md-direction");
+  // let iconW = addElement("div", "md-icons md-direction");
+  let iconW = addElement('div', 'md-icons md-dir');
 
-  daily_dom .innerHTML = "";
+  iconW.style.transform =
+    'rotate(' + dailyWeather.wind_direction_10m_dominant[0] + 'deg)';
+
+  daily_dom.innerHTML = "";
   daily_dom.classList.add("simple-today");
 
   orderAppend(group1, ...[iconH, high, iconL, low]);
@@ -236,7 +242,6 @@ export function populateForecast(forecastWeather){
 export function populateAQI(now, hour){
   let aqiNow_dom = document.querySelector(".aqi-now");
   let aqiHourly_dom = document.querySelector(".aqi-hour");
-
   let usn = addElement("div", '', `US: ${now.us_aqi}`);
   let eun = addElement("div", "", `EU: ${now.european_aqi}`);
   let pm10n = addElement("div", "", `PM10: ${now.pm10}`);
@@ -255,15 +260,45 @@ export function populateAQI(now, hour){
   orderAppend(aqiHourly_dom, ...[ush, euh, pm10h,pm25h, uvh]);
 }
 
+
+export function searchedLocations(){
+  let searches = document.querySelector(".searches");
+  let searchedLocations = JSON.parse(localStorage.getItem('searchedLocations'));
+  
+  searches.querySelectorAll('.places').forEach((l) => l.remove());
+
+  if (searchedLocations === undefined || searchedLocations === null) return; 
+
+  searchedLocations.forEach((location, i) => {
+    let place = document.createElement('div');
+    let state = ( location.admin1 === undefined ) ? '' : `, ${location.admin1}`;
+    let country = ( location.country === undefined ) ? countryCodes(location.country_code) : location.country;
+
+    place.classList.add('places');
+    place.textContent = `${location.name}${state}, ${country}`;
+    place.setAttribute('data-index', i);
+    place.addEventListener("click", () => {
+      testLocation(location);
+      localStorage.setItem('selectedLocation', JSON.stringify(location));
+      closeModal();
+    });
+    searches.append(place);
+  });
+  
+}
+
+
 function tempClass(){
   let setUnits = getUnits();
   return (setUnits.temperature === "fahrenheit") ? "fahrenheit" : "celsius";
 }
 
+
 function precipClass(){
   let setUnits = getUnits();
   return (setUnits.precipitation === "inch") ? "inch" : "mm";
 }
+
 
 function windClass(){
   let setUnits = getUnits();
@@ -290,3 +325,8 @@ function orderAppend(parentElement, ...list){
     parentElement.append(element);
   });
 }
+
+// function rotateArrow( angle ){
+// 	let arrow = document.querySelector(".md-compass");
+// 	arrow.style.transform = 'rotate(' + angle + 'deg)';
+// }

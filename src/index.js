@@ -40,7 +40,7 @@ if(document.readyState === "interactive"){ initialize(); }
 
 save.addEventListener("click", () => { savePrefs(); closeModal(); });
 set.addEventListener("click", () => { settings.classList.add("show"); });
-search.addEventListener("click", () => { modal.classList.add("show"); });
+search.addEventListener("click", () => { modal.classList.add("show"); pDOM.searchedLocations(); });
 span.addEventListener("click", () => closeModal());
 span2.addEventListener("click", () => closeModal());
 window.addEventListener("click", (e) => { if (e.target === modal || e.target === settings ){ closeModal(); }   });
@@ -69,6 +69,7 @@ export function closeModal(){
   modal.classList.remove("show");
   settings.classList.remove("show");
   document.querySelector(".info").classList.remove("hide");
+  document.querySelector(".searches").classList.remove('hide');
   document.querySelectorAll(".result").forEach( (l) => { l.remove(); });
 }
 
@@ -90,6 +91,7 @@ export function testLocation( location ){
   fetchForecastWeather(location);
   fetchHourlyWeather(location);
   fetchAirQualityIndex(location);
+  pDOM.searchedLocations();
 }
 
 
@@ -120,6 +122,7 @@ async function repeatVisitor(){
   let hourlyWeather = JSON.parse(localStorage.getItem("hourlyWeather"));
   let airNow = JSON.parse(localStorage.getItem("aqi-now"));
   let airHour = JSON.parse(localStorage.getItem("aqi-hourly"));
+  // let searchedLocations = JSON.parse(localStorage.getItem("searchedLocations"));  
   let location = pref.getLocation();
   let timestamp = JSON.parse(localStorage.getItem('currentWeather')).time;
   let nextUpdate = DateTime.fromISO(timestamp).plus({minutes: 15}).toISO();
@@ -140,6 +143,7 @@ async function repeatVisitor(){
   pDOM.populateHourly(hourlyWeather);
   pDOM.populateForecast(forecastWeather);
   pDOM.populateAQI(airNow, airHour);
+  // pDOM.searchedLocations();
 }
 
 
@@ -183,4 +187,9 @@ async function changeUnits(temp, precip, speed, results){
   fetchForecastWeather(location);
   fetchHourlyWeather(location);
   fetchAirQualityIndex(location);
+}
+
+function clearStorage(){
+  Object.keys(localStorage).forEach((key) => localStorage.removeItem(key));
+  // or use localStorage.clear();
 }

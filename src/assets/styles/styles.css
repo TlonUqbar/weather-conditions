@@ -260,11 +260,14 @@ span{
 .modal-footer {
   display: flex;
   justify-content: center;
-  padding: 20px 40px 40px;
+  align-items: center;
+  padding: 30px 0px 40px;
   background-color: var(--night-text-3);
   border-radius: 0 0 10px 10px;
   width: 804px;
   font-size: 1.3rem;
+  flex-direction: column;
+  gap: 40px;
 }
 
 #myModal{ border-radius: 10px; }
@@ -281,7 +284,9 @@ span{
 }
 
 .info{
-  font-family: Helvetica;
+  font-family: Poppins, Arial, Helvetica;
+  font-size: 1.2rem;
+  text-align: center;
   padding: 10px 20px
 }
 
@@ -429,32 +434,41 @@ legend{
   background-color: var(--night-text-2);
 }
 
-.results{
+.results, .searches{
   border: 1px solid var(--night-accent-4);
   border-radius: 7px;
   width: 640px;
   background-color: var(--night-text-3);
 }
 
-.result, .not-found{
+.searches-title{
+  font-size: 1.2rem;
+  padding: 16px 20px;
+  text-align: center;
+  font-family: Poppins, Arial;
+  border-bottom: 1px solid rgba(255,0,0, 0.2);
+}
+
+.result, .not-found, .places{
   border-bottom: 1px solid var(--night-accent-4);
   padding: 15px 0 13px 30px;
   font-weight: 400;
   font-size: 1.2rem;
   color: var(--night-accent-2);
-  font-family: Arial;
+  font-family: Poppins, Arial;
 }
 
-.result:last-child{ 
+.result:last-child, .places:last-child{ 
   border-bottom: none ;
 }
 
-.result:hover{
+.result:hover, .places:hover{
   background-color: var(--night-text-4);
   color: var(--night-primary-1);
+  border-radius: 6px;
 }
 
-.result::before{
+.result::before, .places::before{
   content: url("../icons/location-pin.svg");
   margin-left: -10px;
   margin-right: 20px;
@@ -562,6 +576,18 @@ legend{
   min-height: 6vh;
   align-self: center;
   justify-self: end;
+}
+
+.md-compass, .md-dir {
+  grid-area: icons;
+  background-image: url("../icons/direction-arrow.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  min-width: 3vw;
+  min-height: 6vh;
+  align-self: center;
+  justify-self: end;
+  filter: drop-shadow(1px 1px 4px rgb(255, 255, 255, 1));
 }
 
 .c-speed{
@@ -740,7 +766,7 @@ div[class^="simple-day"]{
 
 
 .md-speed{ grid-area: speedIcon;}
-.md-direction{ grid-area: directionIcon; }
+.md-direction, .md-dir{ grid-area: directionIcon; }
 .dl-direction{ 
   grid-area: cardinal; 
   width: 180px; 

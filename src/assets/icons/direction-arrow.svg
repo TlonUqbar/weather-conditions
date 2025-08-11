@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <g id="Wind" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="matrix(0, -9.015044, -7.952186, 0, 91.962105, 92.616989)" stroke-linecap="round" style="transform-origin: 8.75px 2.5px;">
+    <path d="M0.5,2.5 L13,2.5" id="Line" stroke="#000000"/>
+    <polygon id="Triangle-1" stroke="#000000" stroke-linejoin="round" fill="#000000" points="13 5 13 1.13686838e-13 17 2.5"/>
+  </g>
+</svg>

@@ -16,7 +16,6 @@ export async function fetchInitial(){
   return await fetch(`${baseURL}?${apiKey}`, vars.requestOptions)
     .then( (response) => response.json() )
     .then( (json) => results = json )
-    // .then( () => console.log("raw", results) )
     .then( () => { startingLocation = extractIPGeoValues(results); testSelection = startingLocation; })
     .then( () => { 
       let initial = {};
@@ -24,7 +23,6 @@ export async function fetchInitial(){
       
       initial = startingLocation; 
       info.location = initial;
-    
       localStorage.setItem("initialLocation", JSON.stringify(initial)); 
       localStorage.setItem("info", JSON.stringify(info));
       localStorage.setItem("selectedLocation", JSON.stringify(initial));

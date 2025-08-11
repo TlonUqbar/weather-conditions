@@ -19,7 +19,6 @@ export function geoCoding(userLocation){
     .then( (json) => { results = json; } )
     .then( () => { 
       listed = extractGeoLocationValues(results); 
-      // console.table(listed); 
       return listed; } )
     .catch( (error) => console.error(error));
 }

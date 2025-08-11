@@ -6,4 +6,3 @@ export function windDirection( angle ){
 	section = section % 16;
 	return directions[section];
 }
-
