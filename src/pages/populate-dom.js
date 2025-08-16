@@ -72,51 +72,99 @@ export function populateCurrent(currentWeather) {
 
 
 export function populateDaily(dailyWeather){
-  let daily_dom = document.querySelector(".daily");
-  let sunup = DateTime.fromISO(dailyWeather.sunrise[0],{setZone: "true"}).toLocaleString(DateTime.TIME_SIMPLE);
-  let sundown = DateTime.fromISO(dailyWeather.sunset[0],{setZone: "true"}).toLocaleString(DateTime.TIME_SIMPLE);
+  let daily_dom = document.querySelector('.daily');
+  let sunup = DateTime.fromISO(dailyWeather.sunrise[0], {
+    setZone: 'true',
+  }).toLocaleString(DateTime.TIME_SIMPLE);
+  let sundown = DateTime.fromISO(dailyWeather.sunset[0], {
+    setZone: 'true',
+  }).toLocaleString(DateTime.TIME_SIMPLE);
   // let high = addElement("div", `dl-high ${tempClass()}`, dailyWeather.temperature_2m_max[0] );
   // let low = addElement("div", `dl-low ${tempClass()}`, dailyWeather.temperature_2m_min[0],);
   let highTemp = dailyWeather.temperature_2m_max[0];
   let lowTemp = dailyWeather.temperature_2m_min[0];
-  let high = addElement('div', `dl-high`, highTemp );
-  let low = addElement('div', `dl-low`, lowTemp );
-  let sunrise = addElement("div", "dl-rise sunrise", sunup);
-  let sunset  = addElement("div", "dl-set sunset", sundown);
-  let precip = addElement("div", "dl-pop percent", dailyWeather.precipitation_probability_max[0]);
-  let speed = addElement("div", `dl-speed ${windClass()}`, dailyWeather.wind_speed_10m_max[0]);
-  let direction = addElement("div", "dl-direction direction", dailyWeather.wind_direction_10m_dominant[0]);
-  let cardinal = addElement("div", "dl-direction cardinal", degreesToCardinal(dailyWeather.wind_direction_10m_dominant[0]));
-  let uv = addElement("div", "dl-uv", dailyWeather.uv_index_max);
-  let group1 = addElement("div", "dg1");
-  let group2 = addElement("div", "dg2");
-  let group3 = addElement("div", "dg3");
-  let group4 = addElement("div", "dg4"); 
+  let high = addElement('div', `dl-high`, highTemp);
+  let low = addElement('div', `dl-low`, lowTemp);
+  let sunrise = addElement('div', 'dl-rise sunrise', sunup);
+  let sunset = addElement('div', 'dl-set sunset', sundown);
+  let precip = addElement(
+    'div',
+    'dl-pop percent',
+    dailyWeather.precipitation_probability_max[0]
+  );
+  let speed = addElement(
+    'div',
+    `dl-speed ${windClass()}`,
+    dailyWeather.wind_speed_10m_max[0]
+  );
+  let direction = addElement(
+    'div',
+    'dl-direction direction',
+    dailyWeather.wind_direction_10m_dominant[0]
+  );
+  let cardinal = addElement(
+    'div',
+    'dl-direction cardinal',
+    degreesToCardinal(dailyWeather.wind_direction_10m_dominant[0])
+  );
+  let uv = addElement('div', 'dl-uv', dailyWeather.uv_index_max);
+  let group1 = addElement('div', 'dg1');
+  let group2 = addElement('div', 'dg2');
+  let group3 = addElement('div', 'dg3');
+  let group4 = addElement('div', 'dg4');
   // let iconH = addElement("div", "md-icons md-high");
   // let iconL = addElement("div", "md-icons md-low");
-  let iconU = addElement("div", "md-icons md-sunrise");
-  let iconD = addElement("div", "md-icons md-sunset");
-  let iconI = addElement("div", "md-icons md-uv-index");
-  let iconP = addElement("div", "md-icons md-pop");
-  let iconS = addElement("div", "md-icons md-speed");
+  let iconU = addElement('div', 'md-icons md-sunrise');
+  let iconD = addElement('div', 'md-icons md-sunset');
+  let iconI = addElement('div', 'md-icons md-uv-index');
+  let iconP = addElement('div', 'md-icons md-pop');
+  let iconS = addElement('div', 'md-icons md-speed');
   // let iconW = addElement("div", "md-icons md-direction");
+
+  let attrsObj = {min: 0, max: 11, step: 1, value: dailyWeather.uv_index_max[0], type: "range", disabled: true};
   let iconW = addElement('div', 'md-icons md-dir');
   
-  let sliders = createSliders( group1, lowTemp, highTemp);
+  console.log("attrs", attrsObj);
+  // let meter = addElement('input', 'dl-meter', "", attrs);
+  let meter = addElement2('input', 'dl-meter', '', attrsObj);
+
+
+  let val = parseInt(dailyWeather.uv_index_max);
+  let colr = "#fff";
+
+  switch (val) {
+    case 0:
+    case 1:
+    case 2: colr = '#289500';
+      break;
+    case 3:
+    case 4:
+    case 5: colr = '#f7e400';
+      break;
+    case 6:
+    case 7: colr = '#f85900';
+      break;
+    case 8:
+    case 9:
+    case 10: colr = '#d80010';
+      break;
+    case 11: colr = '#6b49c8';
+      break;
+    default: break;
+  }
+
+  meter.style.setProperty('--slider-color', `${colr}`);
+
+  let sliders = createSliders(group1, lowTemp, highTemp);
 
   iconW.style.transform = `rotate(${dailyWeather.wind_direction_10m_dominant[0]}deg)`;
 
-  daily_dom.innerHTML = "";
-  daily_dom.classList.add("simple-today");
-
+  daily_dom.innerHTML = '';
+  daily_dom.classList.add('simple-today');
 
   orderAppend(group1, ...[low, sliders, high]);
-  // updateMaxSide(sliders, dailyWeather.temperature_2m_max[0]);
-  // updateMinSide(sliders, dailyWeather.temperature_2m_min[0]);
-  
-  // orderAppend(group1, ...[iconH, high, iconL, low]);
   orderAppend(group2, ...[iconU, sunrise, iconD, sunset]);
-  orderAppend(group3, ...[iconI, uv, iconP, precip]);
+  orderAppend(group3, ...[iconI, meter, uv, iconP, precip]);
   orderAppend(group4, ...[iconS, speed, iconW, direction, cardinal]);
   orderAppend(daily_dom, ...[group1, group2, group3, group4]);
 }
@@ -338,6 +386,16 @@ function addElement( element, classes, value){
   return temp;
 }
 
+function addElement2( element, classes, value, attrs2){
+  console.log("attrs2", attrs2);
+  let temp = document.createElement(element);
+  temp.classList = classes;
+  if (value !== ''){ temp.textContent = value; }
+  if (attrs2 !== "" ){ 
+    Object.keys(attrs2).forEach((key) => { temp.setAttribute(key, attrs2[key]); });
+  }
+  return temp;
+}
 
 function orderAppend(parentElement, ...list){
   list.forEach( (element) => {
@@ -352,20 +410,11 @@ function createSliders(target, low, high){
   let rngMd = addElement('div', 'range-middle');
   let rngHi = addElement('div', 'range-high');
   let input = addElement('div', 'range-input');
-  let min = addElement('input', 'min');
-  let max = addElement('input', 'max');
+  let minAttrs = {min: 0, max: 100, step: 1, value: "30", type: "range"};
+  let maxAttrs = {min: 0, max: 100, step: 1, value: "70", type: "range", disabled: true};
+  let min = addElement2('input', 'min', '', minAttrs);
+  let max = addElement2('input', 'max', '', maxAttrs);
 
-  min.setAttribute('min', 0);
-  min.setAttribute('max', 100);
-  min.setAttribute('value', 30);
-  min.setAttribute('step', 1);
-  min.setAttribute('type', 'range');
-
-  max.setAttribute('min', 0);
-  max.setAttribute('max', 100);
-  max.setAttribute('value', 70);
-  max.setAttribute('step', 1);
-  max.setAttribute('type', 'range');
 
   orderAppend(slider, ...[rngLo, rngMd, rngHi]);
   orderAppend(input, ...[min, max]);

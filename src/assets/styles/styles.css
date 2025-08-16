@@ -626,10 +626,17 @@ legend{
   grid-template-rows: auto;
 }
 
+.dg1{ 
+  grid-area: temp; 
+  grid-template-columns: .65fr 1fr .65fr; 
+}
 
-.dg1{ grid-area: temp; grid-template-columns: .75fr 1fr .75fr;}
 .dg2{ grid-area: sun; }
-.dg3{ grid-area: conditions; }
+
+.dg3{ 
+  grid-area: conditions; 
+  grid-template-columns: .65fr 1fr .65fr;
+}
 .dg4{ 
   grid-area: wind; 
   grid-template-areas: "speedIcon speed" "directionIcon cardinal";
@@ -802,6 +809,45 @@ div[class^="simple-day"]{
   align-content: center;
   justify-self: center;
 }
+
+input[type="range"].dl-meter{
+  height: 9px;
+  width: 80%;
+  align-content: center;
+  justify-self: center;
+  border-radius: 5px;
+  border: 0.5px solid;
+  border-width: thin;
+}
+
+input[type="range"].dl-meter:focus {
+  outline: none;
+}
+
+input[type="range"].dl-meter{
+  /* background: linear-gradient(90deg, #289500 16%, #f7e400 18%, #f7e400 43%, #f85900 45%, #f85900 61%, #d80010 63%, #d80010 90%, #6b49c8 99%, #6b49c8 100%); */
+}
+
+
+input[type="range"].dl-meter::-moz-range-thumb {
+  /* background-color: #1b53c0; */
+  /* background: transparent; */
+  /* filter: blur(1px); */
+  background-color: var(--slider-color);
+  opacity: 0.9;
+  height: 16px;
+  width: 10px;
+  /* border-radius: 5px; */
+  border-color: #dfe0d5;
+  border-width: thin;
+}
+
+input[type="range"].dl-meter::-moz-range-track{
+  background: linear-gradient(90deg, #289500 17%, #f7e400 18%, #f7e400 53%, #f85900 54%, #f85900 72%, #d80010 63%, #d80010 90%, #6b49c8 99%, #6b49c8 100%);
+  height: 7px
+}
+
+
 
 .sm-wmo{
   font-weight: 900;
