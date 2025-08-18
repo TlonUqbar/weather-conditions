@@ -10,6 +10,7 @@ export function updateMinSide(target, value) {
   let rg = target.querySelector('.range-middle');
   let rl = target.querySelector('.range-low');
   let inpt = target.querySelector('.range-input input.min');
+  
   if( temp === 'fahrenheit'){
     inpt.value = parseInt(value / 2);
     rg.style.left = ( (value / inpt.max) * 100 / 2 ) + '%';
@@ -28,16 +29,15 @@ export function updateMaxSide(target, value) {
   let rh = target.querySelector('.range-high');
   let inpt = target.querySelector('.range-input input.max');
 
-  console.log(units.temperature);
-   if (units.temperature === 'celsius') {
-     inpt.value = parseInt(value * 2 + 15);
-     rg.style.right = ( (100 - (value / inpt.max) * 100) * 2) + 10 + '%';
-     rh.style.left = ( (value / inpt.max) * 100 * 2 ) + 10 + '%';
-   } else {
-     inpt.value = parseInt(value);
-     rg.style.right = 100 - (value / inpt.max) * 100 + '%';
-     rh.style.left = (value / inpt.max) * 100 + '%';
-   }
+  if (units.temperature === 'celsius') {
+    inpt.value = parseInt(value * 2 + 15);
+    rg.style.right = ( (100 - (value / inpt.max) * 100) * 2) + 10 + '%';
+    rh.style.left = ( (value / inpt.max) * 100 * 2 ) + 10 + '%';
+  } else {
+    inpt.value = parseInt(value);
+    rg.style.right = 100 - (value / inpt.max) * 100 + '%';
+    rh.style.left = (value / inpt.max) * 100 + '%';
+  }
 
   inpt.disabled = true;
 }

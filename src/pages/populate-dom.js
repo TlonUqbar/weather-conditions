@@ -11,7 +11,17 @@ import { updateMaxSide, updateMinSide } from "../utils/sliders.js";
 let thisHour = DateTime.now().hour;
 
 
-function isDay() { return JSON.parse(localStorage.getItem("info")).is_day;}
+function isDay(val="") {
+  if( val === '' ){ 
+    return JSON.parse(localStorage.getItem("info")).is_day;
+  } else {
+    let hour = parseInt(val);
+    let rise = DateTime.fromISO(JSON.parse(localStorage.getItem("forecastWeather")).sunrise[0]).hour;
+    let set = DateTime.fromISO(JSON.parse(localStorage.getItem("forecastWeather")).sunset[0]).hour;
+    let daytime = ( hour > rise && hour <= set ) ? "1" : "0";
+    return daytime;
+  }
+}
 
 
 export function populateCurrent(currentWeather) {
@@ -81,33 +91,17 @@ export function populateDaily(dailyWeather){
   }).toLocaleString(DateTime.TIME_SIMPLE);
   // let high = addElement("div", `dl-high ${tempClass()}`, dailyWeather.temperature_2m_max[0] );
   // let low = addElement("div", `dl-low ${tempClass()}`, dailyWeather.temperature_2m_min[0],);
-  let highTemp = dailyWeather.temperature_2m_max[0];
-  let lowTemp = dailyWeather.temperature_2m_min[0];
+  let highTemp = parseInt(dailyWeather.temperature_2m_max[0]);
+  let lowTemp = parseInt(dailyWeather.temperature_2m_min[0]);
   let high = addElement('div', `dl-high`, highTemp);
   let low = addElement('div', `dl-low`, lowTemp);
   let sunrise = addElement('div', 'dl-rise sunrise', sunup);
   let sunset = addElement('div', 'dl-set sunset', sundown);
-  let precip = addElement(
-    'div',
-    'dl-pop percent',
-    dailyWeather.precipitation_probability_max[0]
-  );
-  let speed = addElement(
-    'div',
-    `dl-speed ${windClass()}`,
-    dailyWeather.wind_speed_10m_max[0]
-  );
-  let direction = addElement(
-    'div',
-    'dl-direction direction',
-    dailyWeather.wind_direction_10m_dominant[0]
-  );
-  let cardinal = addElement(
-    'div',
-    'dl-direction cardinal',
-    degreesToCardinal(dailyWeather.wind_direction_10m_dominant[0])
-  );
-  let uv = addElement('div', 'dl-uv', dailyWeather.uv_index_max);
+  let precip = addElement('div','dl-pop percent', dailyWeather.precipitation_probability_max[0] );
+  let speed = addElement('div', `dl-speed ${windClass()}`, dailyWeather.wind_speed_10m_max[0]);
+  let direction = addElement('div', 'dl-direction direction', dailyWeather.wind_direction_10m_dominant[0] );
+  let cardinal = addElement('div', 'dl-direction cardinal', degreesToCardinal(dailyWeather.wind_direction_10m_dominant[0]) );
+  let uv = addElement('div', 'dl-uv', parseInt(dailyWeather.uv_index_max));
   let group1 = addElement('div', 'dg1');
   let group2 = addElement('div', 'dg2');
   let group3 = addElement('div', 'dg3');
@@ -121,39 +115,23 @@ export function populateDaily(dailyWeather){
   let iconS = addElement('div', 'md-icons md-speed');
   // let iconW = addElement("div", "md-icons md-direction");
 
-  let attrsObj = {min: 0, max: 11, step: 1, value: dailyWeather.uv_index_max[0], type: "range", disabled: true};
+
+
+  let uvAttrs = {min: 0, max: 11, step: 1, value: dailyWeather.uv_index_max[0], type: "range", disabled: true};
+  let rainAttrs = {min: 0, max: 100, step: 1, value: dailyWeather.precipitation_probability_max[0], type: "range", disabled: true};
   let iconW = addElement('div', 'md-icons md-dir');
   
-  console.log("attrs", attrsObj);
-  // let meter = addElement('input', 'dl-meter', "", attrs);
-  let meter = addElement2('input', 'dl-meter', '', attrsObj);
+
+  let rainMeter = addElement2("input", 'rain-meter', '', rainAttrs);
+  let uvMeter = addElement2('input', 'uv-meter', '', uvAttrs);
 
 
   let val = parseInt(dailyWeather.uv_index_max);
-  let colr = "#fff";
 
-  switch (val) {
-    case 0:
-    case 1:
-    case 2: colr = '#289500';
-      break;
-    case 3:
-    case 4:
-    case 5: colr = '#f7e400';
-      break;
-    case 6:
-    case 7: colr = '#f85900';
-      break;
-    case 8:
-    case 9:
-    case 10: colr = '#d80010';
-      break;
-    case 11: colr = '#6b49c8';
-      break;
-    default: break;
-  }
+  let colr = sliderThumbColor(val);
 
-  meter.style.setProperty('--slider-color', `${colr}`);
+  uvMeter.style.setProperty('--slider-color', `${colr}`);
+
 
   let sliders = createSliders(group1, lowTemp, highTemp);
 
@@ -164,7 +142,7 @@ export function populateDaily(dailyWeather){
 
   orderAppend(group1, ...[low, sliders, high]);
   orderAppend(group2, ...[iconU, sunrise, iconD, sunset]);
-  orderAppend(group3, ...[iconI, meter, uv, iconP, precip]);
+  orderAppend(group3, ...[iconI, uvMeter, uv, iconP, rainMeter, precip]);
   orderAppend(group4, ...[iconS, speed, iconW, direction, cardinal]);
   orderAppend(daily_dom, ...[group1, group2, group3, group4]);
 }
@@ -172,18 +150,26 @@ export function populateDaily(dailyWeather){
 
 export function populateHourly(hourlyWeather){
   let hourly_dom = document.querySelector(".hourly");
-  let thisHour = DateTime.now().hour;
-  let temp = addElement("div", `temp ${tempClass()}`, hourlyWeather.temperature_2m[thisHour]);
-  let feels = addElement("div", `feels ${tempClass()}`, hourlyWeather.apparent_temperature[thisHour]);
-  let humid = addElement("div", "percemt", hourlyWeather.relative_humidity_2m[thisHour]);
-  let wmocode = addElement("div", "code ", weatherCodeToForecast(hourlyWeather.weather_code[thisHour].toString(), isDay()) );
-  let visibility = addElement("div", "m", hourlyWeather.visibility[thisHour]);
-  let speed = addElement("div", `h-wind ${windClass()}`, hourlyWeather.wind_speed_10m[thisHour]);
-  let direction = addElement("div", "h-wind", degreesToCardinal(hourlyWeather.wind_direction_10m[thisHour]));
-
+  let slots = hourlyWeather.time;
   hourly_dom.innerHTML = "";
 
-  orderAppend( hourly_dom, ...[temp, feels, humid, wmocode, visibility, speed, direction]);
+  slots.forEach(  (key, index, slots) => {
+    let day = (index > 12) ? `${(index) - 12}`  : `${index}`;
+    if ( index === 0 || index === 12 ) day = "12"; 
+  
+    let hours = addElement("div", "hours" );
+    let daytime = (index < 12) ? "day" : "night";
+    let hour = addElement("div", `hour ${daytime}`, day);
+    let getIcon = wmoToIcon(weatherCodeToForecast(hourlyWeather.weather_code[index].toString(), isDay(index)) );
+    let icon = addElement("div", `icon hr-icon ${getIcon}`);
+    let temp = addElement("div", 'hTemp', parseInt(hourlyWeather.temperature_2m[index]));
+    
+    if (getIcon === "partly-cloudy" && isDay(index) === "0") icon.classList = 'icon hr-icon partly-cloudy-night';
+    if( index ===  DateTime.fromISO(JSON.parse(localStorage.getItem("currentWeather")).time).hour ) hours.classList.add("thisHour");
+
+    orderAppend( hours, ...[hour, icon, temp]);
+    orderAppend(hourly_dom, ...[hours]);
+  });
 }
 
 // function isArray(what){ return Object.prototype.toString.call(what) === '[object Array]'; }
@@ -206,9 +192,9 @@ export function populateForecast(forecastWeather){
         const weekday = (day) => {return DateTime.fromISO(forecastWeather.time[day]).weekdayLong;};
         let time = addElement("div", "grp zeroth", weekday(day));
         let icon = addElement("div", `first sm-icon ${wmoToIcon(weatherCodeToForecast(forecastWeather.weather_code[day], 1) )}`);
-        let wmo = addElement("div", "second sm-wmo", weatherCodeToForecast(forecastWeather.weather_code[day], 1)); 
+        // let wmo = addElement("div", "second sm-wmo", weatherCodeToForecast(forecastWeather.weather_code[day], 1)); 
         let ranges = addElement("div", "grp-slide third");
-        let low = addElement("div", "grp fourth");
+        // let low = addElement("div", "grp fourth");
         // let sunrise = addElement("div", "grp fifth");
         // let sunset = addElement("div", "grp sixth");
         let uv = addElement("div", "grp seventh");
@@ -219,9 +205,9 @@ export function populateForecast(forecastWeather){
 
         switch (key) {
           case "temperature_2m_max": {
-            let icon = addElement("div", "icons sm-high");
-            let highTemp = forecastWeather.temperature_2m_max[day];
-            let lowTemp = forecastWeather.temperature_2m_min[day];
+            // let icon = addElement("div", "icons sm-high");
+            let highTemp = parseInt(forecastWeather.temperature_2m_max[day]);
+            let lowTemp = parseInt(forecastWeather.temperature_2m_min[day]);
             let high = addElement("div", `sl-high`, highTemp);
             let low = addElement("div",`sl-low`, lowTemp);
 
@@ -258,9 +244,11 @@ export function populateForecast(forecastWeather){
           //   }
           case "precipitation_probability_max" : {
             let icon = addElement("div", "icons sm-pop");
+            let rainAttrs = {min: 0, max: 100, step: 1, value: forecastWeather.precipitation_probability_max[0], type: "range", disabled: true};
+            let rainMeter = addElement2("input", 'rain-meter', '', rainAttrs);
             let value = addElement("div", "fc-pop percent", forecastWeather.precipitation_probability_max[day]);
 
-            orderAppend(precip, ...[icon, value]);
+            orderAppend(precip, ...[icon, rainMeter, value]);
             days.append(precip);
               break;
             }
@@ -287,9 +275,15 @@ export function populateForecast(forecastWeather){
   
           case "uv_index_max" : {
             let icon = addElement("div", "icons sm-uv-index");
-            let value = addElement("div", "fc-uv-index", forecastWeather.uv_index_max[day]);
+            let uvAttrs = {min: 0, max: 11, step: 1, value: forecastWeather.uv_index_max[day], type: "range", disabled: true};
+            let uvMeter = addElement2("input", "uv-meter", "", uvAttrs);
+            let uvVal = parseInt(forecastWeather.uv_index_max[day]);
+            let value = addElement("div", "fc-uv-index", uvVal);
+            let colr = sliderThumbColor(uvVal);
 
-            orderAppend(uv, ...[icon, value]);
+            uvMeter.style.setProperty('--slider-color', `${colr}`);
+
+            orderAppend(uv, ...[icon, uvMeter, value]);
             days.append(uv);
               break;
             }
@@ -387,7 +381,6 @@ function addElement( element, classes, value){
 }
 
 function addElement2( element, classes, value, attrs2){
-  console.log("attrs2", attrs2);
   let temp = document.createElement(element);
   temp.classList = classes;
   if (value !== ''){ temp.textContent = value; }
@@ -410,7 +403,7 @@ function createSliders(target, low, high){
   let rngMd = addElement('div', 'range-middle');
   let rngHi = addElement('div', 'range-high');
   let input = addElement('div', 'range-input');
-  let minAttrs = {min: 0, max: 100, step: 1, value: "30", type: "range"};
+  let minAttrs = {min: 0, max: 100, step: 1, value: "30", type: "range", disabled: true};
   let maxAttrs = {min: 0, max: 100, step: 1, value: "70", type: "range", disabled: true};
   let min = addElement2('input', 'min', '', minAttrs);
   let max = addElement2('input', 'max', '', maxAttrs);
@@ -424,4 +417,32 @@ function createSliders(target, low, high){
   updateMinSide(range, low);
 
   return range;
+}
+
+
+
+
+function sliderThumbColor(value){
+  let colr = "#fff";
+  switch (value) {
+    case 0:
+    case 1:
+    case 2: colr = '#289500';
+      break;
+    case 3:
+    case 4:
+    case 5: colr = '#f7e400';
+      break;
+    case 6:
+    case 7: colr = '#f85900';
+      break;
+    case 8:
+    case 9:
+    case 10: colr = '#d80010';
+      break;
+    case 11: colr = '#6b49c8';
+      break;
+    default: break;
+  }
+  return colr;
 }
