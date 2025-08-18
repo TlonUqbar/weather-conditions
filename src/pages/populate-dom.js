@@ -301,24 +301,45 @@ export function populateForecast(forecastWeather){
 }
 
 export function populateAQI(now, hour){
-  let aqiNow_dom = document.querySelector(".aqi-now");
+  // let aqiNow_dom = document.querySelector(".aqi-now");
   let aqiHourly_dom = document.querySelector(".aqi-hour");
-  let usn = addElement("div", '', `US: ${now.us_aqi}`);
-  let eun = addElement("div", "", `EU: ${now.european_aqi}`);
-  let pm10n = addElement("div", "", `PM10: ${now.pm10}`);
-  let pm25n = addElement("div", "", `PM2.5: ${now.pm2_5}`);
-  let uvn = addElement("div", "", `UV: ${now.uv_index}`);
-  let ush = addElement("div", "", `US: ${now.us_aqi[thisHour]}`);
-  let euh = addElement("div", '', `EU: ${now.european_aqi[thisHour]}`);
-  let pm10h = addElement("div", "", `PM10:  ${hour.pm10[thisHour]}`);
-  let pm25h = addElement("div", "", `PM2.5:  ${hour.pm2_5[thisHour]}`);
-  let uvh = addElement("div", "", now.uv_index[thisHour] );
-
-  aqiNow_dom.innerHTML = '';
+  console.log("slots", hour );
   aqiHourly_dom.innerHTML = '';
+  
+  let slots = hour.time;
 
-  orderAppend(aqiNow_dom, ...[usn, eun, pm10n, pm25n, uvn]);
-  orderAppend(aqiHourly_dom, ...[ush, euh, pm10h,pm25h, uvh]);
+
+  slots.forEach(  (key, index, slots) => {
+    let day = (index > 12) ? `${(index) - 12}`  : `${index}`;
+    if ( index === 0 || index === 12 ) day = "12"; 
+
+    let hrs = addElement("div", "hours" );
+    let daytime = (index < 12) ? "day" : "night";
+    let hr = addElement("div", `hour ${daytime}`, day);
+    let aqiVal = addElement("div", `aqi-val ${aqiLevel(hour.us_aqi[index])}`, parseInt(hour.us_aqi[index]));
+
+    if( index ===  DateTime.fromISO(JSON.parse(localStorage.getItem("currentWeather")).time).hour ) hrs.classList.add("thisHour");
+
+    orderAppend(hrs, ...[hr, aqiVal]);
+    orderAppend(aqiHourly_dom, ...[hrs]);
+
+  });
+  // let usn = addElement("div", '', `US: ${now.us_aqi}`);
+  // let eun = addElement("div", "", `EU: ${now.european_aqi}`);
+  // let pm10n = addElement("div", "", `PM10: ${now.pm10}`);
+  // let pm25n = addElement("div", "", `PM2.5: ${now.pm2_5}`);
+  // let uvn = addElement("div", "", `UV: ${now.uv_index}`);
+  // let ush = addElement("div", "", `US: ${now.us_aqi[thisHour]}`);
+  // let euh = addElement("div", '', `EU: ${now.european_aqi[thisHour]}`);
+  // let pm10h = addElement("div", "", `PM10:  ${hour.pm10[thisHour]}`);
+  // let pm25h = addElement("div", "", `PM2.5:  ${hour.pm2_5[thisHour]}`);
+  // let uvh = addElement("div", "", now.uv_index[thisHour] );
+
+  // aqiNow_dom.innerHTML = '';
+  // aqiHourly_dom.innerHTML = '';
+
+  // orderAppend(aqiNow_dom, ...[usn, eun, pm10n, pm25n, uvn]);
+  // orderAppend(aqiHourly_dom, ...[ush, euh, pm10h,pm25h, uvh]);
 }
 
 
@@ -445,4 +466,23 @@ function sliderThumbColor(value){
     default: break;
   }
   return colr;
+}
+
+function aqiLevel(value){
+  let level;
+  if ( value <= 50){ 
+    level = "good";
+  } else if ( value > 50 && value <=100){
+    level = "moderate";
+  } else if ( value > 100 && value <=150){
+    level = "sensitive";
+  } else if ( value > 150 && value <=200){
+    level = "unhealthy";
+  } else if ( value > 200 && value <=300){
+    level = "very-unhealthy";
+  } else if ( value > 301 ){
+    level = "hazardous";
+  }
+
+  return level;
 }
