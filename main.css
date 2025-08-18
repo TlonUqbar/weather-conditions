@@ -1098,7 +1098,7 @@ legend{
   min-height: 80dvh;
 }
 
-.simple{ grid-template-areas: "current today" "hourly hourly" "forecast forecast"; }
+.simple{ grid-template-areas: "current today" "hourly hourly" "forecast forecast" "aqi aqi"; }
 
 .simple-current{
   display: grid;
@@ -1278,9 +1278,67 @@ div[class^="simple-day"]{
   gap: 10px;
 }
 
-.aqi{ grid-area: aqi; }
+.aqi{ 
+  grid-area: aqi; 
+}
+
+.aqi-hour{
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 10px;
+ 
+}
+
+.aqi-hour > .hours {
+  padding-bottom: 10px;
+  
+}
+
+.aqi-val{
+  width: 80%;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+  padding: 5px 0;
+}
+
+.good{
+  background-color: green;
+  color: var(--night-primary-2);
+  text-shadow: 0px 0px 2px var(--night-primary-2);
+}
+
+.moderate{
+  background-color: yellow;
+  color: var(--night-base-3);
+  text-shadow: 0px 0px 2px var(--night-base-3);
+}
+
+.sensitive{
+  background-color: orange;
+  color: var(--night-base-1);
+  text-shadow: 0px 0px 2px var(--night-base-1);
+}
+
+.unhealthy{
+  background-color: red;
+  color: var(--night-base-1);
+  text-shadow: 0px 0px 2px var(--night-base-1);
+}
+
+.very-unhealthy{
+  background-color: purple;
+  color: var(--night-primary-2);
+  text-shadow: 0px 0px 2px var(--night-primary-2);
+}
 
 
+.hazardous{
+  background-color: maroon;
+  color: var(--night-primary-2);
+  text-shadow: 0px 0px 2px var(--night-primary-2);
+}
 
 .forecast{
   grid-area: forecast;
@@ -1413,10 +1471,11 @@ div[class^="simple-day"]{
 
 .dl-high, .dl-low, .dl-rise, .dl-set, .dl-pop, .dl-speed, .dl-direction{
   height: 5.5vh;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 900;
   align-content: center;
   justify-self: center;
+  text-shadow: 0px 0px 1px;
 }
 
 
@@ -1563,7 +1622,7 @@ div[class^="simple-day"]{
 
 .thisHour{
   box-shadow: 3px 3px 10px var(--night-primary-2), -3px -3px 10px var(--night-primary-1);
-  
+
 }
 
 .hTemp{
@@ -1592,7 +1651,7 @@ div[class^="simple-day"]{
   }
 
   .simple{
-    grid-template-areas:  "current" "today" "hourly" "forecast";
+    grid-template-areas:  "current" "today" "hourly" "forecast" "aqi";
   }
 
   .simple-today{
