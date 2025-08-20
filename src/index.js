@@ -128,15 +128,7 @@ async function repeatVisitor(){
   let nextUpdate = DateTime.fromISO(timestamp).plus({minutes: 15}).toISO();
   let now = DateTime.local().toISO();
 
-  console.log("now: ", now, " stamp: ", timestamp, " next: ", nextUpdate);
-  // console.log("comparing to timestamp", timestamp <= now);
-  // console.log("comparing to nextUpdate", nextUpdate <= now);
-
-
-  if( nextUpdate <= now ){
-    testLocation(location);
-    // console.log("initiating update . . .");
-  }
+  if( nextUpdate <= now ) testLocation(location); 
 
   pDOM.populateCurrent(currentWeather);
   pDOM.populateDaily(dailyWeather);

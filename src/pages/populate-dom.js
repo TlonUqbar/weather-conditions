@@ -83,12 +83,8 @@ export function populateCurrent(currentWeather) {
 
 export function populateDaily(dailyWeather){
   let daily_dom = document.querySelector('.daily');
-  let sunup = DateTime.fromISO(dailyWeather.sunrise[0], {
-    setZone: 'true',
-  }).toLocaleString(DateTime.TIME_SIMPLE);
-  let sundown = DateTime.fromISO(dailyWeather.sunset[0], {
-    setZone: 'true',
-  }).toLocaleString(DateTime.TIME_SIMPLE);
+  let sunup = DateTime.fromISO(dailyWeather.sunrise[0], {setZone: 'true'}).toLocaleString(DateTime.TIME_SIMPLE);
+  let sundown = DateTime.fromISO(dailyWeather.sunset[0], {setZone: 'true'}).toLocaleString(DateTime.TIME_SIMPLE);
   // let high = addElement("div", `dl-high ${tempClass()}`, dailyWeather.temperature_2m_max[0] );
   // let low = addElement("div", `dl-low ${tempClass()}`, dailyWeather.temperature_2m_min[0],);
   let highTemp = parseInt(dailyWeather.temperature_2m_max[0]);
@@ -115,28 +111,17 @@ export function populateDaily(dailyWeather){
   let iconS = addElement('div', 'md-icons md-speed');
   // let iconW = addElement("div", "md-icons md-direction");
 
-
-
   let uvAttrs = {min: 0, max: 11, step: 1, value: dailyWeather.uv_index_max[0], type: "range", disabled: true};
   let rainAttrs = {min: 0, max: 100, step: 1, value: dailyWeather.precipitation_probability_max[0], type: "range", disabled: true};
   let iconW = addElement('div', 'md-icons md-dir');
-  
-
   let rainMeter = addElement2("input", 'rain-meter', '', rainAttrs);
   let uvMeter = addElement2('input', 'uv-meter', '', uvAttrs);
-
-
   let val = parseInt(dailyWeather.uv_index_max);
-
   let colr = sliderThumbColor(val);
-
-  uvMeter.style.setProperty('--slider-color', `${colr}`);
-
-
   let sliders = createSliders(group1, lowTemp, highTemp);
 
+  uvMeter.style.setProperty('--slider-color', `${colr}`);
   iconW.style.transform = `rotate(${dailyWeather.wind_direction_10m_dominant[0]}deg)`;
-
   daily_dom.innerHTML = '';
   daily_dom.classList.add('simple-today');
 
@@ -303,11 +288,10 @@ export function populateForecast(forecastWeather){
 export function populateAQI(now, hour){
   // let aqiNow_dom = document.querySelector(".aqi-now");
   let aqiHourly_dom = document.querySelector(".aqi-hour");
-  console.log("slots", hour );
+
   aqiHourly_dom.innerHTML = '';
   
   let slots = hour.time;
-
 
   slots.forEach(  (key, index, slots) => {
     let day = (index > 12) ? `${(index) - 12}`  : `${index}`;
@@ -316,13 +300,14 @@ export function populateAQI(now, hour){
     let hrs = addElement("div", "hours" );
     let daytime = (index < 12) ? "day" : "night";
     let hr = addElement("div", `hour ${daytime}`, day);
-    let aqiVal = addElement("div", `aqi-val ${aqiLevel(hour.us_aqi[index])}`, parseInt(hour.us_aqi[index]));
+    let aqiVal = addElement("div", `aqi-val aqi-icon ${aqiLevel(hour.us_aqi[index])}`, parseInt(hour.us_aqi[index]));
+    let uv = addElement("div", `uvi uv-icon ${uvLevel(hour.uv_index[index])}`, parseInt(hour.uv_index[index]));
 
     if( index ===  DateTime.fromISO(JSON.parse(localStorage.getItem("currentWeather")).time).hour ) hrs.classList.add("thisHour");
-
-    orderAppend(hrs, ...[hr, aqiVal]);
+  
+    orderAppend(hrs, ...[hr, aqiVal, uv]);
     orderAppend(aqiHourly_dom, ...[hrs]);
-
+    
   });
   // let usn = addElement("div", '', `US: ${now.us_aqi}`);
   // let eun = addElement("div", "", `EU: ${now.european_aqi}`);
@@ -340,6 +325,7 @@ export function populateAQI(now, hour){
 
   // orderAppend(aqiNow_dom, ...[usn, eun, pm10n, pm25n, uvn]);
   // orderAppend(aqiHourly_dom, ...[ush, euh, pm10h,pm25h, uvh]);
+  // location.reload();
 }
 
 
@@ -470,18 +456,38 @@ function sliderThumbColor(value){
 
 function aqiLevel(value){
   let level;
+  
   if ( value <= 50){ 
     level = "good";
-  } else if ( value > 50 && value <=100){
+  } else if ( value > 50 && value <= 100){
     level = "moderate";
-  } else if ( value > 100 && value <=150){
+  } else if ( value > 100 && value <= 150){
     level = "sensitive";
-  } else if ( value > 150 && value <=200){
+  } else if ( value > 150 && value <= 200){
     level = "unhealthy";
-  } else if ( value > 200 && value <=300){
+  } else if ( value > 200 && value <= 300){
     level = "very-unhealthy";
   } else if ( value > 301 ){
     level = "hazardous";
+  }
+
+  return level;
+}
+
+function uvLevel(value){
+  let level;
+  value = parseInt(value);
+  
+  if ( value <= 3){ 
+    level = "low";
+  } else if ( value > 3 && value <= 5){
+    level = "moderate";
+  } else if ( value > 5 && value <= 8){
+    level = "high";
+  } else if ( value > 8 && value <= 10){
+    level = "very-high";
+  } else if ( value > 11 ){
+    level = "extreme";
   }
 
   return level;
