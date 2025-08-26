@@ -14,18 +14,14 @@ export function fetchCurrent(userSelection){
   let currentWeather = {};
   let info = {};
   let setUnits = getUnits();
-// console.log("current units", setUnits.wind);
   let temperature = `temperature_unit=${setUnits.temperature}`;
   let precipitation = `precipitation_unit=${setUnits.precipitation}`;
   let wind = `wind_speed_unit=${setUnits.wind}`;
   let units = `${temperature}&${precipitation}&${wind}`;
 
-  // console.log("current units", setUnits);
-
   fetch(`${vars.weatherEndpoint}?${latitude}&${longitude}&${vars.current}&${units}&${timezone}&${vars.forecast}`, vars.requestOptions)
     .then(response => response.json())
     .then( (json) => now = json  )
-    // .then( () => console.log("current results:", now ) )
     .then( () => currentWeather = extractWeatherData(now, "current") )
     .then( () => { 
       currentWeather.name = userSelection.city || userSelection.name; 

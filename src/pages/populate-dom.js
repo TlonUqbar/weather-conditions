@@ -6,6 +6,7 @@ import { countryCodes } from "../utils/country_codes.js";
 import { getUnits } from "../utils/units.js";
 import { closeModal, testLocation } from "../index.js";
 import { updateMaxSide, updateMinSide } from "../utils/sliders.js";
+import Chart from 'chart.js/auto';
 
 
 let thisHour = DateTime.now().hour;
@@ -111,16 +112,23 @@ export function populateDaily(dailyWeather){
   let iconS = addElement('div', 'md-icons md-speed');
   // let iconW = addElement("div", "md-icons md-direction");
 
+  // let [minAQI, maxAQI] = minMaxAQILevel(); 
+
   let uvAttrs = {min: 0, max: 11, step: 1, value: dailyWeather.uv_index_max[0], type: "range", disabled: true};
   let rainAttrs = {min: 0, max: 100, step: 1, value: dailyWeather.precipitation_probability_max[0], type: "range", disabled: true};
   let iconW = addElement('div', 'md-icons md-dir');
   let rainMeter = addElement2("input", 'rain-meter', '', rainAttrs);
   let uvMeter = addElement2('input', 'uv-meter', '', uvAttrs);
+  // let aqiLow = addElement("div", "min-aqi", minAQI);
+  // let aqiHigh = addElement("div", "max-aqi", maxAQI);
   let val = parseInt(dailyWeather.uv_index_max);
   let colr = sliderThumbColor(val);
+
   let sliders = createSliders(group1, lowTemp, highTemp);
+  // let aqiSliders = createAQISliders(group3, minAQI, maxAQI);
 
   uvMeter.style.setProperty('--slider-color', `${colr}`);
+  // aqiMeter.style.setProperty("",)
   iconW.style.transform = `rotate(${dailyWeather.wind_direction_10m_dominant[0]}deg)`;
   daily_dom.innerHTML = '';
   daily_dom.classList.add('simple-today');
@@ -229,7 +237,7 @@ export function populateForecast(forecastWeather){
           //   }
           case "precipitation_probability_max" : {
             let icon = addElement("div", "icons sm-pop");
-            let rainAttrs = {min: 0, max: 100, step: 1, value: forecastWeather.precipitation_probability_max[0], type: "range", disabled: true};
+            let rainAttrs = {min: 0, max: 100, step: 1, value: forecastWeather.precipitation_probability_max[day], type: "range", disabled: true};
             let rainMeter = addElement2("input", 'rain-meter', '', rainAttrs);
             let value = addElement("div", "fc-pop percent", forecastWeather.precipitation_probability_max[day]);
 
@@ -426,7 +434,28 @@ function createSliders(target, low, high){
   return range;
 }
 
+function createAQISliders(target, low, high){
+  let range = addElement('div', 'range');
+  let slider = addElement('div', 'range-slider');
+  let rngLo = addElement('div', 'range-low');
+  let rngMd = addElement('div', 'range-middle');
+  let rngHi = addElement('div', 'range-high');
+  let input = addElement('div', 'range-input');
+  let minAttrs = {min: 0, max: 350, step: 1, value: "30", type: "range", disabled: true};
+  let maxAttrs = {min: 0, max: 350, step: 1, value: "70", type: "range", disabled: true};
+  let min = addElement2('input', 'min', '', minAttrs);
+  let max = addElement2('input', 'max', '', maxAttrs);
 
+
+  orderAppend(slider, ...[rngLo, rngMd, rngHi]);
+  orderAppend(input, ...[min, max]);
+  orderAppend(range, ...[slider, input]);
+
+  updateMaxSide(range, high);
+  updateMinSide(range, low);
+
+  return range;
+}
 
 
 function sliderThumbColor(value){
@@ -491,4 +520,110 @@ function uvLevel(value){
   }
 
   return level;
+}
+
+function minMaxAQILevel(){
+  let aqi = JSON.parse(localStorage.getItem("aqi-hourly")).us_aqi;
+  return ([Math.min(...aqi), Math.max(...aqi)]);
+}
+
+let chart;
+export function charts(){
+  let chartsDom = document.querySelector("#myCharts");
+  chartsDom.innerHTML = "";
+  let data = JSON.parse(localStorage.getItem("aqi-hourly"));
+
+  let hours = [];
+  data.time.forEach(h => { hours.push(DateTime.fromISO(h).hour); });
+
+  const config =  {
+    data: {
+      labels: hours.map((h) => {
+        if (h === 0 ) {
+          h = 12 + " am";
+        } else if( h > 0 && h <= 12 ) {
+          h = h + " am";
+        } else if( h > 12 && h <= 23){
+          h = h -12 + " pm";
+        }
+        return h;
+      }),
+      datasets: [{
+        type: "line",
+        data: data.us_aqi,
+        label: "US AQI",
+        backgroundColor: "purple",
+        color: "pink",
+        borderColor: "purple",
+      },
+      {
+        type: "line",
+        data: data.european_aqi,
+        label: "EU AQI",
+        backgroundColor: "blue",
+        borderColor: "blue",
+      },
+      {
+        type: "line",
+        data: data.pm2_5,
+        label: "PM 2.5",
+        backgroundColor: "red",
+        borderColor: "red",
+      },
+      {
+        type: "line",
+        data: data.pm10,
+        label: "PM 10",
+        backgroundColor: "yellow",
+        borderColor: "yellow",
+      },
+      {
+        type: "bar",
+        data: data.uv_index,
+        label: "UV Index ",
+        backgroundColor: "green"
+      }],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          display: true,
+          grid: {
+            color: "#ffffff0a"
+          },
+          ticks: {
+            color: "#ff8800cc"
+          },
+          title: {
+            display: true,
+            text: "Hours",
+            color: "yellow"
+          }
+        },
+        y: {
+          display: true,
+          grid: {
+            color: "#ffffff0a"
+          },
+          ticks: {
+            color: "#ff8800cc"
+          },
+          title: {
+            display: true,
+            text: "Values",
+            color: "yellow"
+          }
+        }
+      }
+    },
+  };
+
+  if (chart){
+    chart.destroy();
+    chart = new Chart(chartsDom, config);
+  } else {
+    chart = new Chart(chartsDom, config);
+  }
+
 }

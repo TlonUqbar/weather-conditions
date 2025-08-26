@@ -4,6 +4,7 @@ import { fetchDaily as fetchDailyWeather } from "./fetchDaily.js";
 import { fetchForecast as fetchForecastWeather } from "./fetchForecast.js";
 import { fetchHourly as fetchHourlyWeather } from "./fetchHourly.js";
 import { fetchAQI as fetchAirQualityIndex  } from "./fetchAQI.js";
+import { charts } from "../pages/populate-dom.js";
 
 
 export async function fetchInitial(){
@@ -32,6 +33,7 @@ export async function fetchInitial(){
     .then( () => fetchForecastWeather(testSelection))
     .then( () => fetchHourlyWeather(testSelection))
     .then( () => fetchAirQualityIndex(testSelection) )
+    .then( () => charts() )
     .then( () => { return testSelection; })
     .catch( (error) => console.error(error) );
 }

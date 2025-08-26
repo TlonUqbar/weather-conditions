@@ -92,6 +92,7 @@ export function testLocation( location ){
   fetchHourlyWeather(location);
   fetchAirQualityIndex(location);
   pDOM.searchedLocations();
+  pDOM.charts();
 }
 
 
@@ -135,6 +136,7 @@ async function repeatVisitor(){
   pDOM.populateHourly(hourlyWeather);
   pDOM.populateForecast(forecastWeather);
   pDOM.populateAQI(airNow, airHour);
+  pDOM.charts();
   // pDOM.searchedLocations();
 }
 
@@ -179,6 +181,7 @@ async function changeUnits(temp, precip, speed, results){
   fetchForecastWeather(location);
   fetchHourlyWeather(location);
   fetchAirQualityIndex(location);
+  pDOM.charts();
 }
 
 

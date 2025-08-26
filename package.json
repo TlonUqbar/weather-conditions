@@ -31,6 +31,7 @@
     "browserslist": "^4.24.4",
     "buffer-from": "^1.1.2",
     "caniuse-lite": "^1.0.30001700",
+    "chart.js": "^4.5.0",
     "chrome-trace-event": "^1.0.4",
     "clone-deep": "^4.0.1",
     "colorette": "^2.0.20",

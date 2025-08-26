@@ -501,7 +501,12 @@ legend{
   min-height: 80dvh;
 }
 
-.simple{ grid-template-areas: "current today" "hourly hourly" "forecast forecast" "aqi aqi"; }
+.simple{ grid-template-areas: 
+  "current today" 
+  "hourly hourly" 
+  "forecast forecast" 
+  "aqi aqi"
+  "charts charts"; }
 
 .simple-current{
   display: grid;
@@ -830,7 +835,7 @@ div[class^="simple-day"]{
   font-weight: bold; 
   font-size: 2rem; 
   font-weight: 900;
-  text-align: right;
+  text-align: center;
   height: 4vh;
   justify-content: center;
   align-self: center;
@@ -839,8 +844,8 @@ div[class^="simple-day"]{
 }
 
 .icons { 
-  height: 3vh;
-  width: 6vw; 
+  height: 24px;
+  width: 100%; 
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
@@ -886,7 +891,7 @@ div[class^="simple-day"]{
   text-align: center;
 }
 
-.dl-high, .dl-low, .dl-rise, .dl-set, .dl-pop, .dl-speed, .dl-direction{
+.dl-high, .dl-low, .dl-rise, .dl-set, .dl-pop, .dl-speed, .dl-direction,.aqi-min, .aqi-max{
   height: 5.5vh;
   font-size: 1.5rem;
   font-weight: 900;
@@ -907,8 +912,14 @@ div[class^="simple-day"]{
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
-  width: 5vw;
-  height: 10vh;
+  width: 100%;
+  height: 64px;
+}
+
+.sm-low, .sm-high, .sm-uv-index{
+  flex: auto;
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -1046,6 +1057,26 @@ div[class^="simple-day"]{
   font-size: 1.3rem;
   font-weight: 900;
   text-shadow: 0px 0px 1px var(--night-primary-2);
+}
+
+.chartsWrapper{
+  grid-area: charts;
+  display: flex;
+  background-color: rgba(0,0,0, 0.6);
+  border: 1px solid var(--night-border);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  width: 100%;
+  /* height: 50vh; */
+  justify-content: center;
+  flex: 1 auto;
+  gap: 20px;
+}
+
+#myCharts{
+  padding: 40px;
+  /* background-color: #0b232e; */
+  background-color: rgba(0,0,0, 0.4);
 }
 
 
@@ -1187,10 +1218,10 @@ div[class^="simple-day"]{
     line-height: 1;
   }
 
-  .fc-high, .fc-low, .fc-pop, .fc-uv-index{
+  .fc-high, .fc-low, .fc-pop, .fc-uv-index, .sm-uv-index{
     font-weight: 900;
     font-size: 1.4rem;
-    flex-basis: 28vw;
+    flex-basis: 25vw;
     gap:10px;
   }
 
