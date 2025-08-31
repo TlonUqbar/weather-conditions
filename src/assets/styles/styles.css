@@ -214,7 +214,6 @@ span{
   background-color: var(--night-base-3);
   margin: auto;
   padding: 0;
-  /* border: 1px solid #e8e6e3; */
   border: 1px solid #756d60;
   width: 800px;
   border-radius: 10px;
@@ -295,7 +294,6 @@ span{
 
 .group, .group2{
   display: flex;
-  /* border: 1px solid var(--night-accent-5); */
   border: 1px solid var(--night-border);
   border-radius: 8px;
 }
@@ -322,13 +320,7 @@ span{
   align-items: center;
   justify-items: center;
   font-size: 1.1rem;
-  /* border: 1px solid; */
-  /* gap:20px; */
 }
-
-/* output{
-  display: inline;
-} */
 
 .settings-results{
   grid-template-columns: 1fr;
@@ -367,7 +359,6 @@ legend{
 
 .switch-field label {
   background-color: var(--night-text-1);
-  /* color: rgba(0, 0, 0, 0.6); */
   color: var(--night-text-3);
   font-size: 900;
   font-size: 1rem;
@@ -511,7 +502,6 @@ legend{
 .simple-current{
   display: grid;
   background-color: rgba(0,0,0,0.4);
-  /* border: 1px solid rgba(255, 255, 255, 0.20); */
   border: 1px solid var(--night-border);
   backdrop-filter: blur(2px);
   border-radius: 10px;
@@ -569,7 +559,7 @@ legend{
 .cg6{ 
   height: 10vh;
   grid-area: wind; 
-  gap: 2px 2px;
+  gap: 2px 20px;
   grid-template-areas: "icons speed" "icons direction";
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -610,7 +600,7 @@ legend{
   min-height: 11vh;
   align-self: center;
   justify-self: center;
-  /* border: 1px solid */
+  aspect-ratio: 1;
 }
 
 .c-speed{
@@ -639,7 +629,6 @@ legend{
   align-items: center;
   align-content: center;
   backdrop-filter: blur(2px);
-  /* border: 1px solid rgba(255, 255, 255, 0.20); */
   border: 1px solid var(--night-border);
   background-color: rgba(0,0,0,0.4);
   border-radius: 10px;
@@ -675,7 +664,6 @@ div[class^="simple-day"]{
   justify-content: space-between;
   backdrop-filter: blur(2px);
   background-color: rgba(0,0,0,0.4);
-  /* border: 1px solid rgba(255, 255, 255, 0.20); */
   border: 1px solid var(--night-border);
   border-radius: 10px;
 }
@@ -696,8 +684,6 @@ div[class^="simple-day"]{
 
 .hourly{ 
   grid-area: hourly; 
-  /* display: grid; */
-  /* grid-template-columns: repeat(12, 1fr); */
   gap: 10px;
 }
 
@@ -726,14 +712,12 @@ div[class^="simple-day"]{
 }
 
 .aqi-icon{
-  /* grid-area: icons; */
   background-image: url("../icons/aqi.svg");
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .uv-icon{
-  /* grid-area: icons; */
   background-image: url("../icons/uvi.svg");
   background-size: contain;
   background-repeat: no-repeat;
@@ -886,8 +870,6 @@ div[class^="simple-day"]{
   grid-template-areas: direction cardinal;
 }
 
-
-/* grid-template-areas: "speedIcon speed" "directionIcon cardinal"; */
 
 .sm-high, .md-high { background-image: url('../icons/thermometer-1.svg'); }
 .sm-low, .md-low{ background-image: url('../icons/thermometer-4.svg'); }
@@ -1054,14 +1036,6 @@ div[class^="simple-day"]{
 }
 
 .hours > .hr-icon{
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* gap:20px; */
-  /* flex-basis: 10px; */
-  /* gap: 10px; */
-  /* display: flex;
-  align-self: center;
-  justify-self: center; */
   
 }
 
@@ -1087,7 +1061,6 @@ div[class^="simple-day"]{
   border-radius: 10px;
   backdrop-filter: blur(10px);
   width: 100%;
-  /* height: 50vh; */
   justify-content: center;
   flex: 1 auto;
   gap: 20px;
@@ -1095,7 +1068,6 @@ div[class^="simple-day"]{
 
 #myCharts{
   padding: 40px;
-  /* background-color: #0b232e; */
   background-color: rgba(0,0,0, 0.4);
 }
 
@@ -1150,16 +1122,16 @@ div[class^="simple-day"]{
 
   .dg4 {
     grid-template-areas: "speedIcon speed directionIcon direction cardinal";
-    grid-template-columns: .5fr 2fr .5fr 1fr 1fr;
+    grid-template-columns: .5fr 2fr 1fr .5fr 2fr;
     justify-content: space-between;
 
   }
 
   .dg4 > .md-dir{
-    width: 20px;
+    width: 10px;
   }
-  .dg4 > .direction{ grid-area: direction; width: 20px;}
-  .dg4 > .cardinal{ grid-area: cardinal; width: 20px;}
+  .dg4 > .direction{ grid-area: direction; width: 2px;}
+  .dg4 > .cardinal{ grid-area: cardinal; width: 2px;}
 
 
 
@@ -1167,15 +1139,22 @@ div[class^="simple-day"]{
     width: 5%;
   }
 
-  /* .high, .low, .sunrise, .sunset, .uv-index, .pop, .speed, .direction{
-    font-size: 1.2rem;
+  .cg6{ 
+    height: 10vh;
+    grid-area: wind; 
+    gap: 10px 20px;
+    grid-template-areas: "icons speed" "icons direction";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
   }
 
-  .high::before, .low::before, .sunrise::before, .sunset::before, 
-  .uv-index::before, .pop::before, .speed::before, .direction::before{
-    width: 1rem; 
-    height: 1rem;  
-  } */
+  .md-bg{
+    min-height: 8vh;
+    align-self: center;
+    justify-self: center;
+    aspect-ratio: 1;
+  }
+
 
   .simple-forecast{
     gap:10px;
@@ -1246,8 +1225,10 @@ div[class^="simple-day"]{
     align-self: center;
   }
 
-  .c-speed{
-    width: 26vw;
+
+
+  .c-speed, .c-direction{
+   width: 25vw;
   }
 
   .cg6{
