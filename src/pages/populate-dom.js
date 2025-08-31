@@ -47,6 +47,7 @@ export function populateCurrent(currentWeather) {
   let cardinal = addElement( "span", "c-direction cardinal", degreesToCardinal(currentWeather.wind_direction_10m));
   let smIconH = addElement("div", "sm-humid");
   let smIconR = addElement("div", "sm-rain");
+  let mdIconBg = addElement("div", "md-bg");
   let mdIconW = addElement('div', 'md-compass');  
   let location = addElement( "div", "location");
   let city = addElement("div", "city", currentWeather.name, );
@@ -68,6 +69,8 @@ export function populateCurrent(currentWeather) {
 
   current_dom.innerHTML = ""; 
   current_dom.classList.add("simple-current");
+
+  mdIconBg.append(mdIconW);
   
   orderAppend(datetime, ...[date, time]);
   orderAppend(location, ...order);
@@ -76,7 +79,7 @@ export function populateCurrent(currentWeather) {
   orderAppend(group3, ...[temp, feels]);
   orderAppend(group4, ...[icon, wmocode]);
   orderAppend(group5, ...[smIconH, humid, smIconR, precip ]);
-  orderAppend(group6, ...[mdIconW, speed, direction, cardinal]);
+  orderAppend(group6, ...[mdIconBg, speed, direction, cardinal]);
   orderAppend( current_dom, ...[group1, group2, group3, group4, group5, group6]);
 
 }

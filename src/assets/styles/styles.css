@@ -567,11 +567,11 @@ legend{
 .sm-rain{ background-image: url("../icons/umbrella-f-rain.svg");}
 
 .cg6{ 
-  height: 12vh;
+  height: 10vh;
   grid-area: wind; 
-  gap: 5px 20px;
+  gap: 2px 2px;
   grid-template-areas: "icons speed" "icons direction";
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
 }
 
@@ -587,15 +587,30 @@ legend{
 }
 
 .md-compass, .md-dir {
-  grid-area: icons;
+  
   background-image: url("../icons/direction-arrow.svg");
   background-size: contain;
   background-repeat: no-repeat;
-  min-width: 3vw;
-  min-height: 6vh;
-  align-self: center;
-  justify-self: end;
+  min-width: 50%;
+  min-height: 50%;
+  align-self: middle;
+  justify-self: center;
   filter: drop-shadow(1px 1px 4px rgb(255, 255, 255, 1));
+  scale: 0.75;
+}
+
+
+.md-bg{
+  display: grid;
+  grid-area: icons;
+  background-image: url("../icons/compass-background.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  min-width: 5vw;
+  min-height: 11vh;
+  align-self: center;
+  justify-self: center;
+  /* border: 1px solid */
 }
 
 .c-speed{
@@ -694,7 +709,6 @@ div[class^="simple-day"]{
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 10px;
- 
 }
 
 .aqi-hour > .hours {
@@ -863,14 +877,17 @@ div[class^="simple-day"]{
 
 
 .md-speed{ grid-area: speedIcon;}
+.dl-speed{ grid-area: speed;}
 .md-direction, .md-dir{ grid-area: directionIcon; }
 .dl-direction{ 
   grid-area: cardinal; 
-  width: 180px; 
   display: grid; 
   grid-template-columns: 1fr 2fr; 
+  grid-template-areas: direction cardinal;
 }
 
+
+/* grid-template-areas: "speedIcon speed" "directionIcon cardinal"; */
 
 .sm-high, .md-high { background-image: url('../icons/thermometer-1.svg'); }
 .sm-low, .md-low{ background-image: url('../icons/thermometer-4.svg'); }
@@ -1059,8 +1076,11 @@ div[class^="simple-day"]{
   text-shadow: 0px 0px 1px var(--night-primary-2);
 }
 
-.chartsWrapper{
+.charts{
   grid-area: charts;
+}
+
+.chartsWrapper{
   display: flex;
   background-color: rgba(0,0,0, 0.6);
   border: 1px solid var(--night-border);
@@ -1099,7 +1119,7 @@ div[class^="simple-day"]{
   }
 
   .simple{
-    grid-template-areas:  "current" "today" "hourly" "forecast" "aqi";
+    grid-template-areas:  "current" "today" "hourly" "forecast" "aqi" "charts";
   }
 
   .simple-today{
@@ -1108,11 +1128,43 @@ div[class^="simple-day"]{
     grid-template-rows: 1fr;
   }
 
-  .dg1, .dg2, .dg3, .dg4{
-    display: flex;
+  .dg2, .dg3, .dg4{
+    display: grid;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
     height: 6vh;
+  }
+
+  .dg1{
+    display:grid;
+  }
+
+  .dg2{
+    grid-template-columns: 1fr 2fr 1fr 2fr;
+  }
+
+  .dg3{
+    grid-template-columns: .35fr 1.2fr .25fr .5fr 1fr .75fr;
+    justify-content: space-evenly;
+  }
+
+  .dg4 {
+    grid-template-areas: "speedIcon speed directionIcon direction cardinal";
+    grid-template-columns: .5fr 2fr .5fr 1fr 1fr;
+    justify-content: space-between;
+
+  }
+
+  .dg4 > .md-dir{
+    width: 20px;
+  }
+  .dg4 > .direction{ grid-area: direction; width: 20px;}
+  .dg4 > .cardinal{ grid-area: cardinal; width: 20px;}
+
+
+
+  .md{
+    width: 5%;
   }
 
   /* .high, .low, .sunrise, .sunset, .uv-index, .pop, .speed, .direction{
@@ -1182,8 +1234,9 @@ div[class^="simple-day"]{
   }
 
   .md-icons{
-    flex: 1 0 15%;
+    flex: 1 0 10%;
     height: 3vh;
+    width: 5vw;
   }
 
   .md-wind{
@@ -1214,6 +1267,13 @@ div[class^="simple-day"]{
     text-align: left;
   }
 
+  .hourly, .aqi-hour{
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 10px;
+  }
+
+
   .zeroth{
     line-height: 1;
   }
@@ -1226,10 +1286,14 @@ div[class^="simple-day"]{
   }
 
   .dl-high, .dl-low, .dl-rise, .dl-set, .dl-uv, .dl-pop, .dl-speed, .dl-direction{
-    flex: 1 0 28%;
     height: 5vh;
     font-size: 1.4rem;
     align-content: center;
+  }
+
+  .dl-uv{
+    justify-self: right;
+    align-items: center;
   }
 
   .dl-direction{
@@ -1436,7 +1500,7 @@ div[class^="simple-day"]{
   }
 
   .cg6{
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .grp{
