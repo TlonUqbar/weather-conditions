@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" height="64px" width="64px" xmlns:bx="https://boxy-svg.com">
-  <ellipse style="stroke-linecap: round; stroke: rgba(254, 0, 0, 0); stroke-opacity: 0; stroke-width: 0.5px; stroke-miterlimit: 2; paint-order: fill; fill: rgba(0, 0, 0, 0.96);" cx="32" cy="32" rx="32" ry="32">
+  <ellipse style="stroke-linecap: round; stroke: rgba(254, 0, 0, 0); stroke-opacity: 0; stroke-width: 0.5px; stroke-miterlimit: 2; paint-order: fill; fill: rgba(0, 0, 0, 0);" cx="32" cy="32" rx="32" ry="32">
     <title>outer</title>
   </ellipse>
   <text style="fill: rgb(225, 22, 22); font-family: Verdana; font-size: 12px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre;" x="26.972" y="10.913"><title>N</title>N</text>
