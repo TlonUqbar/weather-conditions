@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" height="64px" width="64px" xmlns:bx="https://boxy-svg.com">
-  <ellipse style="stroke-linecap: round; stroke: rgba(254, 0, 0, 0); stroke-opacity: 0; stroke-width: 0.5px; stroke-miterlimit: 2; paint-order: fill; fill: rgba(0, 0, 0, 0);" cx="32" cy="32" rx="32" ry="32">
+  <ellipse style="stroke-linecap: round; stroke: rgba(254, 0, 0, 0); stroke-opacity: 0; stroke-width: 0.5px; stroke-miterlimit: 2; paint-order: fill; fill: rgba(0, 0, 0, 0.96);" cx="32" cy="32" rx="32" ry="32">
     <title>outer</title>
   </ellipse>
   <text style="fill: rgb(225, 22, 22); font-family: Verdana; font-size: 12px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre;" x="26.972" y="10.913"><title>N</title>N</text>
@@ -34,16 +34,16 @@
     <bx:guide x="1" y="-6" angle="0"/>
   </defs>
   <text style="fill: rgb(12, 23, 224); font-family: Verdana; font-size: 12px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-box: fill-box; transform-origin: 3.68861px 8.28038px;" x="27.824" y="61.901"><title>S</title>S</text>
-  <text style="fill: rgb(255, 255, 255); font-family: Verdana; font-size: 10px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; opacity: 0.8; transform-box: fill-box; transform-origin: 35.1011% 56.7491%;" x="2.584" y="35.986"><title>W</title>W</text>
-  <text style="fill: rgb(255, 251, 251); font-family: Verdana; font-size: 12px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-box: fill-box; transform-origin: 44.9479% 46.7677%;" x="53.664" y="36.806"><title>E</title>E</text>
+  <text style="fill: rgb(231, 231, 231); font-family: Verdana; font-size: 10px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; opacity: 0.8; transform-box: fill-box; transform-origin: 3.96055px 6.90101px;" x="2.584" y="35.986"><title>W</title>W</text>
+  <text style="fill: rgb(231, 231, 231); font-family: Verdana; font-size: 12px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-box: fill-box; transform-origin: 3.68412px 6.82465px;" x="53.664" y="36.806"><title>E</title>E</text>
   <ellipse style="stroke: rgb(0, 0, 0); fill-opacity: 0.44; fill: rgba(0, 0, 0, 0.376); stroke-width: 0.5px; stroke-miterlimit: 2;" cx="32" cy="32" rx="4" ry="4.036">
     <title>center</title>
   </ellipse>
-  <text style="fill: rgb(184, 184, 184); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-box: fill-box; transform-origin: 3.63679px 15.7437px;" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, -10.039502, -2.0088)" x="50.983" y="13.585">|</text>
-  <text style="fill: rgb(184, 184, 184); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-origin: 45.226px 17.14px;" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, -40.220946, 32.858023)" x="50.983" y="13.585">|</text>
-  <text style="fill: rgb(184, 184, 184); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-origin: 54.62px 25.713px;" transform="matrix(-0.707107, 0.707107, -0.707107, -0.707107, -53.386359, -20.127413)" x="50.983" y="13.585">|</text>
-  <text style="fill: rgb(184, 184, 184); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-origin: 54.62px 25.713px;" transform="matrix(-0.707107, 0.707107, -0.707107, -0.707107, -14.286568, 19.437355)" x="50.983" y="13.585">|</text>
-  <ellipse style="fill-rule: nonzero; fill: rgba(0, 0, 0, 0); stroke-linecap: round; stroke-width: 0.5px; stroke-miterlimit: 1.5; stroke-dasharray: 3; stroke-dashoffset: 1px; stroke: rgba(244, 243, 243, 0.663); paint-order: stroke;" cx="32.521" cy="32" rx="30.521" ry="30.973">
+  <text style="fill: rgb(184, 184, 184); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-box: fill-box; transform-origin: 324.881% 354.007%;" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, -10.035971, -2.011199)" x="50.983" y="13.585"><title>NE</title>|</text>
+  <text style="fill: rgb(184, 184, 184); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-origin: 45.226px 17.14px;" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, -40.220946, 32.858023)" x="50.983" y="13.585"><title>SW</title>|</text>
+  <text style="fill: rgb(184, 184, 184); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-origin: 54.62px 25.713px;" transform="matrix(-0.707107, 0.707107, -0.707107, -0.707107, -53.386359, -20.127413)" x="50.983" y="13.585"><title>NW</title>|</text>
+  <text style="fill: rgb(184, 184, 184); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; stroke-miterlimit: 2; stroke-width: 0.5px; white-space: pre; transform-origin: 54.62px 25.713px;" transform="matrix(-0.707107, 0.707107, -0.707107, -0.707107, -14.286568, 19.437355)" x="50.983" y="13.585"><title>SE</title>|</text>
+  <ellipse style="fill-rule: nonzero; stroke-linecap: round; stroke-width: 0.5px; stroke-miterlimit: 1.5; stroke-dasharray: 3; stroke-dashoffset: 1px; stroke: rgba(244, 243, 243, 0.663); paint-order: stroke; fill: rgba(0, 0, 0, 0);" cx="32.521" cy="32" rx="30.521" ry="30.973">
     <title>Inner</title>
   </ellipse>
 </svg>
