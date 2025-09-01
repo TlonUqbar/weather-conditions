@@ -329,12 +329,18 @@ span{
 }
 
 .settings-results > input[type="range"]{
-  width: 8vw;
+  width: 160px;
 }
 
 legend{
   width: 100%;
   text-align: center;
+}
+
+.wind-left, .wind-right{
+  display: grid;
+  justify-self: center;
+  align-items: center;
 }
 
 /* Start */
@@ -345,7 +351,11 @@ legend{
 }
 
 .settings-wind > .switch-field{
-  flex-direction: column;
+  display: grid;
+  overflow:visible;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
 }
 
 .switch-field input {
@@ -389,12 +399,22 @@ legend{
   border-radius: 0 4px 4px 0;
 }
 
-.settings-wind > .switch-field label:first-of-type {
-  border-radius: 4px 4px 0 0 ;
+.settings-wind > .switch-field label{ border-radius: 0px;}
+
+.settings-wind > .switch-field > .wind-left > label:first-of-type {
+  border-radius: 5px 0 0 0 ;
 }
 
-.settings-wind > .switch-field label:last-of-type {
-  border-radius: 0 0 4px 4px ;
+.settings-wind > .switch-field > .wind-left > label:last-of-type {
+  border-radius: 0 0 0 5px ;
+}
+
+.settings-wind > .switch-field > .wind-right > label:first-of-type {
+  border-radius: 0 5px 0 0 ;
+}
+
+.settings-wind > .switch-field > .wind-right > label:last-of-type {
+  border-radius: 0 0 5px 0;
 }
 
 /* End */
@@ -1067,7 +1087,7 @@ div[class^="simple-day"]{
 }
 
 #myCharts{
-  padding: 40px;
+  padding: 20px;
   background-color: rgba(0,0,0, 0.4);
 }
 
@@ -1172,8 +1192,12 @@ div[class^="simple-day"]{
 
   .input{ width: 75vw; }
   .search{ width: 40px; }
-  .results{ width: calc( 75vw + 40px);  }
+  .results, .searches{ width: calc( 75vw + 40px);  }
   .info { font-size: 1.2rem; }
+
+  .settings-results > input[type="range"]{
+    width: 30vw;
+  }
 
   .city{ font-size: 1.9rem; }
   .state{ font-size: 1rem; }
@@ -1286,6 +1310,10 @@ div[class^="simple-day"]{
     text-align: left;
   }
 
+  #myCharts{
+    padding: 4px;
+  }
+
 }
 
 @media screen and (min-width: 577px) and (max-width: 768px ) {
@@ -1304,7 +1332,7 @@ div[class^="simple-day"]{
   }
 
   .simple{
-    grid-template-areas: "current" "today" "hourly" "forecast";
+    grid-template-areas: "current" "today" "hourly" "forecast" "aqi" "charts";
   }
 
   .simple-today{
@@ -1319,18 +1347,22 @@ div[class^="simple-day"]{
   }
 
   .dg1, .dg2, .dg3, .dg4{
+    height:12vh;
     display: grid;
     align-items: center;
     justify-items: center;
-    font-size: 1.2rem;
-    grid-template-columns: .75fr 1.25fr;
+    font-size: 1.1rem;
     grid-template-rows: auto;
+  }
+
+  .dg1{
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
   .simple-forecast{
     gap:10px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
   }
 
@@ -1347,9 +1379,13 @@ div[class^="simple-day"]{
   }
   .input{ width: 65vw; }
   .search{ width: 40px; }
-  .results{ width: calc( 65vw + 40px); }
+  .results, .searches{ width: calc( 65vw + 40px); }
 
+  .settings-results > input[type="range"]{
+    width: 20vw;
+  }
 
+  .range { width: 22vw; }
 
   .city{font-size: 2.9rem; }
   .state{ font-size: 1.5rem; }
@@ -1425,6 +1461,10 @@ div[class^="simple-day"]{
     text-align: center;
   }
 
+  #myCharts{
+    padding: 6px;
+  }
+
 }
 
 @media screen and (min-width: 769px) and (max-width: 992px ) {
@@ -1461,8 +1501,11 @@ div[class^="simple-day"]{
   .modal-header, .modal-body, .modal-footer{ width: calc(75vw - 4px); }
   .input{ width: 60vw; }
   .search{ width: 40px;}
-  .results{ width: calc( 60vw + 40px); }
+  .results, .searches{ width: calc( 60vw + 40px); }
 
+  .settings-results > input[type="range"]{
+    width: 20vw;
+  }
 
   .city{font-size: 2.9rem; }
   .state{ font-size: 1.5rem; }
@@ -1529,6 +1572,10 @@ div[class^="simple-day"]{
     text-align: center;
   }
 
+  #myCharts{
+    padding: 8px;
+  }
+
 }
 
 
@@ -1564,7 +1611,12 @@ div[class^="simple-day"]{
   .modal-header, .modal-body, .modal-footer{ width: calc(65vw - 4px); }
   .input{ width: 52vw; }
   .search{ width: 40px; }
-  .results{ width: calc( 52vw + 40px);  }
+  .results, .searches{ width: calc( 52vw + 40px);  }
+
+
+  .settings-results > input[type="range"]{
+    width: 15vw;
+  }
 
   .icon{
     min-width: 20vw;
@@ -1621,6 +1673,10 @@ div[class^="simple-day"]{
     text-align: center;
   }
 
+  #myCharts{
+    padding: 8px;
+  }
+
 }
 
 @media screen and (min-width: 1201px) and (max-width: 1440px ) {
@@ -1643,7 +1699,11 @@ div[class^="simple-day"]{
   .modal-header, .modal-body, .modal-footer{ width: calc(50vw - 4px); }
   .input{ width: 38vw; }
   .search{ width: 40px; }
-  .results{ width: calc( 38vw + 40px); }
+  .results, .searches{ width: calc( 38vw + 40px); }
+
+  .settings-results > input[type="range"]{
+    width: 10vw;
+  }
 
   .cg6{
     grid-template-columns: 1fr 2fr;
@@ -1685,6 +1745,10 @@ div[class^="simple-day"]{
   .dl-direction.cardinal{
     padding-left: 80px;
     text-align: center;
+  }
+
+  #myCharts{
+    padding: 10px;
   }
 
 }
