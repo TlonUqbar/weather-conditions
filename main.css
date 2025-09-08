@@ -1670,7 +1670,11 @@ summary{
 }
 
 summary::marker{
-  color: blue;
+  display:none;
+}
+
+summary::-webkit-details-marker{
+  display:none;
 }
 
 .mmm{
@@ -1684,7 +1688,6 @@ summary::marker{
   justify-content: center;
   align-content:center;
   justify-self: center ;
-  /* width: 100px; */
   gap: 20px 40px;
 }
 
@@ -1692,9 +1695,6 @@ summary::marker{
   display: flex;
   justify-content: center;
   align-items: center;
-  /* height: 60px; */
-  /* border: 1px solid; */
-  /* flex-basis: 50px; */
 }
 
 .mmm-item > .btn{
@@ -1707,10 +1707,17 @@ summary::marker{
   background-size: 30px;
   background-repeat: no-repeat;
   background-position: center center;
-  /* height: 32px;
-  width: 28px; */
-  /* padding-top: 0px;
-  margin-bottom: -40px */
+}
+
+.mmm-item > .hint{
+  color: #aad94c;
+  background-color: #aad94c;
+}
+
+[class*="hint--info"]:hover::after,
+[class*="hint--info"]:hover::before{
+  color: var(--night-text-1);
+  background-color: var(--night-box-shadow-color);
 }
 
 .fc-high, .fc-low, .fc-pop, .fc-uv-index, .fc-sunrise, .fc-sunset, .fc-speed, .fc-direction{
@@ -2499,8 +2506,8 @@ summary::marker{
 
 @media screen and (min-width: 1201px) and (max-width: 1440px ) {
 
-  .grid-container{ 
-    grid-template-columns: 1fr 1200px 1fr; 
+  .grid-container{
+    grid-template-columns: 1fr 1200px 1fr;
     grid-template-rows: 80px 1fr;
     row-gap: 5px;
   }

@@ -1,2 +1,2 @@
-self.addEventListener("message",function(e){let s=e.data,[t,n]=s;switch(console.log("received",t,n),t){case"start":!function(e){let s=1;setInterval(function(){s++,s<=e||(postMessage(s),s=0)},6e4)}(n);break;case"stop":console.log("stopping")}});
+self.addEventListener("message",function(e){let t=e.data,[n,s]=t;"start"===n&&function(e){let t=1;setInterval(function(){t++,t<=e||(postMessage(t),t=0)},6e4)}(s)});
 //# sourceMappingURL=262.bundle.js.map
