@@ -1751,9 +1751,10 @@ span{
   backdrop-filter: blur(2px);
   border-radius: 10px;
   grid-template-columns:1fr 1fr;
-  grid-template-rows: 2fr 1fr;  
+  grid-template-rows: 1.75fr 1.5fr;  
   grid-template-areas:  "temperature conditions" "humidity wind";
   min-height: 50dvh;
+  gap:0 10px;
 }
 
 .location-bar{
@@ -1778,26 +1779,44 @@ span{
   display: grid;
   align-content: center;
   justify-content: stretch;
+  /* border: 1px solid; */
+  align-self: center;
+  justify-self: center;
+  height: 80%;
+  width: 90%;
 }
 
 .cg1{ grid-area: location; }
 .cg2{ grid-area: datetime;}
-.cg3{ grid-area: temperature; text-align: center;}
+
+.cg3{ 
+  grid-area: temperature; 
+  text-align: center;
+}
+
 .cg4{ 
   grid-area: conditions; 
   text-align: center;
-  align-content: stretch;
-  justify-content: space-around;
+  /* align-content: end;
+  justify-content: space-evenly; */
+
+  grid-template-columns: 1fr;
+  grid-template-rows: 3fr 1fr;
+  justify-items: center;
+  align-items: end;
+
+
 }
 .cg5{ 
   grid-area: humidity;
-  height: 13vh;
-  gap:0px 0px;
   grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   align-content: stretch;
+  align-items: center;
   justify-content: space-around;
   justify-self: center;
+  background-color: rgba(0,0,0,0.4);
+  border-radius: 10px;
 }
 
 .humid, .rain-total{ font-weight: 900; }
@@ -1805,7 +1824,7 @@ span{
 .sm-humid, .sm-rain{
   background-size: contain;
   background-repeat: no-repeat;
-  width: 4vw;
+  width: 2vw;
   height: 4vh;
   justify-self: center;
 }
@@ -1814,12 +1833,12 @@ span{
 .sm-rain{ background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8zIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNjQgNjQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY0IDY0OyIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCI+CiAgPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7b3BhY2l0eTowLjc1O30KCS5zdDF7ZmlsbDojYzZkZWZmO30KCS5zdDJ7b3BhY2l0eTowLjU7ZmlsbDojMjAyMDIwO30KPC9zdHlsZT4KICA8ZyBjbGFzcz0ic3QwIiBzdHlsZT0iIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjgzMTc0MSwgMCwgMCwgMC43OTExMDksIDQuMzI3Nzg4LCAxMy4yNTQ2ODEpIj4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zNCw0LjFWM2MwLTEuMS0wLjktMi0yLTJzLTIsMC45LTIsMnYxLjFDMTMuOCw1LjEsMSwxOC42LDEsMzVjMCwwLjEsMCwwLjEsMCwwLjJjMCwwLDAsMC4xLDAsMC4xIGMwLDAuMSwwLjEsMC4yLDAuMSwwLjJjMCwwLDAsMC4xLDAuMSwwLjFjMCwwLjEsMC4xLDAuMSwwLjIsMC4yYzAsMCwwLDAuMSwwLjEsMC4xYzAsMCwwLjEsMCwwLjEsMC4xYzAsMCwwLDAsMC4xLDAgQzEuOCwzNiwxLjksMzYsMiwzNmMwLjMsMCwwLjYtMC4yLDAuOC0wLjRjMS41LTIuMiw0LTMuNiw2LjctMy42YzIuNywwLDUuMSwxLjMsNi42LDMuNWMwLjEsMC4xLDAuMiwwLjIsMC4zLDAuM2MwLDAsMCwwLDAsMCBjMC41LDAuMywxLjEsMC4yLDEuNC0wLjNjMS41LTIuMiw0LTMuNiw2LjctMy42YzIuNywwLDUuMSwxLjMsNi42LDMuNWMwLDAuMSwwLjEsMC4xLDAuMSwwLjFjMCwwLjEsMC4xLDAuMSwwLjIsMC4yYzAsMCwwLDAsMCwwIGMwLDAsMCwwLDAsMEMzMS42LDM2LDMxLjgsMzYsMzIsMzZjMC4yLDAsMC40LTAuMSwwLjUtMC4yYzAuMi0wLjEsMC4zLTAuMiwwLjMtMC40YzEuNS0yLjIsMy45LTMuNSw2LjYtMy41YzIuNywwLDUuMSwxLjMsNi42LDMuNSBjMC4xLDAuMSwwLjIsMC4yLDAuMywwLjNjMCwwLDAsMCwwLDBjMC4yLDAuMSwwLjQsMC4yLDAuNiwwLjJjMC4zLDAsMC42LTAuMiwwLjgtMC40YzEuNS0yLjIsNC0zLjYsNi43LTMuNmMyLjcsMCw1LjEsMS4zLDYuNiwzLjUgYzAsMCwwLjEsMC4xLDAuMSwwLjFjMCwwLDAuMSwwLjEsMC4xLDAuMWMwLDAsMC4xLDAuMSwwLjEsMC4xYzAuMiwwLjEsMC4zLDAuMiwwLjUsMC4yYzAuNiwwLDEtMC40LDEtMUM2MywxOC42LDUwLjIsNS4xLDM0LDQuMXoiIHN0eWxlPSJmaWxsOiByZ2IoMzcsIDcyLCAxMjApOyIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTQwLDU1Yy0xLjEsMC0yLDAuOS0yLDJzLTAuOSwyLTIsMnMtMi0wLjktMi0yVjM5LjZjLTAuNiwwLjMtMS4zLDAuNC0yLDAuNGMtMC43LDAtMS40LTAuMi0yLTAuNFY1NyBjMCwzLjMsMi43LDYsNiw2czYtMi43LDYtNkM0Miw1NS45LDQxLjEsNTUsNDAsNTV6IiBzdHlsZT0iZmlsbDogcmdiKDM3LCA3MiwgMTIwKTsiLz4KICA8L2c+CiAgPGcgY2xhc3M9ImFtLXdlYXRoZXItcmFpbnktMyIgdHJhbnNmb3JtPSJtYXRyaXgoMS41MjA3MTIsIDAuMjY4MTM4LCAtMC40Mzg0MzEsIDIuNDg2NDY0LCA0NS45MjU5MTEsIC0xLjQ0ODgyNikiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzkxYzBmOCIgc3Ryb2tlLWRhc2hhcnJheT0iNCwgNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiIHN0eWxlPSIiPgogICAgPGxpbmUgY2xhc3M9ImFtLXdlYXRoZXItcmFpbi0xIiB5Mj0iMTIuNDQ1IiB4MT0iLTE0LjEzNCIgeTE9IjQuNDQ1IiB4Mj0iLTE0LjEzNCIvPgogICAgPGxpbmUgY2xhc3M9ImFtLXdlYXRoZXItcmFpbi0yIiB5Mj0iMTAuNzE5IiB4MT0iLTUuNjQxIiB5MT0iMi43MTkiIHgyPSItNS42NDEiLz4KICAgIDxsaW5lIGNsYXNzPSJhbS13ZWF0aGVyLXJhaW4tMSIgeTI9IjEyLjQwNCIgeDE9IjIuOTA4IiB5MT0iNC40MDQiIHgyPSIyLjkwOCIvPgogIDwvZz4KPC9zdmc+);}
 
 .cg6{ 
-  height: 10vh;
   grid-area: wind; 
-  gap: 2px 20px;
   grid-template-areas: "icons speed" "icons direction";
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 2fr 1fr;
+  background-color: rgba(0,0,0,0.4);
+  border-radius: 10px;
 }
 
 .md-wind{
@@ -1876,7 +1895,7 @@ span{
   display: grid;
   /* grid-area: today; */
   border-radius: 10px;
-  gap: 20px;
+  gap: 50px;
   /* grid-template-columns: 1fr 1fr; */
   /* grid-template-rows: 1fr 1fr;   */
   /* grid-template-areas: "temp sun" "conditions wind"; */
@@ -1890,15 +1909,16 @@ span{
   backdrop-filter: blur(2px);
   border-radius: 10px;
   min-height: 50dvh;
+  padding: 20px;
 }
 
 .dg1, .dg2, .dg3, .dg4{
   display: grid;
   align-items: center;
   align-content: center;
-  /* backdrop-filter: blur(2px);
-  border: 1px solid var(--night-border);
-  background-color: rgba(0,0,0,0.4); */
+  backdrop-filter: blur(2px);
+  /* border: 1px solid var(--night-border); */
+  background-color: rgba(0,0,0,0.2);
   border-radius: 10px;
   font-size: 1.8rem;
   grid-template-columns: .75fr 1.25fr;
@@ -1908,6 +1928,7 @@ span{
 .dg1{ 
   grid-area: temp; 
   grid-template-columns: .65fr 1fr .65fr; 
+  /* gap: 50px; */
 }
 
 .dg2{ grid-area: sun; }
@@ -2108,11 +2129,13 @@ div[class^="simple-day"]{
   order:2;
 }
 .icon{
-  max-width: 30vw;
-  min-width: 10vw;
-  max-height: 25vh;
-  min-height: 8vh;
-  background-size: cover;  
+  /* max-width: 30vw; */
+  min-width: 50%;
+  /* max-height: 25vh; */
+  min-height: 95%;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;  
 }
 
 
@@ -2375,19 +2398,19 @@ a.menu-icon::content{
 /* hourly */
 .hourly{
   display: grid;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   justify-items: space-evenly;
   grid-template-columns: repeat(12, 1fr);
   gap: 10px;
-  padding: 0 10px;
+  padding: 20px;
 }
 
 .hours{
   border-radius: 5px;
   background-color: transparent;
-  flex-basis:calc( 100% / 12);
-  flex-wrap: wrap;
+  /* flex-basis:calc( 100% / 12); */
+  /* flex-wrap: wrap; */
   /* border: 1px solid var(--night-border); */
   /* background-color: rgba(0,0,0,0.4); */
   backdrop-filter: blur(2px);
@@ -2398,8 +2421,9 @@ a.menu-icon::content{
   justify-content: center;
   font-size: 1.3rem;
   text-shadow: 0px 0px 1px;
-  gap: 25px 5px;
+  gap: 30px 10px;
   /* padding: 0px 10px; */
+  min-height: 80%;
 }
 
 .hour{
@@ -3129,14 +3153,15 @@ a.menu-icon::content{
   .simple-today{
     /* grid-template-areas: "temp" "sun" "conditions" "wind"; */
     grid-template-areas: "temp       sun " "conditions wind";
-    row-gap: 10px;
-    column-gap: 10px;
+    row-gap: 50px;
+    column-gap: 100px;
     padding: 0;
     display: grid;
     justify-content: space-around;
     align-content: stretch;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
+    padding: 60px;
   }
 
   .grp{
@@ -3147,8 +3172,8 @@ a.menu-icon::content{
   }
 
   .icon{
-    min-width: 220px;
-    min-height: 130px;
+    /* min-width: 220px;
+    min-height: 170px; */
   }
 
   .icons{
@@ -3321,5 +3346,17 @@ main{
 }
 
 
+
+
+/* Fix for Hint.css tooltip to allow escape sequences like &#xa; or &#10; equiv to \n */
+
+[data-hint]:after {
+  content: attr(data-hint);
+  color: var(--night-primary-1);
+  background-color: var(--night-base-3);
+  white-space: pre-line;
+  display: inline-block;
+  
+}
 
 /*# sourceMappingURL=main.css.map*/
