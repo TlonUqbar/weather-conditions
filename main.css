@@ -558,7 +558,7 @@ sup{ vertical-align:super; }
 
 .dg1 > .dl-high, .dg1 > .dl-low{
   height: 5vh;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 900;
   align-content: center;
   justify-self: center;
@@ -578,7 +578,7 @@ sup{ vertical-align:super; }
 
 .dl-uv, .uv-meter{
   height: 5vh;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 900;
   align-content: center;
   justify-self: center;
@@ -649,7 +649,7 @@ input[type="range"].uv-meter::-moz-range-track{
 .dg3 > .dl-pop, .rain-meter, 
 .min-aqi, .max-aqi{
   height: 5vh;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 900;
   align-content: center;
   justify-self: center;
@@ -1659,10 +1659,10 @@ span{
 
 .cardinal{
   display: inline-block;
-  padding-left: 70px;
-  width:200px;
+  /* padding-left: 70px; */
+  width: calc(100% - 60px);
   vertical-align: bottom;
-  text-align: center;
+  text-align: right;
 }
 
 .direction{
@@ -1753,7 +1753,8 @@ span{
   grid-template-columns:1fr 1fr;
   grid-template-rows: 1.75fr 1.5fr;  
   grid-template-areas:  "temperature conditions" "humidity wind";
-  min-height: 50dvh;
+  /* min-height: 50dvh; */
+  min-height: 520px;
   gap:0 10px;
 }
 
@@ -1807,6 +1808,12 @@ span{
 
 
 }
+
+.cg4 > .icon {
+  min-width: 40%;
+  min-height:98%;
+}
+
 .cg5{ 
   grid-area: humidity;
   grid-template-rows: 1fr 1fr;
@@ -1819,7 +1826,10 @@ span{
   border-radius: 10px;
 }
 
-.humid, .rain-total{ font-weight: 900; }
+.humid, .rain-total{ 
+  font-weight: 900;
+  font-size: 2rem;
+}
 
 .sm-humid, .sm-rain{
   background-size: contain;
@@ -1835,10 +1845,11 @@ span{
 .cg6{ 
   grid-area: wind; 
   grid-template-areas: "icons speed" "icons direction";
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 2fr 1fr;
+  grid-template-columns: 1.75fr 1.2fr;
+  grid-template-rows: 1fr 1fr;
   background-color: rgba(0,0,0,0.4);
   border-radius: 10px;
+  align-items: center;
 }
 
 .md-wind{
@@ -1853,7 +1864,6 @@ span{
 }
 
 .md-compass, .md-dir {
-  
   /* background-image: url("../icons/direction-arrow.svg"); */
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIwIDAgNjQgNjQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICA8ZyBpZD0iV2luZCIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiB0cmFuc2Zvcm09Im1hdHJpeCgwLCAtMy42MzYzNjQsIDEuNiwgMCwgMjQuMjUsIDI5LjAwMDAwNCkiIHN0eWxlPSJ0cmFuc2Zvcm0tb3JpZ2luOiA4Ljc1cHggM3B4OyI+CiAgICA8cGF0aCBkPSJNMC41LDIuNSBMMTMsMi41IiBpZD0iTGluZSIgc3Ryb2tlPSIjMDAwMDAwIi8+CiAgICA8cG9seWdvbiBpZD0iVHJpYW5nbGUtMSIgc3Ryb2tlPSIjZmYwMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmaWxsPSIjZmYwMDAwIiBwb2ludHM9IjEzIDUgMTMgMS4xMzY4NjgzOGUtMTMgMTcgMi41Ii8+CiAgPC9nPgo8L3N2Zz4=);
   background-size: contain;
@@ -1866,6 +1876,11 @@ span{
   scale: 0.75;
 }
 
+.md-dir{
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPGcgaWQ9IldpbmQiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHRyYW5zZm9ybT0ibWF0cml4KDAsIC0zLjYzNjM2NCwgLTQuMjk2MTU0LCAwLCAyMi4yMTMzMDUsIDI5LjU2MDQ2NykiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3R5bGU9InRyYW5zZm9ybS1vcmlnaW46IDguNzg2NzRweCAyLjQzOTU1cHg7Ij4KICAgIDxwYXRoIGQ9Ik0wLjUsMi41IEwxMywyLjUiIGlkPSJMaW5lIiBzdHJva2U9IiMwMDAwMDAiLz4KICAgIDxwb2x5Z29uIGlkPSJUcmlhbmdsZS0xIiBzdHJva2U9IiNmZjAwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9IiNmZjAwMDAiIHBvaW50cz0iMTMgNSAxMyAxLjEzNjg2ODM4ZS0xMyAxNyAyLjUiLz4KICA8L2c+Cjwvc3ZnPg==);
+  filter: drop-shadow(1px 1px 2px var(--night-primary-2));
+  scale: 0.95;
+}
 
 .md-bg{
   display: grid;
@@ -1880,16 +1895,15 @@ span{
   aspect-ratio: 1;
 }
 
-.c-speed{
-  grid-area: speed;
-  font-weight: 900;
-}
 
-.c-direction{
-  font-weight: 900;
-  grid-area: direction;
-}
 
+.c-speed{ grid-area: speed; }
+.c-direction{ grid-area: direction; align-self: baseline; }
+
+.c-speed, .c-direction {  
+  font-weight: 900;
+  font-size: 2rem;
+}
 
 .simple-today{
   display: grid;
@@ -1939,7 +1953,9 @@ span{
 }
 .dg4{ 
   grid-area: wind; 
-  grid-template-areas: "speedIcon speed" "directionIcon cardinal";
+  grid-template-areas: "speedIcon speed" "directionIcon cardinalD";
+  grid-template-columns: 1fr 2fr;
+  justify-items: center;
 }
 
 .simple-forecast{
@@ -2175,12 +2191,13 @@ div[class^="simple-day"]{
 .md-speed{ grid-area: speedIcon;}
 .dl-speed{ grid-area: speed;}
 .md-direction, .md-dir{ grid-area: directionIcon; }
-.dl-direction{ 
-  grid-area: cardinal; 
+
+/* .dl-direction{ 
+  grid-area: cardinalD; 
   display: grid; 
-  grid-template-columns: 1fr 2fr; 
-  grid-template-areas: direction cardinal;
-}
+  grid-template-columns: 1fr 1fr; 
+  grid-template-areas: "dir card";
+} */
 
 
 
@@ -2329,15 +2346,15 @@ a.menu-icon::content{
   text-align: center;
 }
 
-.dl-high, .dl-low, .dl-rise, .dl-set, .dl-pop, .dl-speed, .dl-direction,.aqi-min, .aqi-max{
+.dl-high, .dl-low, .dl-rise, .dl-set, .dl-uv,
+.dl-pop, .dl-speed, .dl-direction,.aqi-min, .aqi-max{
   height: 5.5vh;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 900;
   align-content: center;
   justify-self: center;
   text-shadow: 0px 0px 1px;
 }
-
 
 
 
@@ -3133,7 +3150,7 @@ a.menu-icon::content{
 
   .dl-high, .dl-low, .dl-rise, .dl-set, .dl-uv, .dl-pop, .dl-speed, .dl-direction{
     height: 5vh;
-    font-size: 1.8rem;
+    /* font-size: 1.8rem; */
   }
 
   .dl-direction.cardinal{
@@ -3180,16 +3197,70 @@ a.menu-icon::content{
     width: 3vw;
   }
 
-  .dl-direction.cardinal{
+  /* .dl-direction{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-content: space-between;
+    justify-self: center;
+    align-items: center;
+    border: 1px solid;
+  } */
+
+  /* .dg4 > .cardinal{
     padding-left: 80px;
     text-align: center;
-  }
+    height: 0;
+    text-align: right;
+    justify-self: center ;
+    align-items: center;
+    align-self: center;
+    border: none;
+  } */
+
+  /* .dg4 > .dl-direction{
+    height: 4vh;
+    align-content: center;
+    align-items: center;
+    align-self: center ;
+  } */
 
 }
 
 
 
+.dg4 > .md-icons.md-dir{
+  min-width: 50px;
+  min-height: 50px;
+  justify-self: end;
+}
 
+
+
+.direction-grp{
+  grid-area: cardinalD;
+  display: grid;
+  grid-template-areas: "dir card";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  justify-items: center;
+  align-items: center;
+  /* border: 1px solid; */
+}
+
+
+.dl-direction{
+  grid-area: dir;
+  /* border: none; */
+  /* width: 20%; */
+}
+
+.dl-cardinal{
+  grid-area: card;
+  /* border: 1px solid; */
+  text-shadow: 0px 0px 1px;
+  font-weight: 900;
+}
 
 
 /*   nav part */
@@ -3233,6 +3304,8 @@ main{
   perspective: 1000px;
   perspective-origin: calc(50% + 120px) 50%;
   grid-template-columns: 1fr 1280px 1fr;
+  grid-template-rows: 1fr;
+  /* overflow: hidden; */
   grid-template-areas: 
     ". lbar ."
     ". section ."
@@ -3266,7 +3339,6 @@ main{
 }
 
 .menu{
-  
   display: grid;
   /* justify-content: space-between; */
   align-content: center;
