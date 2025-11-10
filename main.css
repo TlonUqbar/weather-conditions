@@ -1396,6 +1396,8 @@ legend{
 /* Media Queries */
 /* breakpoints: 576, 768, 992, 1200, 1400 */
 
+
+
 @media screen and (max-width: 576px)  { 
 
   nav > .menu{
@@ -1404,6 +1406,17 @@ legend{
     width: 420px;
     height: auto;
     gap: 200px;
+
+  }
+
+  /* nav > .menu:hover > .menu-left{
+    position: relative;
+    top: 18px;
+  } */
+
+  nav > .menu > .menu-left:has(.menu){
+    position: relative;
+    top: 16px;
   }
 
   nav > .menu > .menu-right, 
